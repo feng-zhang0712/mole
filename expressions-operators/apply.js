@@ -17,3 +17,6 @@ Function.prototype.myApply = function(context, args) {
 function greet(greeting, punctuation) {
   return `${greeting}, ${this.name}${punctuation}`;
 }
+
+const person = { name: 'John' };
+console.log(greet.myApply(person, ['Hello', '!'])); // 输出: "Hello, John!"
