@@ -17,3 +17,13 @@ function throttle(func, wait) {
     }
   }
 }
+
+function throttle(func, wait) {
+  let lastRan;
+  return function(...args) {
+    if (Date.now() - lastRan >= wait) {
+      func.apply(this, args);
+      lastRan = Data.now();
+    }
+  }
+}
