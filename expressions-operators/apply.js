@@ -1,4 +1,4 @@
-Function.prototype.myApply = function(context, ...args) {
+Function.prototype.myApply = function(context, args) {
   if (typeof this !== 'function') {
     throw new TypeError('Not callable');
   }

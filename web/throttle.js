@@ -9,7 +9,7 @@ function throttle(func, wait) {
     } else {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        if (Date.now() - lastRan < wait) {
+        if (Date.now() - lastRan >= wait) {
           func.apply(this, args);
           lastRan = Date.now();
         }
