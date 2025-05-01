@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debounce and throttle</title>
+  <style>
+    body {
+      margin-bottom: 200vh;
+    }
+  </style>
+</head>
+<body>
+  <button id="btn">click me</button>
+  <script type="module">
+    import { debounce, throttle } from './index.js'
+    
+    document.getElementById('btn').onclick = debounce(function onButtonClick() {
+      console.log('button clicked.');
+    }, 1000);
+
+    document.addEventListener('scroll', throttle(function() {
+      console.log('scrolling...');
+    }, 1000));
+  </script>
+</body>
+</html>
