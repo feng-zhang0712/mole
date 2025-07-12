@@ -5,8 +5,6 @@
 缺点：
   1. 定义在原型中的属性（引用对象的属性），会被所有的实例对象共享；
   2. 创建子类实例时，不能向父类的构造函数传递参数。
-
-这种方式很少使用。
 */
 
 function SuperType() {
@@ -27,7 +25,7 @@ function SubType() {
 }
 
 /*
-继承 SuperType
+  关键代码：继承 SuperType
 
   1. 等号右边实例对象的属性和方法，挂载到了 `SubType.prototype`
   2. 实例的 constructor 属性指向 SuperType

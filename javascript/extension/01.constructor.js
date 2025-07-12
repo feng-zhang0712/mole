@@ -5,8 +5,6 @@
   1. 避免了父类的引用类型属性被子类共享；
   2. 调用父类构造函数时，可以向其传递参数。
 缺点：只能继承父类实例属性，不能继承原型上的属性和方法，无法实现复用。
-
-  这种方式实际很少使用
 */
 
 function SuperType(name) {
@@ -19,7 +17,7 @@ function SuperType(name) {
 }
 
 function SubType(name, age) {
-  // 继承 SuperType 
+  // 关键代码：继承 SuperType 
   SuperType.call(this, name);
   this.age = age;
 }
