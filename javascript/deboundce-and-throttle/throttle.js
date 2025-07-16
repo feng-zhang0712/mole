@@ -17,7 +17,7 @@ function throttle(func, wait) {
     if (!timer) { // 关键代码
       const _this = this;
       timer = setTimeout(() => {
-        func.apply(_this, arguments);
+        func.call(_this, ...arguments);
         timer = null; // 关键代码
       }, wait); 
     }
@@ -29,7 +29,7 @@ function _throttle(func, wait) {
   let lastRan;
   return function() {
     if (!lastRan || Date.now() - lastRan >= wait) {
-      func.apply(this, arguments);
+      func.call(this, ...arguments);
       lastRan = Date.now();
     }
   }

@@ -15,7 +15,7 @@ function debounce(func, wait) {
     clearTimeout(timer);
     const _this = this;
     timer = setTimeout(() => {
-      func.apply(_this, arguments);
+      func.call(_this, ...arguments);
       timer = null; // 关键代码
     }, wait);
   }
