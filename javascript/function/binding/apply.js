@@ -1,4 +1,4 @@
-// 非 ES6 实现
+// 借助 eval 函数实现
 if (!('apply' in Function.prototype)) {
   Object.defineProperty(Function.prototype, 'apply', {
     value: function () {
@@ -6,31 +6,22 @@ if (!('apply' in Function.prototype)) {
         throw Error('Not a function.');
       }
 
-      const args = Array.from(arguments);
-      let context = args.shift();
-      // 确保context存在，若为null或undefined则使用全局对象
-      context = Object(context) || window;
+      let [context, args] = arguments;
+      context = Object(context) || globalThis;
         
-      // 生成唯一属性名以避免冲突
-      let uniqueProp = 'call_' + new Date().getTime();
-      while (context[uniqueProp]) {
-        uniqueProp = 'call_' + new Date().getTime();
+      let key = String(new Date().getTime());
+      while (context[key]) {
+        key = String(new Date().getTime());
       }
       
-      // // 绑定 this：将函数赋值给context的临时属性
-      context[uniqueProp] = this;
-      
-      // 获取参数（从第二个参数开始）
+      context[key] = this; // 绑定 this：将函数赋值给context的临时属性
       const evalArgs = [];
-      for (let i = 1; i < args.length; i++) {
+      for (let i = 0; i < args.length; i++) {
         evalArgs.push('args[' + i + ']');
       }
       
-      // 使用eval执行函数调用（ES3兼容方式）
-      const result = eval('context[uniqueProp](' + evalArgs.join(',') + ')');
-      
-      // 删除临时属性
-      delete context[uniqueProp];
+      const result = eval('context[key](' + evalArgs.join(',') + ')');
+      delete context[key];
       
       return result;
     },
@@ -40,7 +31,6 @@ if (!('apply' in Function.prototype)) {
   })
 }
 
-// ES6 实现
 if (!('apply' in Function.prototype)) {
   Object.defineProperty(Function.prototype, 'apply', {
     value: function() {
@@ -53,8 +43,7 @@ if (!('apply' in Function.prototype)) {
       context = context ? Object(context) : globalThis;
     
       const key = Symbol('key');
-      // 绑定 this
-      context[key] = this;
+      context[key] = this; // 绑定 this
       const result = context[key](...args);
       delete context[key];
       
