@@ -12,11 +12,14 @@ function debounce(func, wait) {
   let timer;
   return function() {
     // 关键代码
-    clearTimeout(timer);
+    if (timer) {
+     clearTimeout(timer); 
+    }
+    
     const _this = this;
     timer = setTimeout(() => {
       func.call(_this, ...arguments);
-      timer = null; // 关键代码
+      timer = null;
     }, wait);
   }
 }
