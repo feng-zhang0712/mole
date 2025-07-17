@@ -8,8 +8,6 @@
   3. 构造函数内部的 this 被赋值为这个新对象（即 this 指向新对象）。 
   4. 执行构造函数内部的代码（给新对象添加属性）。 
   5. 如果构造函数返回非空对象，则返回该对象；否则，返回刚创建的新对象。
-
-参考：[Class 的继承](https://es6.ruanyifeng.com/#docs/class-extends)
 */
 
 class SuperType {
