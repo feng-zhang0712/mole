@@ -56,13 +56,7 @@
       transform: translateY(-50%);
     } */
 
-    /* 方式四：line-height（仅限单行文本）*/
-    /* .box {
-      line-height: 100vh;
-      height: 100vh;
-    } */
-
-    /* 方式五：使用绝对定位和 margin: auto */
+    /* 方式四：绝对定位 + margin: auto */
     /* .box {
       position: relative;
       height: 100vh;
@@ -75,7 +69,24 @@
       height: 100px; 必须设置固定高度 
     } */
 
-    /* 方式六：table-cell */
+    /* 方式五：绝对定位 + calc() */
+    /* .box {
+      position: relative;
+      height: 100vh;
+    }
+    .item {
+      position: absolute;
+      height: 100px;
+      top: calc(50% - 50px);
+    } */
+
+    /* 方式六：line-height（仅限单行文本）*/
+    /* .box {
+      line-height: 100vh;
+      height: 100vh;
+    } */
+
+    /* 方式七：table-cell */
     /* .box {
       display: table-cell;
       vertical-align: middle;

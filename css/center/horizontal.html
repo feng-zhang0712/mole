@@ -32,22 +32,7 @@
       transform: translateX(-50%);
     } */
 
-    /* 方式四：text-align: center（适用于内联或内联块元素） */
-    /* .box {
-      text-align: center;
-    } */
-
-    /* 方式五：margin（适用于块级元素，且宽度固定） */
-    /* .box {
-      width: 100%;
-    }
-    .item {
-      display: block;
-      margin: 0 auto;
-      width: 100px; 必须设置宽度
-    } */
-
-    /* 方式六：使用绝对定位和 margin: auto */
+    /* 方式四：绝对定位 + margin: auto */
     /* .box {
       position: relative;
       height: 100vh;
@@ -60,6 +45,22 @@
       width: 100px; 必须设置宽度
     } */
 
+    /* 方式五：绝对定位 + calc() */
+    /* .box {
+      position: relative;
+      height: 100vh;
+    }
+    .item {
+      position: absolute;
+      width: 100px;
+      left: calc(50% - 50px);
+    } */
+
+    /* 方式六：text-align: center（适用于内联或内联块元素） */
+    /* .box {
+      text-align: center;
+    } */
+
     /* 方式七：table-cell */
     /* .box {
       display: table;
@@ -70,7 +71,17 @@
       text-align: center;
     } */
 
-    /* 方式八：inline-block 和 text-align（结合伪元素） */
+    /* 方式八：margin（适用于块级元素，且宽度固定） */
+    /* .box {
+      width: 100%;
+    }
+    .item {
+      display: block;
+      margin: 0 auto;
+      width: 100px; 必须设置宽度
+    } */
+
+    /* 方式九：inline-block + text-align（结合伪元素） */
     /* .box {
       text-align: center;
       font-size: 0; 消除 inline-block 间隙
