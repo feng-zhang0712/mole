@@ -2,38 +2,53 @@
 
 ## 一、介绍
 
-webpack 是一个用于现代 JavaScript 应用程序的 静态模块打包工具。当 webpack 处理应用程序时，它会在内部从一个或多个入口点构建一个 [依赖图](https://webpack.docschina.org/concepts/dependency-graph/)，然后将你项目中所需的每一个模块组合成一个或多个 bundles，它们均为静态资源。
+webpack 是一个用于现代 JavaScript 应用程序的静态模块打包工具。当 webpack 处理应用程序时，会在内部从一个或多个入口点构建一个 [依赖图](https://webpack.docschina.org/concepts/dependency-graph/)，然后将项目中所需的每一个模块组合成一个或多个 bundles，它们均为静态资源。
 
-默认情况下，在开发环境中，webpack 只支持编译 ESM 语法；而在生产环境中，webpack 除了支持编译 ESM 语法外，还会压错 JavaScript 代码。
+默认情况下，在开发环境中，webpack 只支持编译 **ESM** 语法；而在生产环境中，webpack 除了支持编译 ESM 语法外，还会**压错 JavaScript 代码**。
 
 ## 二、概念及相关术语
 
 ### 2.1 入口（Entry）
 
-入口表示 webpack 应该使用哪个模块，来开始构建其内部依赖图。入口通过 `[entry]()` 选项来配置。入口有两种写法：单入口写法和对象写法。
+入口表示 webpack 应该使用从哪个文件开始，执行打包操作。入口通过 `[entry](#32-entry)` 选项来配置。入口有两种写法：单入口写法和对象写法。
 
 ```javascript
 module.exports = {
-  entry: './path/to/my/entry/file.js',
+  entry: './src/index.js',
 };
 
 // 等同于
 module.exports = {
   entry: {
-    main: './path/to/my/entry/file.js',
+    app: './src/index.js',
   },
 };
 ```
 
+上面代码中，表示从 `./src/index.js` 文件开始打包。
+
+```javascript
+module.exports = {
+  entry: {
+    app: './src/app.js',
+    main: {
+      dependOn: 'app',
+      import: './src/main.js',
+    },
+  },
+};
+```
+
+上面的代码是多入口写法，表示从 `./src/app.js` 和 `./src/main.js` 两个文件开始打包。其中，`main` 依赖于 `app`，也就是说，`main` 文件会在 `app` 文件之后被加载。
+
 ### 2.2 输出（Output）
 
-`output` 属性指定 webpack 如何输出、以及在哪里输出打包后生成的 bundle、asset 和其他内容。webpack 打包后默认生成一个 `./dist` 文件夹，所有打包的资源都会被放在这个文件夹下。
+`output` 属性指定 webpack 如何输出、以及在哪里输出打包后生成的 bundle、asset 和其他内容。webpack 打包后默认生成一个 `./dist` 目录，所有打包的资源都会放在这个目录下。
 
 ```javascript
 const path = require('path');
 
 module.exports = {
-  // ...
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
@@ -41,7 +56,9 @@ module.exports = {
 };
 ```
 
-上面的代码，会将打包好的 `bundle.js` 放在默认的 `./dist` 目录下。
+上面的代码表示，打包好的 `bundle.js` 将被放在的 `./dist` 目录下。
+
+注意，上面代码中，省略了无关的配置，如果不做特殊说明，以后的代码示例中，都会省略无关的配置。
 
 如果 `entry` 中配置了多个打包入口，则应该使用 [占位符](https://webpack.docschina.org/configuration/output/#outputfilename) 来确保每个文件具有唯一的名称。
 
@@ -51,7 +68,7 @@ const path = require('path');
 module.exports = {
   entry: {
     app: './src/app.js',
-    search: './src/search.js',
+    main: './src/main.js',
   },
   output: {
     filename: '[name].js',
@@ -60,13 +77,12 @@ module.exports = {
 };
 ```
 
-上面的代码，分别会创建 `app.js` 和 `search.js` 两个文件，并放在 `./dist` 目录下。
+上面的代码，分别会创建 `app.js` 和 `main.js` 两个文件，并放在 `./dist` 目录下。
 
 此外，如果使用了 CND 和 hash 值来命名输出文件，则需要明确指定 `publicPath`，并使用占位符来确保每个文件具有唯一的名称。
 
 ```javascript
 module.exports = {
-  //...
   output: {
     path: '/home/proj/cdn/assets/[fullhash]',
     publicPath: 'https://cdn.example.com/assets/[fullhash]/',
@@ -74,7 +90,7 @@ module.exports = {
 };
 ```
 
-不知道最终输出文件的 `publicPath` 是地址什么，可以在运行时通过入口起点文件中的 `__webpack_public_path__` 动态设置。
+如果不知道最终输出文件的 `publicPath` 是地址什么，可以在运行时通过入口起点文件中的 `__webpack_public_path__` 动态设置。
 
 ```javascript
 __webpack_public_path__ = myRuntimePublicPath;
@@ -82,36 +98,31 @@ __webpack_public_path__ = myRuntimePublicPath;
 
 ### 2.3 Loader
 
-webpack 默认只能处理 JavaScript 和 JSON 文件。loader 让 webpack 能够处理其他类型的文件，并将它们转换为有效的模块，添加到依赖图中。比如，loader 可以将文件从不同的语言（如 TypeScript）转换为 JavaScript 或将内联图像转换为 data URL。
+Loader 是 webpack 的核心功能之一。webpack 默认只能处理 JavaScript 和 JSON 文件。loader 让 webpack 能够处理其他类型的文件，并将它们转换为有效的模块，添加到依赖图中。比如，loader 可以将文件从不同的语言（如 TypeScript）转换为 JavaScript 或将内联图像转换为 data URL。
 
-loader 有两种配置方式，[配置方式](https://webpack.docschina.org/concepts/loaders#configuration) 和 [内联方式](https://webpack.docschina.org/concepts/loaders#inline)，前者在 webpack.config.js 文件中指定 loader，后者在每个 `import` 语句中显式指定 loader。除非有特殊需求，否则，永远不要使用后者的方式来配置。此外，loader 有两个重要的属性。
-
-- `test`：用于匹配文件类型；
-- `use`：指定在对匹配到的文件进行转换时，应该使用哪个 loader。
+Loader 有两种配置方式，[配置方式](https://webpack.docschina.org/concepts/loaders#configuration) 和 [内联方式](https://webpack.docschina.org/concepts/loaders#inline)，前者在 `webpack.config.js` （webpack 的配置文件）中指定所使用的 Loader，后者在每个 `import` 语句中指定所使用的 Loader。除非有特殊需求，否则，永远不要使用后者的方式来配置。
 
 ```javascript
-// webpack.config.js
-
 module.exports = {
-  // ...
   module: {
-    rules: [{
-      test: /\.txt$/,
-      use: 'raw-loader',
-    }],
+    rules: [
+      {
+        test: /\.txt$/,
+        use: 'raw-loader',
+      }
+    ],
   },
 };
 ```
 
-上面的代码告诉 webpack，对于所有以 `.txt` 结尾的文件，使用 `raw-loader` 进行处理。
+上面的代码告诉 webpack，对于所有以 `.txt` 结尾的文件，使用 `raw-loader` 进行处理。其中，`test` 用于匹配文件类型；`use` 指定在对匹配到的文件进行转换时，应该使用哪个 loader。
 
-注意，使用正则表达式匹配文件时，你不要为它添加引号。也就是说，`/\.txt$/` 与 `'/\.txt$/'` 或 `"/\.txt$/"` 不同。前者指示 webpack 匹配任何以 `.txt` 结尾的文件，后者指示 webpack 匹配具有绝对路径 `'.txt'` 的单个文件。
+注意，使用正则表达式匹配文件时，不要为它添加引号。也就是说，`/\.txt$/` 与 `'/\.txt$/'` 或 `"/\.txt$/"` 不同。前者表示 webpack 匹配任何以 `.txt` 结尾的文件，后者表示 webpack 匹配具有绝对路径 `'.txt'` 的单个文件。
 
 `use` 属性除了可以指定单个 loader 外，还可以指定多个 loader，它们可以链式调用，且按照**从右到左**、**从下往上**的顺序执行。
 
 ```javascript
 module.exports = {
-  // ...
   module: {
     rules: [
       {
@@ -123,9 +134,9 @@ module.exports = {
 };
 ```
 
-上面的代码，匹配到 `.css` 文件时，首先使用 `sass-loader` 处理，之后将处理后的结果交给 `css-loader` 处理，最后，上一步的处理结果又交由 `style-loader` 处理。
+上面的代码表示，每当匹配到 `.css` 结尾的文件时，首先使用 `sass-loader` 处理，之后将处理后的结果交给 `css-loader` 处理，最后，再将处理结果交给 `style-loader` 处理。
 
-`use` 属性中除了直接指定 loader 的名称，还可以指定一个配置对象，来传递额外的选项。
+`use` 属性中除了直接指定 loader 的名称，还可以指定一个配置对象，用来传递额外的选项。
 
 ```javascript
 module.exports = {
@@ -149,7 +160,7 @@ module.exports = {
 };
 ```
 
-下面是一个使用内联方式配置 loader 的例子。
+下面是一个使用内联方式配置 Loader 的例子。
 
 ```javascript
 import Styles from 'style-loader!css-loader?modules!./styles.css';
@@ -163,15 +174,15 @@ import Styles from 'style-loader!css-loader?modules!./styles.css';
 - `!!`：禁用所有已配置的 loader（preLoader/loader/postLoader）；
 - `!-`：禁用所有已配置的 preLoader 和 loader，但不禁用 postLoaders。
 
-选项可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
+选项还可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
 
 注意，loader 在使用之前，要通过 npm 提前安装到项目中。比如，对于上面的配置，要先执行 `npm install style-loader css-loader raw-loader` 命令安装这三个 loader。
 
 ### 2.4 插件（Plugins）
 
-插件是 webpack 的核心配置项之一，用于扩展 webpack 的能力，执行范围更广的任务。比如打包优化、资源管理、环境变量注入等。
+插件是 webpack 的核心功能之一，用于扩展 webpack 的能力，执行范围更广的任务。比如打包优化、资源管理、环境变量注入等。
 
-想要使用一个插件，你需要通过 `require()` 或者 `import` 命令导入，然后把它添加到 `plugins` 数组中。多数插件可以通过选项自定义。也可以在一个配置文件中因为不同目的而多次使用同一个插件，这时需要通过使用 `new` 命令来创建一个插件实例。
+要想使用一个插件，首先要通过 npm 安装到本地，然后通过 `require()` 或者 `import` 命令导入到配置文件中，之后把它添加到 `plugins` 数组中。多数插件可以通过选项自定义。也可以在一个配置文件中，因为不同目的而多次使用同一个插件。
 
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -190,68 +201,25 @@ module.exports = {
 
 本质上，插件是一个具有 [apply](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/apply) 方法的 JavaScript 对象。apply 方法会被 webpack compiler 调用，并且在 **整个** 编译生命周期都可以访问 compiler 对象。关于 webpack 的生命周期，以及如何编写插件，我们会在稍后的章节讨论。
 
-注意，跟 loader 一样，多数插件在使用之前也需要通过 npm 安装到项目中。
+注意，插件在使用时，要通过 `new` 命令执行，因为本质上，插件就是一个构造函数。
 
 ### 2.5 模式（Mode）
 
-模式（Mode）指的是 webpack 运行的环境。可以通过 `[mode](#36-mode模式)` 选项来配置。
+模式（Mode）指的是 webpack 运行的环境。开发模式下，webpack 能够提供更好的开发体验，比如热更新、源映射等；而生产模式下，webpack 会自动启用一些优化功能，比如代码压缩、去除无用代码等。
+
+可以通过 `[mode](#36-mode模式)` 选项来配置具体使用哪种模式。
 
 ### 2.6 代码分割（Code Splitting）
 
-Code Splitting（代码分割）是Webpack的一项高级功能，允许开发者将应用程序的代码分割成多个独立的bundle（包），这些bundle可以在运行时按需加载或并行加载。这种技术的主要目标是优化Web应用的加载性能，减少初始加载时间，提升用户体验，尤其在移动端或网络条件较差的环境下效果显著。Code Splitting通过将代码分割为更小的块，仅加载用户当前需要的部分，从而减少网络传输的数据量，同时支持更高效的浏览器缓存策略。
+代码分割（Code Splitting）是 webpack 的一项高级功能，允许开发者将应用程序的代码分割成多个更小且独立的 bundle，这些 bundle 可以在运行时**按需加载**或**并行加载**。
 
-Code Splitting的核心目的是解决大型JavaScript应用因代码体积过大导致的性能问题。以下是其主要目标：
+这种技术的主要目标是优化 web 应用的加载性能、减少初始加载时间、减少网络传输的数据量，提升用户体验，尤其在移动端或网络条件较差的环境下效果显著。
 
-- 减少初始加载时间：通过仅加载页面初始所需的代码，缩短用户等待时间。
-- 优化资源管理：按需加载（Lazy Loading）或并行加载（Parallel Loading）模块，减少不必要的网络请求。
-- 提升用户体验：用户可以更快地看到页面内容，并在需要时动态加载额外功能。
-- 增强缓存效率：通过生成内容哈希命名的bundle（如[name].[contenthash].js），确保只有更改的代码需要重新加载，优化浏览器缓存。
+要开启代码分割，需要配置 `optimization.splitChunks` 选项，也可以使用 ESM 的 `import()` 动态导入。
 
-Webpack提供了多种方式来实现Code Splitting，每种方式适用于不同场景，开发者可以根据项目需求选择合适的策略。
+#### 2.6.1 `optimization.splitChunks`
 
-#### 2.6.1 通过入口点（Entry Points）手动分割
-
-在Webpack配置中定义多个入口点，每个入口点生成一个独立的bundle。这种方式适合需要明确分割代码的场景。
-
-```javascript
-module.exports = {
-  entry: {
-    index: './src/index.js',
-    another: './src/another-module.js',
-  },
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
-};
-```
-
-优点：配置简单，适合小型项目或明确分割需求的场景。
-缺点：如果多个入口点引用相同模块（如lodash），可能导致模块重复，增加总体积。需要手动管理依赖关系。
-
-#### 2.6.2
-
-通过dependOn选项在入口点之间共享模块，减少重复代码。
-
-```javascript
-module.exports = {
-  entry: {
-    index: { import: './src/index.js', dependOn: 'shared' },
-    another: { import: './src/another-module.js', dependOn: 'shared' },
-    shared: 'lodash',
-  },
-  optimization: {
-    runtimeChunk: 'single',
-  },
-};
-```
-
-优点：有效减少模块重复，适合多个入口点共享第三方库的场景。
-注意：需要确保optimization.runtimeChunk配置正确，推荐单入口点结合动态导入以获得更大灵活性。
-
-#### 2.6.3
-
-通过optimization.splitChunks配置，Webpack自动提取公共模块（如node_modules中的第三方库）到单独的bundle中。
+配置 `optimization.splitChunks` 选项，以开启代码分割功能，并在更多细节上，指定 webpack 打包时如何进行分割代码。
 
 ```javascript
 module.exports = {
@@ -263,40 +231,45 @@ module.exports = {
 };
 ```
 
-优点：自动化程度高，减少手动配置的工作量，能有效提取公共依赖，减少重复代码。
-注意事项：需要满足splitChunks.minSize等阈值条件，开发者可通过调整minSize、maxSize等参数优化分割效果。
+上面的代码表示，对于所有模块，都开启代码分割。`splitChunks` 对象中，还有很多其他配置项，[下面](#optimizationsplitchunks) 列出了更详细的信息。
 
-#### 2.6.4 动态导入（Dynamic Imports）
+#### 2.6.2 动态导入（Dynamic Imports）
 
-使用ES模块的动态导入语法import()，在运行时按需加载模块。这是Code Splitting的推荐方式，特别适合实现Lazy Loading。
+使用 ES6 模块的动态导入语法 `import()`，可以实现对模块的**按需加载**和**条件加载**。
 
 ```javascript
-// 按需加载lodash
-import(/* webpackChunkName: "lodash" */ 'lodash').then(({ default: _ }) => {
-  console.log(_.join(['Hello', 'World'], ' '));
+import('./myModule.js').then(myModule => {
+  console.log(myModule.default);
 });
 
-// 使用async/await
-async function loadComponent() {
-  const { default: Component } = await import('./path/to/Component');
-  return Component;
-}
+// 或者使用 async/await
+const myModule = await import('./myModule.js');
+console.log(myModule.default);
 ```
 
-优点：支持按需加载，减少初始加载的代码量；可与React的React.lazy和React.Suspense结合，实现组件级别的按需加载。
-注意：import() 返回Promise，需使用async/await或.then()处理；Webpack 4及以上对CommonJS模块的处理方式有所不同。
+通过动态导入，能够减少初始加载的代码量。在 React 中，还可以配合 `React.lazy()` 和 `React.Suspense`，实现组件级别的按需加载。
 
-#### 2.6.5 预取（Prefetching）和预加载（Preloading）
-
-通过Webpack的魔法注释（Magic Comments），为动态导入的模块添加预取或预加载提示，优化加载时机。
+此外，`import()` 还支持使用魔法注释，为模块重命名或添加预取/预加载提示。
 
 ```javascript
-// 预取模块（空闲时加载，低优先级）
-import(/* webpackPrefetch: true */ './path/to/LoginModal.js');
-
-// 预加载模块（与当前页面并行加载，中优先级）
-import(/* webpackPreload: true */ 'ChartingLibrary');
+import(/* webpackChunkName: "my-chunk-name" */ './myModule.js').then(myModule =>
+  console.log(myModule.default)
+);
 ```
+
+上面代码中，`webpackChunkName` 用于指定生成的 chunk 的名称。否则，webpack 生成的可能会是类似 `0.js` 的名称。可以通过指定 `output.chunkFilename` 来控制 chunk 的输出文件名。
+
+- `webpackPreload`：表示以 `<link rel="preload">` 的方式预加载模块。
+- `webpackPrefetch`：表示以 `<link rel="prefetch">` 的方式预加载模块。
+
+### 2.7 Tree Shaking
+
+Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死代码（不会被执行的代码）。Tree Shaking 依赖于 ESM 语法。webpack 5 版本中，默认开启了 Tree Shaking 功能。
+
+### PWA（Progressive Web Application）
+
+
+
 
 ## 三、配置
 
@@ -313,17 +286,7 @@ import(/* webpackPreload: true */ 'ChartingLibrary');
 - `publicPath`: 当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。
 - `runtime`: 运行时 chunk 的名字。此属性会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 `false` 以避免一个新的运行时 chunk。注意，`runtime` 不能指向已存在的入口名称，且 `runtime` 和 `dependOn` 不能在同一个入口上同时使用，否则会抛出错误。
 
-```javascript
-module.exports = {
-  entry: {
-    a: './src/a.js',
-    b: {
-      dependOn: 'a',
-      import: './src/b.js',
-    },
-  },
-};
-```
+
 
 ### 3.3 `output`（输出）
 
@@ -347,7 +310,7 @@ module.exports = {
 
 （3）`output.assetModuleFilename`
 
-指定资源模块打包后输出的目录。
+指定图片、字体等通过 `type: 'asset'` 模块类型打包后的输出文件名。
 
 （4）`output.chunkFilename`
 
@@ -493,6 +456,8 @@ module.exports = {
 };
 ```
 
+#### `optimization.runtimeChunk`
+
 ### 3.9 `devServer`
 
 ### 3.10 `cache`
@@ -515,7 +480,7 @@ module.exports = {
 
 ### 3.19 `stats`
 
-## 资源处理
+## 四、资源处理
 
 开发环境是指在本地开发应用程序时使用的环境。开发环境下，要达到下面的目的。
 
@@ -531,7 +496,7 @@ module.exports = {
 - 启用代码分割，便于优化代码加载速度。
 - 启用 tree shaking，便于去除无用代码。-->
 
-### 处理 HTML 资源
+### 4.1 处理 HTML 资源
 
 开发环境下对 HTML 资源的处理，主要借助于 [HtmlWebpackPlugin](https://github.com/jantimon/html-webpack-plugin)，它可以自动生成 HTML 入口文件，并将打包后的 bundle 资源自动注入到 HTML 文件中。
 
@@ -566,7 +531,7 @@ module.exports = {
 
 另外，在生产模式下，HTML 资源会被自动压缩。
 
-### 处理样式资源
+### 4.2 处理样式资源
 
 #### 基本配置
 
@@ -584,7 +549,7 @@ module.exports = {
 
 生产环境下，为了减小打包后样式资源体积，需要对其进行压缩，通过 [CssMinimizerWebpackPlugin](https://webpack.docschina.org/plugins/css-minimizer-webpack-plugin) 插件来实现。
 
-### 处理 JavaScript 资源
+### 4.3 处理 JavaScript 资源
 
 对于 javascript 资源，webpack 只能处理 ESM 语法，除此之外，还需要使用 [Babel](https://babel.dev/) 进行 javascript 兼容性处理以及配置 [ESLint](https://eslint.org/)。
 
@@ -594,7 +559,7 @@ Babel 用于将现代 JavaScript 代码转换为兼容性更好的版本，以�
 
 另外，在生产模式下，javascript 资源会被自动压缩。
 
-### 处理其他资源
+### 4.4 处理其他资源
 
 #### 资源模块
 
@@ -698,7 +663,7 @@ module.exports = {
 
 上面代码中，对于图片资源，打包后会输出到 `./dist/static/images/` 目录下，并且文件名由三部分组成：`[hash 值前 10 位].[扩展名][查询参数]`，而对于字体资源和音视频资源，打包后会输出到 `./dist/static/media/` 目录下。
 
-### 搭建开发服务器
+### 4.5 搭建开发服务器
 
 在开发模式下，通过配置 [devServer](https://webpack.docschina.org/configuration/dev-server/) 选项，能够快速搭建一个本地开发服务器，从而实现页面的热更新。这依赖于 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 插件。
 
@@ -721,7 +686,7 @@ module.exports = {
 
 注意，配置了 `devServer` 选项后，打包后的资源会被保存在内存中，而不是之前配置的 `output.path` 目录下。另外，生产模式下，无需配置 `devServer` 选项。
 
-## 优化
+## 五、优化
 
 <!-- 提升开发体验 -->
 
@@ -730,32 +695,20 @@ module.exports = {
 <!-- 减少代码体积 -->
 <!-- 优化代码运行性能 -->
 
-### 优化代码
+### 生产环境优化
 
-#### Source Map
+- 开启 Source Map
+- 开启 Tree Shaking
+- 配置 Code Splitting
+  - 提取公共模块：如果项目中有多个入口，而多个入口有引用了相同的模块，如果不做代码分割，被引用的模块会被打包打包到每个 bundle 中，这时，就可以使用 Splitting 功能来将这些公共模块提取出来，打包成一个单独的文件，从而减少每个 bundle 的体积。
+  - 按需加载/动态导入 `import()`，如果需要还可以采用魔法注释形式，比如预获取/预加载
+- oneOf/include/exclude
+- 压缩图片：如果项目中使用了大量图片，对其进行压缩可以减小打包后的体积。 [image-minimizer-webpack-plugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin)
+- 使用 core-js 对 javascript 进行兼容性处理
 
-source map 能够帮助我们在浏览器中的开发者工具中，快速定位到源码中代码运行出错的位置。
-
-oneOf/include/exclude
-
-#### Tree Shaking
-
-Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死代码（不会被执行的代码）。Tree Shaking 依赖于 ESM 语法。webpack 5 版本中，默认开启了 Tree Shaking 功能。
-
-### 优化打包构建
-
-#### Code Splitting
-
-- 提取公共模块：如果项目中有多个入口，而多个入口有引用了相同的模块，如果不做代码分割，被引用的模块会被打包打包到每个 bundle 中，这时，就可以使用 Splitting 功能来将这些公共模块提取出来，打包成一个单独的文件，从而减少每个 bundle 的体积。
-- 按需加载/动态导入 `import()`
-- 预获取/预加载
+### 优化打包体验
 
 
-#### 压缩图片
-
-如果项目中使用了大量图片，对其进行压缩可以减小打包后的体积。 [image-minimizer-webpack-plugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin)
-
-#### HMR（热模块替换）
 
 模块热替换（HMR - hot module replacement）功能会在应用程序运行过程中，**替换、添加或删除模块，而无需重新加载整个页面**。也就是只更新页面中发生变化的部分。主要是通过以下几种方式，来显著加快开发速度：
 
@@ -794,10 +747,7 @@ if (import.meta.webpackHot) {
 
 注意，HMR 功能只在开发模式下有效。
 
-#### ESLint、Babel 优化
-
-设置 ESLint 和 Babel 的缓存功能，以及减少 Babel 打包后的文件体积。
-
-#### 多进程打包
-
-
+- HMR（热模块替换）
+- ESLint、Babel 优化：设置 ESLint 和 Babel 的缓存功能，以及减少 Babel 打包后的文件体积。
+- 多进程打包
+- 配置 `optimization.runtimeChunk` 防止打包时文件缓存失效
