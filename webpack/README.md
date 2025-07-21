@@ -98,7 +98,22 @@ __webpack_public_path__ = myRuntimePublicPath;
 
 ### 2.3 Loader
 
+#### 2.3.1 介绍
+
 Loader 是 webpack 的核心功能之一。webpack 默认只能处理 JavaScript 和 JSON 文件。loader 让 webpack 能够处理其他类型的文件，并将它们转换为有效的模块，添加到依赖图中。比如，loader 可以将文件从不同的语言（如 TypeScript）转换为 JavaScript 或将内联图像转换为 data URL。
+
+#### 2.3.2 优先级分类
+
+webpack 中有四种类型的 Loader。
+
+- pre：表示前置 Loader，须通过 `enforce` 属性配置。
+- normal：表示普通 loader。
+- inline：通过内联方式配置的 loader。
+- post：表示后置 loader，须通过 `enforce` 属性配置。
+
+它们执行的优先级顺序为：pre > normal > inline > post。相同优先级的 Loader 按照从右到左，从下到上的顺序执行。
+
+#### 2.3.3 使用方式
 
 Loader 有两种配置方式，[配置方式](https://webpack.docschina.org/concepts/loaders#configuration) 和 [内联方式](https://webpack.docschina.org/concepts/loaders#inline)，前者在 `webpack.config.js` （webpack 的配置文件）中指定所使用的 Loader，后者在每个 `import` 语句中指定所使用的 Loader。除非有特殊需求，否则，永远不要使用后者的方式来配置。
 
@@ -119,46 +134,7 @@ module.exports = {
 
 注意，使用正则表达式匹配文件时，不要为它添加引号。也就是说，`/\.txt$/` 与 `'/\.txt$/'` 或 `"/\.txt$/"` 不同。前者表示 webpack 匹配任何以 `.txt` 结尾的文件，后者表示 webpack 匹配具有绝对路径 `'.txt'` 的单个文件。
 
-`use` 属性除了可以指定单个 loader 外，还可以指定多个 loader，它们可以链式调用，且按照**从右到左**、**从下往上**的顺序执行。
-
-```javascript
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-    ],
-  },
-};
-```
-
-上面的代码表示，每当匹配到 `.css` 结尾的文件时，首先使用 `sass-loader` 处理，之后将处理后的结果交给 `css-loader` 处理，最后，再将处理结果交给 `style-loader` 处理。
-
-`use` 属性中除了直接指定 loader 的名称，还可以指定一个配置对象，用来传递额外的选项。
-
-```javascript
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-            },
-          },
-          'sass-loader',
-        ],
-      },
-    ],
-  },
-};
-```
+#### 2.3.4 内联（inline）loader
 
 下面是一个使用内联方式配置 Loader 的例子。
 
@@ -171,8 +147,8 @@ import Styles from 'style-loader!css-loader?modules!./styles.css';
 使用内联方式导入资源时，路径中还可以使用前缀。
 
 - `!`：禁用所有已配置的 normal loader；
-- `!!`：禁用所有已配置的 loader（preLoader/loader/postLoader）；
-- `!-`：禁用所有已配置的 preLoader 和 loader，但不禁用 postLoaders。
+- `!!`：禁用所有已配置的 loader（pre/normal/post）；
+- `-!`：禁用所有已配置的 pre 和 normal loader，但不禁用 post loaders。
 
 选项还可以传递查询参数，例如 `?key=value&foo=bar`，或者一个 JSON 对象，例如 `?{"key":"value","foo":"bar"}`。
 
@@ -266,10 +242,7 @@ import(/* webpackChunkName: "my-chunk-name" */ './myModule.js').then(myModule =>
 
 Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死代码（不会被执行的代码）。Tree Shaking 依赖于 ESM 语法。webpack 5 版本中，默认开启了 Tree Shaking 功能。
 
-### PWA（Progressive Web Application）
-
-
-
+### 2.8 PWA（Progressive Web Application）
 
 ## 三、配置
 
@@ -285,8 +258,6 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 - `library`：为当前 entry 构建一个 library。
 - `publicPath`: 当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。
 - `runtime`: 运行时 chunk 的名字。此属性会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 `false` 以避免一个新的运行时 chunk。注意，`runtime` 不能指向已存在的入口名称，且 `runtime` 和 `dependOn` 不能在同一个入口上同时使用，否则会抛出错误。
-
-
 
 ### 3.3 `output`（输出）
 
@@ -332,6 +303,47 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 
 ##### （3）`module.rules.use`
 
+`use` 属性用于指定使用哪个 loader 对匹配到的文件进行处理，它可以使用字符串形式，指定单个 loader，或者使用数组，指定多个 loader。如果 `use` 属性指定的是多个 loader，那么它们会被链式调用，且按照**从右到左**、**从下往上**的顺序执行。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      },
+    ],
+  },
+};
+```
+
+上面的代码表示，每当匹配到 `.css` 结尾的文件时，首先使用 `sass-loader` 处理，之后将处理后的结果交给 `css-loader` 处理，最后，再将处理结果交给 `style-loader` 处理。
+
+`use` 属性中除了直接指定 loader 的名称，还可以指定一个配置对象，用来传递额外的选项。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+            },
+          },
+          'sass-loader',
+        ],
+      },
+    ],
+  },
+};
+```
+
 ##### （4）`module.rules.type`
 
 ##### （5）`module.rules.include`
@@ -360,6 +372,10 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 
 ##### （10）`module.rules.enforce`
 
+`enforce` 属性用于配置 loader 类型，可能的值为 `pre` 或者 `post`。
+
+其中，`pre` 优先级要高于 `post`，如果没有配置此属性，则默认为 normal loader。关于 webpack 中 loader 的优先级，可以参考 [Loader](#23-loader) 部分。
+
 ### 3.5 `plugins`（插件）
 
 ### 3.6 `mode`（模式）
@@ -379,6 +395,38 @@ module.exports = {
 注意，webpack 必须指定一种运行环境，否则会报错。
 
 ### 3.7 `resolve`
+
+#### 3.7.1 `resolve.extensions`
+
+`extensions` 用于指定 webpack 解析文件时，应该匹配的模块的扩展名。webpack 会加载数组中指定的，第一个匹配到的对应扩展名的文件。
+
+```javascript
+// index.js
+import myModule form './my-module';
+
+// webpack.config.js
+module.exports = {
+  resolve: {
+    extensions: ['.ts', 'jsx', '.json'],
+  },
+};
+```
+
+上面代码中，在 `index.js` 中导入了 `./my-module` 模块，此时，webpack 会按顺序自动匹配 `my-module.ts`、`my-module.ts` 和 `my-module.ts` 模块是否存在，哪个先被匹配到，就会解析哪个模块。
+
+此外，为了不覆盖 webpack 的默认扩展，建议使用下面的方式来配置。
+
+```javascript
+module.exports = {
+  resolve: {
+    extensions: ['.ts', '...'],
+  },
+};
+```
+
+上面代码中，`'...'` 表示默认扩展名。
+
+配置了 `extensions` 选项后，导入模块时就不用带扩展名了。
 
 ### 3.8 `optimization`
 
@@ -701,14 +749,15 @@ module.exports = {
 - 开启 Tree Shaking
 - 配置 Code Splitting
   - 提取公共模块：如果项目中有多个入口，而多个入口有引用了相同的模块，如果不做代码分割，被引用的模块会被打包打包到每个 bundle 中，这时，就可以使用 Splitting 功能来将这些公共模块提取出来，打包成一个单独的文件，从而减少每个 bundle 的体积。
-  - 按需加载/动态导入 `import()`，如果需要还可以采用魔法注释形式，比如预获取/预加载
+  - 按需加载/动态导入 `import()`，如果需要还可以采用魔法注释形式，比如 preload/prefetch
 - oneOf/include/exclude
 - 压缩图片：如果项目中使用了大量图片，对其进行压缩可以减小打包后的体积。 [image-minimizer-webpack-plugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin)
+- @babel/plugin-transform-runtime 辅助代码
 - 使用 core-js 对 javascript 进行兼容性处理
+- network cache
+- 开启 PWA
 
 ### 优化打包体验
-
-
 
 模块热替换（HMR - hot module replacement）功能会在应用程序运行过程中，**替换、添加或删除模块，而无需重新加载整个页面**。也就是只更新页面中发生变化的部分。主要是通过以下几种方式，来显著加快开发速度：
 
@@ -747,7 +796,195 @@ if (import.meta.webpackHot) {
 
 注意，HMR 功能只在开发模式下有效。
 
-- HMR（热模块替换）
+<!-- - HMR（热模块替换） -->
+- oneOf/include/exclude
 - ESLint、Babel 优化：设置 ESLint 和 Babel 的缓存功能，以及减少 Babel 打包后的文件体积。
-- 多进程打包
+- THread 多进程打包
 - 配置 `optimization.runtimeChunk` 防止打包时文件缓存失效
+
+## 六、自定义 Loader
+
+### 6.1 介绍
+
+loader 本质上是导出为函数的 JavaScript 模块。
+
+```javascript
+// my-first-loader.js
+
+module.exports = function(content, map, meta) {
+  console.log(content);
+  return content;
+}
+```
+
+它的使用方式跟其它 loader 一样，只需在 webpack 配置文件中导入就可以。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/i,
+        loader: './my-first-loader',
+      },
+    ],
+  }
+};
+```
+
+上面代码中，当匹配到 `.js` 结尾的文件，就会执行我们定义的 loader 函数，她接受三个参数。
+
+- `content`：当前匹配到的源文件的内容。
+- `map`：跟 source map 有关的数据。
+- `meta`：其他 loader 传递过来的数据。
+
+注意，loader 函数执行完后，要将处理的内容返回给 webpack。
+
+### 6.2 Loader Interface
+
+[Loader Interface](https://webpack.docschina.org/api/loaders/) 是 webpack 提供的、用于操作 Loader 的 API 接口，要想自定义 Loader，必须对它有所了解。
+
+Loader Interface 中，规定了四种类型的 loader：**同步 Loader**、**异步 Loader**、**Raw Loader** 和 **Pitching Loader**。下面分别对他们进行介绍。
+
+#### 6.2.1 分类
+
+（1）同步 Loader
+
+同步 Loader 执行的同步操作，对于转换后的内容，可以使用 `this.callback` 或者 `return` 返回。推荐的做法是使用前者，应为它可以传递更多参数。
+
+```javascript
+// 方式一：使用 this.callback
+module.exports = function (content, map, meta) {
+  this.callback(
+    null, // 函数执行过程中，抛出的错误
+    someSyncOperation(content),
+    map,
+    meta,
+  );
+};
+
+// 方式二：直接返回处理结果
+module.exports = function (content, map, meta) {
+  return someSyncOperation(content);
+};
+```
+
+（2）异步 Loader
+
+异步 Loader 允许执行异步操作。对于异步 loader，使用 `this.async` 来获取 callback 函数。
+
+```javascript
+module.exports = function (content, map, meta) {
+  const callback = this.async();
+  someAsyncOperation(content, function (err, result) {
+    if (err) return callback(err);
+    callback(null, result, map, meta);
+  });
+};
+```
+
+（3）Raw Loader
+
+默认情况下，资源文件会被转化为 UTF-8 字符串，然后传给 loader。通过设置 `raw` 为 `true`，loader 可以接收原始的 Buffer。每一个 loader 都可以用 String 或者 Buffer 的形式传递它的处理结果。complier 将会把它们在 loader 之间相互转换。
+
+```javascript
+module.exports = function (content) {
+  assert(content instanceof Buffer);
+  return someSyncOperation(content); // 返回值也可以是一个 `Buffer`
+};
+
+module.exports.raw = true;
+```
+
+（4）Pitching Loader
+
+loader 总是从右到左或者从下往上被调用。有些情况下，loader 只关心 request 后面的元数据（metadata），并且忽略前一个 loader 的结果。在实际（从右到左）执行 loader 之前，会先 **从左到右** 调用 loader 上的 `pitch` 方法。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        use: ['a-loader', 'b-loader', 'c-loader'],
+      },
+    ],
+  },
+};
+```
+
+上面的配置，会按照下面的顺序执行。
+
+```text
+|- a-loader `pitch`
+  |- b-loader `pitch`
+    |- c-loader `pitch`
+      |- requested module is picked up as a dependency
+    |- c-loader normal execution
+  |- b-loader normal execution
+|- a-loader normal execution
+```
+
+也就是说，先按照从左到右的顺序执行 `a`、`b`、`c` 的 `pitch` 方法，然后按照从右到左的顺序执行 loader。
+
+传递给 `pitch` 方法的 data，在执行阶段也会暴露在 `this.data` 之下，并且可以用于在循环时，捕获并共享前面的信息。
+
+```javascript
+module.exports = function (content) {
+  return someSyncOperation(content, this.data.value);
+};
+
+module.exports.pitch = function (remainingRequest, precedingRequest, data) {
+  data.value = 42;
+};
+```
+
+其次，如果某个 loader 在 `pitch` 方法中给出一个结果，那么这个过程会回过身来，并跳过剩下的 loader。在我们上面的例子中，如果 `b-loader` 的 `pitch` 方法返回了一些东西，那么，他们的执行顺序又会不同。
+
+```javascript
+module.exports = function (content) {
+  return someSyncOperation(content);
+};
+
+module.exports.pitch = function (remainingRequest, precedingRequest, data) {
+  if (someCondition()) {
+    return (
+      'module.exports = require(' +
+      JSON.stringify('-!' + remainingRequest) +
+      ');'
+    );
+  }
+};
+```
+
+此时的执行结果如下。
+
+```text
+|- a-loader `pitch`
+  |- b-loader `pitch` returns a module
+|- a-loader normal execution
+```
+
+#### 6.2.2 Loader Context
+
+loader context 表示在 loader 函数中使用 `this` 可以访问的一些方法或属性。
+
+- `context`：表示当前模块所在的目录路径。这个路径是模块文件的父目录的绝对路径。
+- `data`：一个可由 loader 自由使用的对象，用于在 loader 链中传递自定义数据。
+- `fs`：提供对 Webpack 输入文件系统的访问。
+- `query`：表示传递给 loader 的配置选项（即 webpack 配置中的 options 或查询字符串）。
+- `loaders`：所有 loader 组成的数组。在 pitch 阶段的时候可以写入。
+- `mode`：表示 webpack 的运行模式（`'development'`、`'production'` 或 `undefined`）。
+- `resource`：表示当前模块的完整文件路径（包括文件名和扩展名）。
+- `async()`：用于将 loader 转换为异步模式。调用 `this.async()` 会返回一个回调函数（类似于 `this.callback`），用于异步返回结果。
+- `callback(err: Error | null, content?: string | Buffer, sourceMap?: SourceMap, meta?: any)`：一个异步回调函数，用于将 loader 的处理结果返回给 Webpack。
+- `emitFile(name: string, content: string | Buffer, sourceMap?: SourceMap)`：用于将文件输出到 webpack 的输出目录。
+- `getOptions(schema)`：返回 loader 的配置选项。
+- `utils.contextify(context: string, request: string)`：将给定的请求路径（`request`）转换为相对于指定上下文路径（`context`）的相对路径。
+- `utils.absolutify(context: string, request: string)`：将给定的请求路径（`request`）转换为相对于指定上下文路径（`context`）的绝对路径。
+- `utils.stringifyRequest(context: string, request: string)`：将模块请求字符串（`request`）转换为一个 JSON 格式的字符串，适用于在 JavaScript 代码中嵌入请求。
+- `utils.createHash(type: string)`：创建一个指定类型的哈希对象，用于生成内容的哈希值。
+- `resolve(context: string, request: string, callback: function(err: Error | null, result: string))`：用于解析模块路径，类似于 Webpack 的 `require.resolve`。
+
+[Loader Context](https://webpack.docschina.org/api/loaders/#the-loader-context) 还有很多其他属性没有列出，可以去参考。
+
+## 七、自定义 Plugin
