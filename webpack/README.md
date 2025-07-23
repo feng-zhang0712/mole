@@ -238,6 +238,10 @@ import(/* webpackChunkName: "my-chunk-name" */ './myModule.js').then(myModule =>
 - `webpackPreload`：表示以 `<link rel="preload">` 的方式预加载模块。
 - `webpackPrefetch`：表示以 `<link rel="prefetch">` 的方式预加载模块。
 
+### 2.7 Source Map
+
+
+
 ### 2.7 Tree Shaking
 
 Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死代码（不会被执行的代码）。Tree Shaking 依赖于 ESM 语法。webpack 5 版本中，默认开启了 Tree Shaking 功能。
@@ -250,22 +254,39 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 
 ### 3.2 `entry`
 
-对象写法可以定义多个入口点，每个入口使用一个配置对象来对入口进行描述。下面列出了描述对象中的属性。
+`entry` 属性不仅指定了 webpack 打包的入口，在多入口写法中与 `dependOn` 属性配合使用，也可以做到代码分割的效果，不过这种方式是一种简单的代码分割，更多的是使用 `splitChunks` 属性以及 `import()` 动态导入。
 
-- `import`：启动时需加载的模块。
-- `filename`：指定要输出的文件名称。
-- `dependOn`：当前入口所依赖的入口。它们必须在该入口被加载前被加载。`dependOn` 不能是循环引用的，否则会抛出错误。
-- `library`：为当前 entry 构建一个 library。
-- `publicPath`: 当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。
-- `runtime`: 运行时 chunk 的名字。此属性会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 `false` 以避免一个新的运行时 chunk。注意，`runtime` 不能指向已存在的入口名称，且 `runtime` 和 `dependOn` 不能在同一个入口上同时使用，否则会抛出错误。
+#### 3.2.1 `import`
+
+指定启动时需加载的模块。
+
+#### 3.2.2 `filename`
+
+指定 webpack 打包的入口。
+
+#### 3.2.3 `dependOn`
+
+当前入口所依赖的入口。它们必须在该入口被加载前被加载。`dependOn` 不能是循环引用的，否则会抛出错误。
+
+#### 3.2.4 `library`
+
+为当前 entry 构建一个 library。
+
+#### 3.2.5 `publicPath`
+
+当该入口的输出文件在浏览器中被引用时，为它们指定一个公共 URL 地址。
+
+#### 3.2.6 `runtime`
+
+运行时 chunk 的名字。此属性会创建一个新的运行时 chunk。在 webpack 5.43.0 之后可将其设为 `false` 以避免一个新的运行时 chunk。注意，`runtime` 不能指向已存在的入口名称，且 `runtime` 和 `dependOn` 不能在同一个入口上同时使用，否则会抛出错误。
 
 ### 3.3 `output`（输出）
 
-（1）`output.path`
+#### 3.3.1 `path`
 
-一个绝对路径，指定打包输出的目录。
+一个绝对路径，指定打包后文件的输出目录。
 
-（2）`output.filename`
+#### 3.3.2 `filename`
 
 指定输出的 bundle 名称，这些 bundle 将写入到 `path` 属性指定的目录下。对于单个入口起点，`filename` 可以是一个静态名称；对于多入口起点，须使用占位符，指定每个 bundle 的唯一名称。下面列出了几个常用的占位符。
 
@@ -279,19 +300,72 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 
 此外，虽然此选项被称为文件名，但是可以使用像 `'js/[name]/bundle.js'` 这样的文件夹结构。
 
-（3）`output.assetModuleFilename`
+#### 3.3.3 `assetModuleFilename`
 
-指定图片、字体等通过 `type: 'asset'` 模块类型打包后的输出文件名。
+用于指定资源模块处理后的文件的输出目录和文件名，这是一个全局属性，优先级低于 [`module.rules.generator`](#9modulerulesgenerator)。
 
-（4）`output.chunkFilename`
+```javascript
+module.exports = {
+  output: {
+   assetModuleFilename: 'media/[hash][ext][query]'
+  },
+};
+```
 
-用于指定打包输出的其他 chunk 文件的名称。比如，此属性可以配置 webpack 的魔法注释一起使用。
+上面代码中，资源模块处理后的文件，会输出为 `'media/[hash][ext][query]'`。
 
-（5）`output.publicPath`
+注意，`assetModuleFilename` 只适用于（资源模块） `type: 'asset'` 和 `type: 'asset/resource'` 类型。
 
-（6）`output.clean`
+#### 3.3.4 `chunkFilename`
+
+用于指定打包输出的其他 chunk（如动态加载的模块）文件的名称。比如，此属性可以配置 webpack 的魔法注释一起使用。
+
+此属性默认值为 `'[id].js'`，或从 `output.filename` 中推导。适合代码分割场景，确保每个 chunk 有唯一的文件名，例如 `'[name].chunk.js'`。
+
+```javascript
+module.exports = {
+  output: {
+    chunkFilename: '[name].chunk.js',
+  },
+};
+```
+
+#### 3.3.5 `publicPath`
+
+指定指定输出文件的公共路径，用于浏览器中引用资源（如动态加载的 chunk）。
+
+```javascript
+module.exports = {
+  output: {
+    publicPath: 'https://cdn.example.com/assets/',
+  },
+};
+```
+
+上面代码中，资源会从该 `'https://cdn.example.com/assets/'` 加载，适合 CDN 部署。
+
+#### 3.3.6 `clean`
 
 用于在每次重新打包之前，清空输出目录。
+
+#### 3.3.7 其他配置项
+
+- `library`：用于配置导出的库名称，用于将打包文件作为库供其他脚本使用。
+- `libraryTarget`：指定库的暴露方式，支持多种模块系统。比如：`'var' | 'module' | 'commonjs' | 'commonjs2' | 'amd' | 'umd' | ...`。
+- `libraryExport`：指定库中哪个导出应该暴露。
+- `hashFunction`：指定生成哈希的算法。比如 `'sha256'`。
+- `hashDigest`：指定哈希的编码格式。比如，设置为 `'base64'` 会生成 base64 编码的哈希。默认值为 `'hex'`。
+- `hashSalt`：指定哈希的盐值，用于增加哈希的唯一性。
+- `pathinfo`：在 bundle 中添加关于模块的注释信息，方便调试。
+- `devtoolModuleFilenameTemplate`：自定义源码映射（source map）中模块的名称。
+- `devtoolNamespace`：指定源码映射的命名空间。
+- `module`：将 JavaScript 文件输出为 ES 模块（实验性功能）。
+- `crossOriginLoading`：启用跨域加载 chunk。
+- `hotUpdateChunkFilename`：定义热更新 chunk 的文件名。
+- `hotUpdateMainFilename`：定义热更新主文件的名称。
+- `charset`：在 HTML `<script>` 标签中添加 `charset="utf-8"`。
+- `iife`：为生成的代码添加 IIFE（立即执行函数表达式）包装器。
+- `trustedTypes`：指定 Trusted Types 策略名称，用于安全地处理内联代码。
 
 ### 3.4 `module`
 
@@ -366,11 +440,233 @@ module.exports = {
 
 `oneOf` 用于匹配数组中，第一个满足条件的规则。
 
-##### （8）`module.rules.generator`
+##### （8）`module.rules.parse`
 
-##### （9）`module.rules.sideEffects`
+`parse` 属性用于控制资源的解析行为。其默认配置如下。
 
-##### （10）`module.rules.enforce`
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        parser: {
+          amd: false, // 禁用 AMD
+          commonjs: false, // 禁用 CommonJS
+          system: false, // 禁用 SystemJS
+          harmony: false, // 禁用 ES2015 Harmony import/export
+          requireInclude: false, // 禁用 require.include
+          requireEnsure: false, // 禁用 require.ensure
+          requireContext: false, // 禁用 require.context
+          browserify: false, // 禁用特殊处理的 browserify bundle
+          requireJs: false, // 禁用 requirejs.*
+          node: false, // 禁用 __dirname, __filename, module, require.extensions, require.main, 等。
+          commonjsMagicComments: false, // 禁用对 CommonJS 的  magic comments 支持
+          node: {}, // 在模块级别(module level)上重新配置 node 层(layer)
+          worker: ['default from web-worker', '...'], // 自定义 WebWorker 对 JavaScript 的处理，其中 "..." 为默认值。
+        },
+      },
+    ],
+  },
+};
+```
+
+这些属性中，经常使用的一项是 `parser.dataUrlCondition`（上面没有列出），`dataUrlCondition` 属性用于指定解析对应的资源时，在转为 data URI 和将文件输出到指定目录之间的阈值。这个属性经常跟 `type: asset` 或者 `type: 'asset/resource'` 一起冲用。
+
+`dataUrlCondition` 可以是一个对象，此时只有一个 `maxSize` 属性，也可以是一个函数。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png)$/,
+        type: 'asset/resources',
+        parser: {
+          dataUrlCondition: {
+            maxSize: 4 * 1024,
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+上面的代码表示，当模块中导入 png 格式的图片时，如果图片大小小于 4kb，则将其转为 Base64 格式，否则，将其输出的到指定的目录。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        parser: {
+          dataUrlCondition: (source, { filename, module }) => {
+            const content = source.toString();
+            return content.includes('some marker');
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+上面是一个使用 `dataUrlCondition` 函数的例子。
+
+##### （9）`module.rules.generator`
+
+`generator` 属性用于自定义资源模块（如图片、字体）的生成方式，适用于（资源模块） `type: 'asset'` 和 `type: 'asset/resource'` 类型。包含五个属性。
+
+（1） `dataUrl`
+
+`dataUrl` 用于配置资源模块是否内联为 data URL（即直接嵌入到 JavaScript 或 CSS 文件中），而不是生成独立文件。它的值是一个对象或者函数。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg)$/,
+        type: 'asset/inline',
+        generator: {
+          dataUrl: {
+            encoding: 'base64',
+            mimetype: 'image/png',
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+或者使用函数形式。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpg)$/,
+        type: 'asset/inline',
+        generator: {
+          dataUrl: (content, { filename, module }) => {
+            return `data:image/png;base64,${content.toString('base64')}`;
+          },
+        },
+      },
+    ],
+  },
+};
+```
+
+（2） `emit`
+
+`emit` 控制是否将资源模块的资源文件输出到指定目录。
+
+这是一个布尔值属性，默认值为 `true`，表示会生成资产文件；设置为 `false` 时，webpack 不会生成这些文件，但仍会记录资产的路径，适合某些特殊场景。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.png$/i,
+        type: 'asset/resource',
+        generator: {
+          emit: false,
+        },
+      },
+    ],
+  },
+};
+```
+
+上面代码中，PNG 文件不会被写入输出目录，但其路径仍可通过其他方式引用。
+
+（3） `filename`
+
+`filename` 用于指定特定资源模块文件的输出目录和文件名，它的值可以是一个字符串或者函数。`filename` 的优先级，要高于全局配置 `output.assetModuleFilename`。
+
+```javascript
+module.exports = {
+  output: {
+    assetModuleFilename: 'images/[hash][ext][query]',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.png/,
+        type: 'asset/resource',
+      },
+      {
+        test: /\.html/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'static/[hash][ext]',
+        },
+      },
+    ],
+  },
+};
+```
+
+上面代码中，HTML 文件的文件名模式被定义为 `'static/[hash][ext]'`，而其他资产使用全局配置。
+
+（4） `publicPath`
+
+`publicPath` 用于指定特定资源模块加载时的公共路径。`publicPath` 的优先级高于全局配置 `output.publicPath`。
+
+```javascript
+module.exports = {
+  output: {
+    publicPath: 'static/',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.png$/i,
+        type: 'asset/resource',
+        generator: {
+          publicPath: 'assets/',
+        },
+      },
+    ],
+  },
+};
+```
+
+上面代码中，PNG 文件会从 `'assets/'` 目录加载，而其他类型资源则从全局公共路径 `'static/'` 加载。
+
+（5） `outputPath`
+
+`outputPath` 用于指定资产模块的输出目录，当 `publicPath` 与文件夹结构匹配时，`outputPath` 可以调整资源在服务器上的实际存储位置。优先级高于全局配置 `output.path`。
+
+```javascript
+module.exports = {
+  output: {
+    publicPath: 'static/',
+  },
+  module: {
+    rules: [
+      {
+        test: /\.png$/i,
+        type: 'asset/resource',
+        generator: {
+          publicPath: 'https://cdn.example.com/assets/',
+          outputPath: 'cdn-assets/',
+        },
+      },
+    ],
+  },
+};
+```
+
+上面代码中，PNG 文件的公共路径为 `'https://cdn.example.com/assets/'`，而在服务器上输出到 `'cdn-assets/'` 目录。
+
+##### （10）`module.rules.sideEffects`
+
+##### （11）`module.rules.enforce`
 
 `enforce` 属性用于配置 loader 类型，可能的值为 `pre` 或者 `post`。
 
@@ -607,147 +903,60 @@ Babel 用于将现代 JavaScript 代码转换为兼容性更好的版本，以�
 
 另外，在生产模式下，javascript 资源会被自动压缩。
 
-### 4.4 处理其他资源
+### 4.4 资源模块
 
-#### 资源模块
+webpack 5 之前，对各种资源文件（字体，图标等）的处理，通常依赖于 Loader。
 
-在 webpack 5 之前，对各种资源文件（字体，图标等）的处理，通常依赖于 [raw-loader](https://v4.webpack.js.org/loaders/raw-loader/)、[url-loader](https://v4.webpack.js.org/loaders/url-loader/) 和 [file-loader](https://v4.webpack.js.org/loaders/file-loader/)。webpack 5 中，引入了**资源模块**的概念，这使得对各种资源文件的处理，无需配置额外 loader。
+- [`raw-loader`](https://v4.webpack.js.org/loaders/raw-loader/)：将文件导入为字符串。
+- [`file-loader`](https://v4.webpack.js.org/loaders/file-loader/)：将文件发送到输出目录。
+- [`url-loader`](https://v4.webpack.js.org/loaders/url-loader/)：将文件作为 data URI 内联到 bundle 中。
 
-资源模块类型，通过添加 4 种新的模块类型，来替换所有这些 loader。
+webpack 5 中，引入了**资源模块**的概念，这使得对各种资源文件的处理，不用依赖于这些 Loader。
 
-- `asset/source`：导出资源的源代码（替代 raw-loader）。
-- `asset/resource`：发送一个单独的文件并导出 URL（替代 file-loader）。
-- `asset/inline`：导出一个资源的 data URI（替代 url-loader）。
-- `asset`：在导出一个 data URI 和发送一个单独的文件之间自动选择（之前通过使用 url-loader，并且配置资源体积限制实现）。
+在资源模块中，包含四种模块类型。
 
-比如，通过指定 `type: 'asset'`，让 webpack 在 `resource` 和 `inline` 之间进行选择。
+- `asset/source`：导出资源的源代码（替代 `raw-loader`）。
+- `asset/resource`：发送文件并导出 URL（替代 `file-loader`）。
+- `asset/inline`：导出资源的 data URI（替代 `url-loader`）。
+- `asset`：在导出 data URI 和发送文件之间自动选择（之前通过使用 `url-loader`，并且配置资源体积限制实现）。
+
+Base64 是一种文件编码规则，通过将体积较小的文件转为 Base64 字符串，并将其嵌入到代码中，可以减少网络请求次数。这时，就可以通过配置 `type` 属性来实现。
 
 ```css
 .box {
-  background-image: url('./image.png');
+  background-image: url('./img.png');
 }
 ```
 
-上面代码中，在 `index.css` 文件中，使用 `url()` 函数来引用图片资源。然后配置 `webpack.config.js`。
+上面代码中，在样式文件中，为 `.box` 添加了一张背景图片。
 
 ```javascript
 module.exports = {
-  // ...
   module: {
-    rules: [
-      {
-       test: /\.(png|jpe?g|gif|webp|svg)$/, 
-       type: 'asset',
+    rules: [{
+        test: /\.(png|jpe?g|gif|webp|svg)$/, 
+        type: 'asset/inline',
       }
     ]
   },
-};
+};  
 ```
 
-上面的代码表示，对于小于 8kb 的图片资源，会被视为 `inline` 模块类型，此时，图片会被作为一个 Base64 编码的字符串注入到 `url()` 函数中；否则会被视为 `resource` 模块类型，被输出到指定的目录中。
+上面代码中，`type` 属性指定为 `asset/inline`，这样，当遇到图片资源时，它们会被导入为 Base64 格式的字符串，输出到指定位置（这里是 `url` 函数中）。
 
-在这里要说一句，之所以要将某些文件转为 Base64 格式，是因为 Base64 编码的字符串可以直接嵌入到 HTML 或 CSS 中，能够减少 HTTP 请求的数量，从而提高页面加载速度。不过，并不是所有资源都适合转为 Base64 格式。通常来说，较小的资源（如小图标、字体等）适合转为 Base64 格式，而较大的资源（如大图片、视频等）则不适合，因为 Base64 编码会增加资源的体积，导致加载速度变慢。
+此外，`type: 'asset'` 属性一般会跟 `dataUrlCondition` 一起使用，关于他们之间的配合，请参考 [`module.rules.parse`](#8modulerulesparse) 部分。
 
-除此之外，还可以通过配置 [Rule.parser.dataUrlCondition.maxSize](https://webpack.docschina.org/configuration/module/#ruleparserdataurlcondition) 属性，来控制资源模块的大小限制。
+注意，并不是所有的资源都适合转为 Base64 字符串，因为转码后的内容通常要比源文件大。
 
-```javascript
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(png|jpe?g|gif|webp|svg)$/, 
-        type: 'asset',
-        parser: {
-          dataUrlCondition: {
-            maxSize: 10 * 1024,
-          },
-        },
-      },
-    ],
-  },
-};
-```
-
-上面的代码表示，当图片资源大于 10kb 时，会被转为 Base64 格式，否则，会被输出到指定的目录中。
-
-#### 指定输出目录
-
-默认情况下，`asset/resource` 模块以 `[hash][ext][query]` 文件名发送到输出目录。目前，有两种方式来指定资源模块打包后的输出目录。
-
-其一是通过指定 [output.assetModuleFilename](https://webpack.docschina.org/configuration/output/#outputassetmodulefilename) 配置项。
-
-```javascript
-module.exports = {
-  output: {
-   assetModuleFilename: 'images/[hash][ext][query]'
-  },
-};
-```
-
-另一种方式是通过 `Rule.generator.filename` 配置项，使用方式与 `output.assetModuleFilename` 相同，但仅适用于 `asset` 和 `asset/resource` 模块类型。
-
-```javascript
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(png|jpe?g|gif|webp|svg)$/, 
-        type: 'asset',
-        generator: {
-          filename: 'static/images/[hash:10][ext][query]'
-        },
-      },
-      {
-        test: /\.(ttf|woff2?|mp3|mp4|avi)$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'static/media/[hash][ext][query]'
-        },
-      },
-    ],
-  },
-};
-```
-
-上面代码中，对于图片资源，打包后会输出到 `./dist/static/images/` 目录下，并且文件名由三部分组成：`[hash 值前 10 位].[扩展名][查询参数]`，而对于字体资源和音视频资源，打包后会输出到 `./dist/static/media/` 目录下。
-
-### 4.5 搭建开发服务器
-
-在开发模式下，通过配置 [devServer](https://webpack.docschina.org/configuration/dev-server/) 选项，能够快速搭建一个本地开发服务器，从而实现页面的热更新。这依赖于 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 插件。
-
-```javascript
-const path = require("path");
-
-module.exports = {
-  devServer: {
-    static: {
-      directory: path.resolve(__dirname),
-    },
-    host: 'localhost',
-    port: 8080
-  },
-  mode: "development"
-};
-```
-
-上面的代码中，`static.directory` 指定了静态资源的目录，并且配置了服务器的主机名和端口号。之后使用 `npx webpack server` 命令启动服务器。当访问 `http://localhost:8080` 时，就会显示当前目录下 `index.html` 文件的内容。如果以后对项目中文件作了修改，都不用再重新打包，dev server 服务器会自动检测到文件的变化，并刷新浏览器页面。
-
-注意，配置了 `devServer` 选项后，打包后的资源会被保存在内存中，而不是之前配置的 `output.path` 目录下。另外，生产模式下，无需配置 `devServer` 选项。
+对于设置了 `type: 'asset'` 或者 `type: 'asset/resource'` 的资源，通常在打包后需要将其输出到指定的目录中，关于这部分内容，请参考 [`output.assetModuleFilename`](#333-assetmodulefilename) 和 [`module.rules.generator`](#9modulerulesgenerator)。
 
 ## 五、优化
 
-<!-- 提升开发体验 -->
-
-优化线上代码性能
-提升打包构建体验
-<!-- 减少代码体积 -->
-<!-- 优化代码运行性能 -->
-
-### 生产环境优化
+### 5.1 生产环境
 
 - 开启 Source Map
 - 开启 Tree Shaking
-- 配置 Code Splitting
+- 代码分割：配置 entry/splitChunks/import() 动态导入
   - 提取公共模块：如果项目中有多个入口，而多个入口有引用了相同的模块，如果不做代码分割，被引用的模块会被打包打包到每个 bundle 中，这时，就可以使用 Splitting 功能来将这些公共模块提取出来，打包成一个单独的文件，从而减少每个 bundle 的体积。
   - 按需加载/动态导入 `import()`，如果需要还可以采用魔法注释形式，比如 preload/prefetch
 - oneOf/include/exclude
@@ -756,8 +965,10 @@ module.exports = {
 - 使用 core-js 对 javascript 进行兼容性处理
 - network cache
 - 开启 PWA
+- 压缩 css 代码：`css-minimizer-webpack-plugin`
+- 压缩 js 代码（默认会压缩，但如果使用了 `css-minimizer-webpack-plugin`，要单独配置这个插件所能压缩 js）：`terser-webpack-plugin`
 
-### 优化打包体验
+### 5.2 打包构建
 
 模块热替换（HMR - hot module replacement）功能会在应用程序运行过程中，**替换、添加或删除模块，而无需重新加载整个页面**。也就是只更新页面中发生变化的部分。主要是通过以下几种方式，来显著加快开发速度：
 
@@ -801,6 +1012,29 @@ if (import.meta.webpackHot) {
 - ESLint、Babel 优化：设置 ESLint 和 Babel 的缓存功能，以及减少 Babel 打包后的文件体积。
 - THread 多进程打包
 - 配置 `optimization.runtimeChunk` 防止打包时文件缓存失效
+- `splitChunks.cacheGroups` 配置第三方包缓存（https://www.bilibili.com/video/BV1YU4y1g745?spm_id_from=333.788.player.switch&vd_source=972e1c11a19c33d1b6cd18095c2b40b9&p=48）
+- 搭建开发服务器
+
+  在开发模式下，通过配置 [devServer](https://webpack.docschina.org/configuration/dev-server/) 选项，能够快速搭建一个本地开发服务器，从而实现页面的热更新。这依赖于 [webpack-dev-server](https://github.com/webpack/webpack-dev-server) 插件。
+
+  ```javascript
+  const path = require("path");
+
+  module.exports = {
+    devServer: {
+      static: {
+        directory: path.resolve(__dirname),
+      },
+      host: 'localhost',
+      port: 8080
+    },
+    mode: "development"
+  };
+  ```
+
+上面的代码中，`static.directory` 指定了静态资源的目录，并且配置了服务器的主机名和端口号。之后使用 `npx webpack server` 命令启动服务器。当访问 `http://localhost:8080` 时，就会显示当前目录下 `index.html` 文件的内容。如果以后对项目中文件作了修改，都不用再重新打包，dev server 服务器会自动检测到文件的变化，并刷新浏览器页面。
+
+注意，配置了 `devServer` 选项后，打包后的资源会被保存在内存中，而不是之前配置的 `output.path` 目录下。另外，生产模式下，无需配置 `devServer` 选项。
 
 ## 六、自定义 Loader
 
@@ -988,3 +1222,103 @@ loader context 表示在 loader 函数中使用 `this` 可以访问的一些方�
 [Loader Context](https://webpack.docschina.org/api/loaders/#the-loader-context) 还有很多其他属性没有列出，可以去参考。
 
 ## 七、自定义 Plugin
+
+### 7.1 介绍
+
+插件本质上是一个具有 `apply` 方法的 JavaScript 对象。`apply` 方法会被 webpack compiler 调用，整个编译生命周期都可以访问 compiler 对象。
+
+webpack 的插件系统包括三个主要部分：Tapable 库、compiler 钩子和 compilation 钩子。
+
+```javascript
+class MyFirstPlugin {
+  constructor() {
+    //...
+  }
+
+  apply(compiler) {
+    //...
+  }
+}
+
+module.exports = MyFirstPlugin;
+```
+
+#### 7.1.1 Tapable
+
+Tapable 库是 webpack 的一个核心工具，它通过提供钩子（hooks）机制，允许开发者在 Webpack 构建过程中的特定点注入自定义逻辑。Tapable 支持同步和异步操作，类似于“发布-订阅”模式，但更灵活，并提供了 `tap`、`tapAsync` 和 `tapPromise` 方法，用于向 webpack 中注入自定义构建的步骤，这些步骤将在构建过程中触发。
+
+- `tap`：用于注册同步钩子和异步钩子。
+- `tapAsync`：用于使用回调方式注册异步钩子。
+- `tapPromise`：用于使用 Promise 方式注册异步钩子。
+
+Tapable 提供了多种类型的 hooks 类，可以使用他们来构建 hooks。
+
+- SyncHook
+- SyncBailHook
+- SyncWaterfallHook
+- SyncLoopHook
+- AsyncParallelHook
+- AsyncParallelBailHook
+- AsyncSeriesHook
+- AsyncSeriesBailHook
+- AsyncSeriesWaterfallHook
+
+#### 7.1.2 Compiler
+
+Compiler 是 Webpack 的主引擎，负责管理整个构建过程，包括接收配置选项并创建 Compilation 实例。Compiler 钩子是 Compiler 对象上定义的一系列钩子，用于在构建过程的关键阶段触发插件逻辑。这些钩子主要关注全局性事件，适合处理整个构建过程的高级操作。
+
+下面列出了 compiler 中的 hooks，他们按照执行顺序排列。
+
+- **`environment`**<`SyncHook`>：准备编译器环境，通常在插件初始化后调用，设置初始环境。
+- `afterEnvironment`<`SyncHook`>：环境设置完成后触发，确保环境已准备好进行后续处理。
+- **`entryOption`**<`SyncBailHook`>：处理入口配置（entry），允许自定义入口点处理。
+- **`afterPlugins`**<`SyncHook`>：内部插件集合设置完成后触发，确保所有内部插件已初始化。
+- `afterResolvers`<`SyncHook`>：解析器（resolver）设置完成后触发，允许对解析器进行自定义。
+- **`initialize`**<`SyncHook`>：编译器对象初始化时触发，标志着编译器设置的开始。
+- `beforeRun`<`AsyncSeriesHook`>：编译器运行前触发，允许在构建开始前进行准备工作。
+- **`run`**<`AsyncSeriesHook`>：读取记录（records）前触发，负责初始化构建并处理记录。
+- **`watchRun`**<`AsyncSeriesHook`>：Watch 模式下触发，用于处理文件变化后的重新编译。
+- `normalModuleFactory`,<`SyncHook`>：NormalModuleFactory 创建后触发，允许自定义模块工厂。
+- `contextModuleFactory`,<`SyncHook`>：ContextModuleFactory 创建后触发，处理上下文模块。
+- **`beforeCompile`**,<`AsyncSeriesHook`>：编译参数创建后触发，允许修改编译参数。
+- **`compile`**,<`SyncHook`>：新编译创建前触发，不被子编译器复制，标志着编译过程的开始。
+- **`thisCompilation`**,<`SyncHook`>：编译初始化期间触发，允许在编译事件前进行设置。,非常高
+- **`compilation`**,<`SyncHook`>：编译对象创建后触发，允许与编译对象交互。
+- **`make`**,<`AsyncParallelHook`>：编译结束前触发，处理模块和依赖图的并行任务。
+- `afterCompile`,<`AsyncSeriesHook`>：编译结束并封闭后触发，确保后编译任务完成。
+- **`shouldEmit`**,<`SyncBailHook`>：发射资产前触发，返回布尔值决定是否发射。
+- **`emit`**<`AsyncSeriesHook`>：输出资产到目录前触发，控制资产发射过程。
+- `afterEmit`<`AsyncSeriesHook`>：资产输出后触发，处理发射后的任务。
+- `assetEmitted`<`AsyncSeriesHook`>：资产发射时触发，提供资产信息，允许访问细节。
+- **`done`**<`AsyncSeriesHook`>：编译完成时触发，提供构建统计信息，标志构建结束。
+- `additionalPass`<`AsyncSeriesHook`>：允许额外的构建传递，支持迭代式构建。
+- **`failed`**<`SyncHook`>：编译失败时触发，处理错误情况。高
+- **`invalid`**<`SyncHook`>：Watch 模式下文件变化时触发，处理重新编译。
+- `watchClose`<`SyncHook`>：Watch 模式停止时触发，处理清理工作。
+- `shutdown`<`AsyncSeriesHook`>：编译器关闭时触发，确保 Proper 关闭。
+- `infrastructureLog`<`SyncBailHook`>：启用基础设施日志时触发，方便调试。
+- `log`<`SyncBailHook`>：启用统计日志时触发，支持详细日志记录。
+
+Compilation 是 Webpack 中表示单次构建过程的对象，包含所有模块、依赖关系和生成的资源信息。Compilation 钩子是 Compilation 对象上定义的一系列钩子，用于在构建过程中更细粒度的阶段触发插件逻辑。这些钩子关注单次构建的具体细节，适合处理模块优化、资源生成等操作。
+
+#### 7.1.3 Compilation
+
+#### 7.1.4 webpack 工作流和生命周期
+
+## 八、Loaders & Plugins 列表
+
+下面列出了开发环境和生产环境可能使用到的一些 Loaders 和 Plugins。
+
+### 8.1 Loaders
+
+- `style-loader`：
+- `css-loader`：
+- `sass-loader` / `less-loader`：
+- `babel-loader`：
+- ``：
+
+### 8.2 Plugins
+
+- `mini-css-extract-plugin`：抽离 CSS 样式到单独文件（开发环境）
+- `css-minimizer-webpack-plugin`：压缩 CSS 代码（生产环境）
+- `terser-webpack-plugin`：压缩 js 代码
