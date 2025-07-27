@@ -442,7 +442,38 @@ module.exports = {
 
 ## 七、`resolve`
 
-### 7.1 `resolve.extensions`
+### 7.1 `resolve.alias`
+
+`alias` 用于在使用 `import` 或者 `require` 命令导入模块时，指定目录或者模块的别名。指定别名之后，就相当于使用别名，替换了导入路径中指定的部分。
+
+```javascript
+const path = require('path');
+
+module.exports = {
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, '/src/components'),
+      config: path.resolve(__dirname, '/src/env/config/index.js'),
+    },
+  },
+};
+```
+
+```javascript
+// 指定别名之前
+import Button from '/src/components/Button';
+import config from '/src/env/config';
+
+// 指定别名之后
+import Button from 'components/Button'
+import 'config';
+```
+
+上面代码中，指定了别名之后，当需要导入 `/src/components` 目录下的组件时，就可以使用 `component/...` 的形式。
+
+注意，`alias` 优先级高于其它模块解析方式。
+
+### 7.2 `resolve.extensions`
 
 `extensions` 用于指定 webpack 解析文件时，应该匹配的模块的扩展名。webpack 会加载数组中指定的，第一个匹配到的对应扩展名的文件。
 
@@ -552,7 +583,122 @@ module.exports = {
 
 ### 8.2 `optimization.runtimeChunk`
 
+### `optimization.sideEffects`
+
+`sideEffects` 用于告诉 webpack 去辨识 package.json 中的 [sideEffects](https://github.com/webpack/webpack/blob/master/examples/side-effects/README.md) 标记或规则，`sideEffects` 属性标记了哪些模块有副作用，有副作用的模块，在进行 Tree Shaking 时会被保留。
+
+### `optimization.usedExports`
+
+<!-- TODO:  -->
+
+`usedExports` 只能取值为 `true` 或者 `'global'`。这个属性跟 tree shaking 有关。。
+
 ## 九、`devServer`
+
+`devServer` 用于配置本地开发服务器，webpack 内部使用了 `webpack-dev-server` 插件，来提供对本地开发服务器的支持。
+
+### 9.1 `devServer.static`
+
+`static` 用于指定 web 服务器的访问入口目录，默认为 `'public'` 文件夹。
+
+#### 9.1.1 `static.directory`
+
+告诉服务器从哪里提供内容。只有在你希望提供静态文件时才需要这样做。`static.publicPath` 将会被用来决定应该从哪里提供 bundle，并具有优先级。
+
+```javascript
+const path = require('path');
+
+module.exports = {
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+  },
+};
+```
+
+### 9.2 `devServer.host`
+
+指定要使用的 host。如果你想让你的服务器可以被外部访问，像这样指定：
+
+```javascript
+module.exports = {
+  devServer: {
+    host: '0.0.0.0',
+  },
+};
+```
+
+或者在命令行中配置。
+
+```bash
+npx webpack serve --host 0.0.0.0
+```
+
+### 9.3 `devServer.port`
+
+指定 web 服务器端口号。
+
+```javascript
+module.exports = {
+  devServer: {
+    port: 8080,
+  },
+};
+```
+
+```bash
+npx webpack serve --port 8080
+```
+
+### 9.4 `devServer.proxy`
+
+指定代理服务器。
+
+### 9.5 `devServer.hot`
+
+布尔值，默认值为 `true`，指定是否启用模块热替换（HMR）功能。
+
+### 9.6 `devServer.liveReload`
+
+布尔值，默认值为 `true`，指定监听到页面变化时，是否自动刷新。
+
+### 9.7 `devServer.https`
+
+布尔值/对象值，用于指定是否启用 HTTPS。
+
+```javascript
+module.exports = {
+  devServer: {
+    https: true,
+  },
+};
+```
+
+```bash
+npx webpack serve --https
+```
+
+```javascript
+module.exports = {
+  devServer: {
+    https: {
+      ca: './path/to/server.pem',
+      pfx: './path/to/server.pfx',
+      key: './path/to/server.key',
+      cert: './path/to/server.crt',
+      passphrase: 'webpack-dev-server',
+      requestCert: true,
+    },
+  },
+};
+```
+
+### 9.8 ``
+
+### 9.9 ``
+
+### 9.10 其他配置项
 
 ## 十、`cache`
 

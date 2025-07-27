@@ -237,3 +237,12 @@ import(/* webpackChunkName: "my-chunk-name" */ './myModule.js').then(myModule =>
 Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死代码（不会被执行的代码）。Tree Shaking 依赖于 ESM 语法。webpack 5 版本中，默认开启了 Tree Shaking 功能。
 
 ## 九、PWA（Progressive Web Application）
+
+
+## Shimming
+
+## 模块联邦（Module Federation）
+
+## 生命周期
+
+## 打包流程
