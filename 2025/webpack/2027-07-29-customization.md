@@ -1,6 +1,6 @@
 # 编写 Loader 和 Plugin
 
-## 一、webpack 构建流程
+## 一、webpack 构建 流程
 
 <!-- TODO：构建流程 -->
 
@@ -220,7 +220,7 @@ class MyFirstPlugin {
 module.exports = MyFirstPlugin;
 ```
 
-#### 3.1.1 Tapable
+### 3.2 Tapable
 
 Tapable 库是 webpack 的一个核心工具，它通过提供钩子（hooks）机制，允许开发者在 Webpack 构建过程中的特定点注入自定义逻辑。Tapable 支持同步和异步操作，类似于“**发布-订阅**”模式，但更灵活，并提供了 `tap`、`tapAsync` 和 `tapPromise` 方法，用于向 webpack 中注入自定义构建的步骤，这些步骤将在构建过程中触发。
 
@@ -240,7 +240,7 @@ Tapable 提供了多种类型的 hooks 类，可以使用他们来构建 hooks�
 - AsyncSeriesBailHook
 - AsyncSeriesWaterfallHook
 
-#### 3.1.2 Compiler
+### 3.3 Compiler
 
 Compiler 是 Webpack 的主引擎，负责管理整个构建过程，包括接收配置选项并创建 Compilation 实例。Compiler 钩子是 Compiler 对象上定义的一系列钩子，用于在构建过程的关键阶段触发插件逻辑。这些钩子主要关注全局性事件，适合处理整个构建过程的高级操作。
 
@@ -286,7 +286,7 @@ compiler.hooks.environment.tap('MyPlugin', (params) => {
 - `infrastructureLog`（`SyncBailHook`）：启用基础设施日志时触发，方便调试。
 - `log`（`SyncBailHook`）：启用统计日志时触发，支持详细日志记录。
 
-#### 3.1.3 Compilation
+### 3.4 Compilation
 
 Compilation 是 Webpack 中表示**单次构建过程**的对象，包含所有模块、依赖关系和生成的资源信息。Compilation 钩子是 Compilation 对象上定义的一系列钩子，用于在构建过程中更细粒度的阶段触发插件逻辑。这些钩子关注单次构建的具体细节，适合处理模块优化、资源生成等操作。
 
@@ -304,7 +304,7 @@ compilation.hooks.[someHook].tap(/* ... */);
 
 下面按逻辑顺序列出了所有钩子，执行顺序基于其触发时机描述。
 
-##### （1）模块构建阶段
+#### （1）模块构建阶段
 
 - **`buildModule`**（SyncHook）：模块构建开始前触发，可用于修改模块。适用于需要调整模块内容的插件。
 - `rebuildModule`（SyncHook）：模块重建前触发。常见于watch模式下。
@@ -313,7 +313,7 @@ compilation.hooks.[someHook].tap(/* ... */);
 - **`finishModules`**（AsyncSeriesHook）：所有模块无错误构建完成后触发。标志模块构建阶段结束。
 - **`finishRebuildingModule`**（SyncHook）：模块重建完成（成功或失败）时触发。适用于watch模式场景。
 
-##### （2）优化阶段
+#### （2）优化阶段
 
 - **`seal`**（SyncHook）：编译停止接受新模块时触发。是添加资产或进行最终调整的关键点。
 - `unseal`（SyncHook）：编译开始接受新模块时触发。
@@ -348,7 +348,7 @@ compilation.hooks.[someHook].tap(/* ... */);
 - `afterHash`（SyncHook）：编译哈希后触发。
 - `recordHash`（SyncHook）：存储记录哈希信息。适用于管理持久化数据的插件。
 
-##### （3）资产处理阶段
+#### （3）资产处理阶段
 
 - `beforeModuleAssets`（SyncHook）：模块资产创建前触发。适用于准备模块资产的插件。
 - **`additionalChunkAssets`**（SyncHook）：为块创建额外资产。适用于添加块额外资产的插件。
@@ -371,4 +371,43 @@ compilation.hooks.[someHook].tap(/* ... */);
 - `statsPreset`（HookMap）：管理统计预设。适用于定制统计输出的插件。
 - `statsNormalize`（SyncHook）：将选项对象转换为一致格式。适用于统计定制。
 
-<!-- #### 2.1.4 webpack 工作流 -->
+### 3.5 案例
+
+```javascript
+class BannerWebpackPlugin {
+  constructor(options) {
+    this.options = options;
+  }
+
+  apply(compiler) {
+    compiler.hooks.emit.tapAsync(
+      'BannerWebpackPlugin',
+      (compilation, callback) => {
+      const extensions = ['css', 'js'];
+      const assets = Object.keys(compilation).filter(assetPath => {
+        const splitted = assetPath.split('.');
+        const extension = splitted[splitted.length - 1];
+        return extension.includes(extension);
+      });;
+      
+      const prefix = `/*
+      * author: ${this.options.author}
+      */`;
+      assets.forEach(asset => {
+        const source = compilation.assets[asset];
+        const content = prefix + source;
+        compilation.assets[asset] = {
+          source() {
+            return content;
+          },
+          size() {
+            return content.length;
+          }
+        };
+      });
+    });
+  }
+}
+
+module.exports = BannerWebpackPlugin;
+```
