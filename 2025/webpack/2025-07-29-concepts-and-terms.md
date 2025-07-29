@@ -177,7 +177,17 @@ module.exports = {
 
 可以通过 `[mode](#36-mode模式)` 选项来配置具体使用哪种模式。
 
-## 六、代码分割（Code Splitting）
+## 六、代码分割
+
+
+
+
+
+
+
+
+
+
 
 代码分割（Code Splitting）是 webpack 的一项高级功能，允许开发者将应用程序的代码分割成多个更小且独立的 bundle，这些 bundle 可以在运行时**按需加载**或**并行加载**。
 
@@ -242,7 +252,3 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的死�
 ## Shimming
 
 ## 模块联邦（Module Federation）
-
-## 生命周期
-
-## 打包流程
