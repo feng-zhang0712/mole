@@ -1,5 +1,9 @@
 # webpack 生产环境优化
 
+## 减少代码体积
+
+### 摇树优化
+
 ## 代码分割
 
 默认情况下，webpack 将脚本代码打包到一个文件中，这就导致，浏览器加载某个页面时，整个 bundle 文件都会被加载进内存。
@@ -42,6 +46,8 @@ asset app.js 1.24 KiB [emitted] (name: app)
 ```
 
 上面代码中，`app` 和 `main` 通过 `shared` 字段告诉 webpack，他们共同引用了 `lodash` 模块，这样，`lodash` 就会被单独打包到一个 bundle 文件中，也就是上面控制台输出中的 `shared.js`。
+
+[示例代码](/examples/webpack/01/)
 
 ### 配置 `splitChunks`
 
@@ -97,6 +103,8 @@ module.exports = {
 
 你可以参考 [官网](https://webpack.docschina.org/plugins/split-chunks-plugin#optimizationsplitchunks)，来获取 `splitChunks` 的更多配置信息。
 
+[示例代码](/examples/webpack/02/)
+
 ### 按需加载，动态导入
 
 使用 ES6 提供的 `import()` 方法导入模块时，webpack 会自动将导入的模块打包为单独的 chunk。
@@ -149,58 +157,222 @@ asset utils.js 126 bytes [emitted] [minimized] (name: utils)
 - `webpackPreload`：布尔值，提示浏览器在后台预加载模块。
 - `webpackPrefetch`：布尔值，提示浏览器预取模块以供将来使用。
 
+[示例代码](/examples/webpack/03/)
+
 ## 预加载/预获取
 
 使用预加载（Preload）或者预获取（Prefetch），可以在不阻塞浏览器渲染的前提下，提前下载某些资源，以确保他们尽早可用。
 
-- `preload`：表示当前页面很快会用到的资源，优先级比 `prefetch` 高。
-- `prefetch`：表示下次导航时可能会用到的资源，浏览器会在空闲时下载对应的资源，优先级较低。
-
-此外，页面关闭后，`preload` 标记的资源会停止下载，而 `prefetch` 标记的资源会继续下载。
+- `preload`：表示当前页面很快会用到的资源，优先级比 `prefetch` 高。页面关闭后，`preload` 标记的资源会停止下载
+- `prefetch`：表示下次导航时可能会用到的资源，浏览器会在空闲时下载对应的资源，优先级较低。面关闭后，`prefetch` 标记的资源会继续下载。
 
 注意，不管是 `preload` 还是 `prefetch`，他们都只会提前下载资源，并不会执行。
 
-webpack 中配置 `preload` 和 `prefetch` 有两种方式，使用魔法注释或者 `preload-webpack-plugin`。
-
-下面分别进行介绍。
+webpack 中配置 `preload` 和 `prefetch` 有两种方式，使用魔法注释或者使用 `preload-webpack-plugin` 插件。下面分别进行介绍。
 
 ### 使用魔法注释
 
-### 使用 `preload-webpack-plugin`
+### 使用 `@vue/preload-webpack-plugin`
 
+[`@vue/preload-webpack-plugin`](https://github.com/vuejs/preload-webpack-plugin) 插件将不同的模块，通过 `<link rel='preload' href='...'>` 或者 `<link rel='prefetch' href='...'>` 的形式，注入到页面的 `<head>` 标签中。
 
-<!-- - webpack/nodejs 更新到最新版
-- 配置 Loader 时，设置 oneOf/include/exclude
-- 配置 `resolve` 选项，优化解析性能，
-  - 比如 `modules` `extensions` `mainFiles` `descriptionFiles`
-  - 如果不使用 systemlinks，设置 `symlinks: false`
-- 使用体积更小的 library
-- 配置 splitChunks
-- 移除未引用的代码
-- HMR
-- 配置 `cache`，持久化缓存
-- 优化自定的 Loader/Plugin -->
-<!-- - 使用 DllPlugin 为梗概不频繁的代码，生成单独的编译结果 -->
+它的使用也很简单，只有几个属性。
 
-<!-- - 开启 Source Map
-- 开启 Tree Shaking（删除无用代码，webpack5 默认开启）
-- 代码分割：配置 entry/splitChunks/import() 动态导入
-  - 提取公共模块：如果项目中有多个入口，而多个入口有引用了相同的模块，如果不做代码分割，被引用的模块会被打包打包到每个 bundle 中，这时，就可以使用 Splitting 功能来将这些公共模块提取出来，打包成一个单独的文件，从而减少每个 bundle 的体积。
-  - 按需加载/动态导入 `import()`，如果需要还可以采用魔法注释形式，比如 preload/prefetch
-- oneOf/include/exclude
-- 压缩图片：如果项目中使用了大量图片，对其进行压缩可以减小打包后的体积。 [image-minimizer-webpack-plugin](https://webpack.docschina.org/plugins/image-minimizer-webpack-plugin)
-- @babel/plugin-transform-runtime 辅助代码
-- 使用 core-js 对 javascript 进行兼容性处理
-- network cache
-- 开启 PWA（须安装 workbox-webpack-plugin 及其他配置，参考 https://webpack.docschina.org/guides/progressive-web-application/#adding-workbox）
-- 压缩 css 代码：`css-minimizer-webpack-plugin`
-- 压缩 js 代码（默认会压缩，但如果使用了 `css-minimizer-webpack-plugin`，要单独配置这个插件所能压缩 js）：`terser-webpack-plugin`
-- ESLint 代码检查（eslint、eslint-loader）
-- `autoprefixer` + `postcss-loader`：配置低版本浏览器/特定内核浏览器 css 语法支持，要配置 `browserslist` 选项
-- 配置 optimization -->
+- `rel`：指定加载策略，值为 `preload` 或者 `prefetch`。
+- `as`：指定通过 `<link>` 标签导入时，`as` 属性的值。可以是字符串，比如 `script`，或者是函数形式。
+- `fileBlacklist`：相当于黑名单，指定哪些模块不会被处理。这是个数组类型，在其中可以使用正则表达式进行匹配。
+- `include`：指定哪些模块会被处理。类型为 string 或者 object。
+  - 指定为字符串时：可选值为 `asyncChunks`、`initial` 或者 `all`，默认为 `asyncChunks`，即只有通过异步方式导入的模块才会被处理。
+  - 指定为对象时，有三个属性：`type`、`chunks` 和 `entries`。
 
+```javascript
+// index.js
+import(
+  /* webpackChunkName: "utils" */
+  './utils').then(module => {
+  console.log(module.default.sum([1, 2, 3]));
+});
 
+setTimeout(() => {
+  import(
+    /* webpackChunkName: "lodash" */
+    'lodash').then(module => {
+    console.log(module.default.random(1, 100));
+  });
+}, 5000);
+```
+
+上面代码中，通过异步方式导入了 `utils` 和 `lodash` 模块。
+
+```javascript
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const PreloadWebpackPlugin = require("@vue/preload-webpack-plugin");
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as(entry) {
+        if (/\.css$/.test(entry)) return 'style';
+        if (/\.woff$/.test(entry)) return 'font';
+        if (/\.png$/.test(entry)) return 'image';
+        return 'script';
+      }
+    }),
+  ]
+};
+```
+
+上面代码中，`rel: 'preload'` 表示对于所有通过异步方式导入的模块，使用 `<link rel='preload'>` 的形式导入。最终打包后的效果如下。
+
+```html
+<head>
+  <!-- ... -->
+  <link href="lodash.js" rel="preload" as="script"></link>
+  <link href="utils.js" rel="preload" as="script"></link>
+</head>
+```
+
+注意，`@vue/preload-webpack-plugin` [不支持](https://github.com/vuejs/preload-webpack-plugin/issues/22)为不同的模块，设置不同的导入策略。
+
+[示例代码](/examples/webpack/04/)
+
+## JavaScript Polyfill
+
+ES6 及其之后的诸多版本，引入了大量的新特性，比如 Promise 对象、async/await 语法、class 类的概念等。这些新语法的诞生，为 JavaScript 这门语言注入了新活力，也让开发变得轻松起来。然而，新的语法特性，也带来了新的挑战：浏览器对这些新语法的兼容性问题。特别是在一些低版本浏览器中，对新语法的兼容性并不友好，这时，就需要引入 polyfill，对新的语法特性做兼容性处理。[core-js](https://github.com/zloirock/core-js) 就是一个不错的选择。
+
+`core-js` 是 JavaScript 标准库中最流行的 polyfill，为最新版本的 ES 及其提案提供了支持，包括从早期的 ES5 版本，到较新的技术（提案）比如，[iterator helpers](https://github.com/tc39/proposal-iterator-helpers)，和 `structuredClone` 等与 web 平台特性有关的方法。
+
+### 手动导入
+
+```javascript
+// index.js
+import 'core-js/actual/promise';
+
+function runTask() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve('Task done!');
+    }, 1000);
+  });
+}
+
+runTask().then((result) => {
+  console.log(result);
+})
+```
+
+上面代码中，使用了 ES6 新增的 Promise 对象，`'core-js/actual/promise'` 用于添加对 Promise 语法的支持。然后，执行打包操作。
+
+```javascript
+module.exports = {
+  mode: 'production'
+};
+```
+
+```text
+asset main.js 34.6 KiB [emitted] [minimized] (name: main)
+```
+
+上面打包输出的 `main.js`，即使是不支持 Promise 语法的浏览器，也可以正常运行。
+
+注意，在使用 `core-js` 之前，要先安装，并且要安装在 `dependencies` 下。
+
+[示例代码](/examples/webpack/05/)
+
+### 自动导入
+
+除了手动导入，还可以借助 `@babel/preset-env`，它会自动添加项目中对 `core-js` 模块的依赖。
+
+```json
+// .babelrc
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": "3.44"
+        }
+      }
+    ]
+  ]
+}
+```
+
+还需要在 `webpack.config.js` 中配置 `babel-loader`。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: "babel-loader",
+      },
+    ],
+  },
+  mode: 'production'
+};
+```
+
+注意，使用这种方式，要先执行下面的命令。
+
+```bash
+npm i -D babel-loader @babel/preset-env
+```
+
+[示例代码](/examples/webpack/06/)
+
+## 渐进式 Web 应用
+
+渐进式网络应用程序（progressive web application，简称：PWA），能够提供对应用的离线支持，使用户在离线情况下，也可以访问应用中的内容。
+
+```javascript
+// index.js
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+    .register('/service-worker.js')
+    .then(res => {
+      console.log('Service worker 注册成功：', res);
+    })
+    .catch(error => {
+      console.log('Service worker 注册失败：', error);
+    });
+  });
+}
+
+// webpack.config.js
+
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+    }),
+    new WorkboxPlugin.GenerateSW(),
+  ],
+  mode: 'production'
+};
+```
+
+1. 安装需要的插件 `npm i -D workbox-webpack-plugin`、`npm i serve -g`
+2. 在项目入口文件中注册 serviceWorker 服务。
+3. 在 `webpack.config.js` 中配置 `workbox-webpack-plugin` 插件。
+4. 执行打包命令 `npx webpack`。
+5. 执行 `serve dist` 命令。
+
+按照上述步骤，现在，项目应该可以支持离线访问了。
 
 ## 参考
 
 - [MDN](https://developer.mozilla.org/)
+- [渐进式网络应用程序](https://zh.wikipedia.org/wiki/%E6%B8%90%E8%BF%9B%E5%BC%8F%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
