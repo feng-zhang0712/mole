@@ -9,7 +9,7 @@
 - ESLint、Babel 优化：设置 ESLint 和 Babel 的缓存功能，以及减少 Babel 打包后的文件体积。
 - THread 多进程打包
 - 配置 `optimization.runtimeChunk` 防止打包时文件缓存失效
-- `splitChunks.cacheGroups` 配置第三方包缓存（https://www.bilibili.com/video/BV1YU4y1g745?spm_id_from=333.788.player.switch&vd_source=972e1c11a19c33d1b6cd18095c2b40b9&p=48
+- `splitChunks.cacheGroups` [配置第三方包缓存](https://www.bilibili.com/video/BV1YU4y1g745?spm_id_from=333.788.player.switch&vd_source=972e1c11a19c33d1b6cd18095c2b40b9&p=48)
 - 搭建开发服务器
 
 <!-- - webpack/nodejs 更新到最新版

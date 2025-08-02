@@ -1,10 +1,377 @@
 # webpack 生产环境优化
 
-## 减少代码体积
+## 一、介绍
 
-### 摇树优化
+## 二、压缩代码
 
-## 代码分割
+### 2.1 压缩脚本资源
+
+#### （1）介绍
+
+Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的**死代码**。这个术语来源于 ES6 模块的静态结构特性，通过**摇树**的动作来比喻移除无用的代码。
+
+Tree Shaking 在执行过程中，会依次经历静态分析、依赖图构建、标记阶段、清除阶段和副作用检查五个阶段。
+
+Tree Shaking 依赖于 ES6 模块的三个静态结构特性。
+
+1. 静态导入/导出：`import` 和 `export` 语句必须在模块的顶层，不能在条件语句或函数内部。
+2. 静态分析：打包工具可以在编译时确定哪些代码被使用，哪些没有被使用。
+3. 副作用分析：识别代码的副作用，确保不会误删有副作用的代码
+
+```javascript
+// utils.js
+export { add };
+
+// index.js
+import { add } from './utils';
+import debounce from 'lodash/debounce';
+// 或者，使用支持 Tree Shaking 的版本
+import { debounce } from 'lodash-es';
+```
+
+通过上面的方式导出和导入的模块，都支持 Tree Shaking。
+
+#### （2）使用限制
+
+并不是所有的模块和第三方库都支持 Tree Shaking，在使用时有一些限制。
+
+首先，`ESM` 中的默认导入、默认导出和 `import()` 动态导入，以及`CommonJS` 模块，都不支持 Tree Shaking。所以，应该尽量避免下面的写法。
+
+```javascript
+const utils = require('./utils');
+
+import * as utils from './utils';
+
+import React from 'react';
+
+import('./utils').then(module => {
+  console.log(module.add(1, 2));
+});
+
+export default { add };
+```
+
+其次，有副作用的代码可能被误删，应该尽量避免在模块顶层，执行有副作用的代码。
+
+```javascript
+// utils.js
+console.log('Code with side effects.');
+window.foo = 'Global side effect variable.';
+```
+
+要避免副作用代码被误删，可以将副作用代码放入一个函数中。
+
+```javascript
+export function addSideEffect() {
+  console.log('Utils loaded with side effect.');
+  window.foo = 'Global side effect variable.';
+}
+```
+
+此外，如果代码没有副作用，可以在代码前插入 `/*#__PURE__*/` 注释，告诉 webpack 可以放心地删除。
+
+```javascript
+/*#__PURE__*/ console.log('Side effect code, will be removed.');
+```
+
+循环依赖的模块，可能影响优化效果。
+
+```javascript
+// foo.js
+import { bar } from './bar';
+export const foo = bar;
+
+// bar.js
+import { foo } from './foo';
+export const bar = foo;
+```
+
+另外，某些第三方库可能也不支持。
+
+```javascript
+import _ from 'lodash';
+```
+
+#### （3）配置
+
+在生产模式下，即在 `webpack.config.js` 中开启 `mode: 'production'` 的情况下，webpack 会自动开启 Tree Shaking。除此之外，还有三个属性，共同决定了 Tree Shaking 的行为和效果。
+
+- `optimization.usedExports` 属性。
+- `optimization.sideEffects` 属性。
+- `package.json` 中的 `sideEffects` 属性。
+
+上面的三个属性，按照优先级排序是，`package.json` 中的 `sideEffects` 属性 > `optimization.sideEffects` > `optimization.usedExports`。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  optimization: {
+    usedExports: /* ... */
+  },
+};
+```
+
+第一步，`optimization.usedExports` 是一个布尔值，告诉 webpack **是否启用标记**，以标记哪些导出被使用了，哪些没有被使用。
+
+```javascript
+// utils.js
+export function add(a, b) {
+  return a + b;
+}
+
+export function subtract(a, b) {
+  return a - b;
+}
+
+// index.js
+import { add } from './utils';
+```
+
+对于上面的代码，当 `usedExports: false` 时，webpack 不会进行标记，所有的导出（上文中的 `add` 和 `subtract`）都会被保留。当 `usedExports: true` 时，webpack 会标记 `add` 为已使用，`subtract` 被标记为未使用。这意味着，构建后的代码会包含标记信息，但不会删除未使用的代码。在打包输出的文件中，会看到类似下面这样的注释。
+
+```javascript
+  /* unused harmony export subtract */
+  /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
+```
+
+注意，这个属性只是告诉 webpack 是否标记代码，即使 `usedExports: true`，也不会删除未使用的代码。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  optimization: {
+    sideEffects: /* ... */
+  },
+};
+```
+
+第二步，`optimization.sideEffects` 是一个布尔值，这是一个全局属性，告诉 webpack 是否假设所有模块都没有副作用。
+
+```javascript
+// utils.js
+console.log('Side effect code.');
+window.baz = 'Global side effect variable.';
+```
+
+对于上面的代码，当 `sideEffects: false` 时，webpack 假设所有模块都没有副作用，会尝试删除未使用的代码，包括 `console.log` 和 `window.baz`，如果这些代码确实有副作用，就会被误删。当 `sideEffects: true` 时，webpack 假设所有模块都有副作用，不会删除任何代码，即使标记为未使用。此时 Tree Shaking 不会生效。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  optimization: {
+    usedExports: true,
+    sideEffects: false,
+  },
+  mode: 'production',
+};
+```
+
+上面的代码，告诉 webpack 启用标记，并且所有代码都没有副作用。此时未使用的代码会被删除，包括有副作用的代码。
+
+第三步，`package.json` 中的 `sideEffects` 属性告诉 webpack 哪些文件有副作用，哪些没有。这个属性要比 `optimization.sideEffects` 更精确，是最精确的副作用控制方式。
+
+下面是这个属性的取值。
+
+- `"sideEffects": true`：整个包都有副作用，所有代码都会被保留。
+- `"sideEffects": false`：整个包都没有副作用，未使用的代码会被删除。
+- `"sideEffects": ["*.css", "./src/utils.js"]`：只有 css 和 `utils.js` 文件有副作用，其他文件的未使用代码会被删除。
+- `"sideEffects": ["*.css", "!*.css"]`：所有 css 文件都有副作用，但是 `!*.css` 文件没有副作用，这个文件中的没有使用的代码会被删除。
+
+```json
+// package.json
+{
+  "name": "my-package",
+  "sideEffects": ["./src/polyfills.js"]
+}
+```
+
+```javascript
+// polyfills.js
+// 这个文件有副作用
+console.log('Polyfills loaded');
+window.Promise = require('es6-promise').Promise;
+
+// utils.js
+// 这个文件没有副作用
+export function add(a, b) {
+  return a + b;
+}
+
+export function subtract(a, b) {
+  return a - b;
+}
+
+// index.js
+import './polyfills.js';  // 有副作用，会被保留
+import { add } from './utils.js';  // 只有 add 方法会被保留
+```
+
+对于上面的代码，`polyfills.js` 有副作用，会被保留。`utils.js` 没有副作用，只有 `add` 方法会被保留，`subtract` 方法由于没有使用，会被删除。
+
+下面是对这三个属性的推荐配置。
+
+```javascript
+// webpack.config.js
+module.exports = {
+  mode: 'production',
+  optimization: {
+    usedExports: true,
+    sideEffects: false,  // 让 package.json 控制副作用
+    minimize: true,
+  },
+  stats: {
+    usedExports: true,     // 显示使用的导出
+    providedExports: true, // 显示提供的导出
+  },
+};
+```
+
+```json
+// package.json
+{
+  // "sideEffects": false,  // 如果确定没有副作用
+  "sideEffects": [
+    "*.css",
+    "*.scss",
+    "*.less",
+    "./src/polyfills.js"
+  ]
+}
+```
+
+#### （4）总结
+
+综上所述，要想使 Tree Shaking 达到预期效果，需要做到这些。
+
+- 使用 ES6 模块语法（`import` / `export`），避免使用 CommonJS 模块化语法。
+- 配置 `mode: 'production'`
+- 配置 `optimization` 的 `usedExports: true`、`sideEffects` 以及 `package.json` 中的 `sideEffects`。
+- 避免在模块顶层执行副作用操作。
+
+如果要调试 Tree Shaking 是否生效，可以使用 `webpack-bundle-analyzer` 插件，或者 webpack 的 `stats` 输出。
+
+```bash
+# 使用 webpack-bundle-analyzer 分析打包结果
+npm install -D webpack-bundle-analyzer
+```
+
+```javascript
+// webpack.config.js
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin(),
+  ],
+};
+```
+
+### 2.2 压缩样式资源
+
+#### (1) CSS 的 Tree Shaking
+
+```javascript
+// 使用 PurgeCSS 移除未使用的 CSS
+const PurgeCSSPlugin = require('purgecss-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new PurgeCSSPlugin({
+      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+    }),
+  ],
+};
+```
+
+#### (2)
+
+对于样式资源，可以考虑从两个方面进行优化，将样式资源提取到单独的文件中，以及压缩样式资源代码。这需要借助两个插件实现。
+
+- `mini-css-extract-plugin` 插件能将样式资源提取到单独的文件中，
+- `css-minimizer-webpack-plugin`
+
+```javascript
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
+
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+    }),
+  ],
+  optimization: {
+    minimizer: [
+      `...`,
+      new CssMinimizerPlugin(),
+    ],
+  },
+};
+```
+
+[示例代码](/examples/webpack/demos/08/)
+
+### 2.3 压缩图片资源
+
+`image-minimizer-webpack-plugin` 可以实现对项目中导入的静态图片资源进行压缩。
+
+图片压缩分为无损压缩和有损压缩，不同的压缩方案，需要安装不同的插件。对于无损压缩，需要执行下面的指令。
+
+```bash
+npm i -D imagemin-gifsicle imagemin-jpegtran imagemin-optipng imagemin-svgo
+```
+
+对于有损压缩，只需将 `imagemin-jpegtran` 替换为 `imagemin-mozjpeg` 即可。
+
+```javascript
+const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
+
+module.exports = {
+  plugins: [
+    new ImageMinimizerPlugin({
+      minimizer: {
+        implementation: ImageMinimizerPlugin.imageminGenerate,
+        options: {
+          plugins: [
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 5 }],
+            [
+              "svgo",
+              {
+                plugins: [
+                  "preset-default",
+                  "prefixIds",
+                  {
+                    name: "sortAttrs",
+                    params: {
+                      xmlnsOrder: "alphabetical",
+                    },
+                  },
+                ],
+              },
+            ],
+          ],
+        },
+      },
+    }),
+  ],
+  mode: "production",
+};
+```
+
+[示例代码](/examples/webpack/demos/09/)
+
+## 三、代码分割
 
 默认情况下，webpack 将脚本代码打包到一个文件中，这就导致，浏览器加载某个页面时，整个 bundle 文件都会被加载进内存。
 
@@ -14,7 +381,7 @@
 
 下面分别进行介绍。
 
-### 多入口
+### 3.1 多入口
 
 如果项目有多个入口，可以配置多入口形式进行打包。如果这些入口，有共通引用的模块，为了避免共通引用的模块被打包到每个文件，需要配置 `dependOn` 和 `shared` 属性，将共同引用的模块，单独打包到一个文件。
 
@@ -47,9 +414,9 @@ asset app.js 1.24 KiB [emitted] (name: app)
 
 上面代码中，`app` 和 `main` 通过 `shared` 字段告诉 webpack，他们共同引用了 `lodash` 模块，这样，`lodash` 就会被单独打包到一个 bundle 文件中，也就是上面控制台输出中的 `shared.js`。
 
-[示例代码](/examples/webpack/01/)
+[示例代码](/examples/webpack/demos/01/)
 
-### 配置 `splitChunks`
+### 3.2 配置 `splitChunks`
 
 `optimization.splitChunks` 属性，是一个用于配置代码分割的选项，通过这个属性，可以对代码分割的行为进行更详细地配置。
 
@@ -103,9 +470,9 @@ module.exports = {
 
 你可以参考 [官网](https://webpack.docschina.org/plugins/split-chunks-plugin#optimizationsplitchunks)，来获取 `splitChunks` 的更多配置信息。
 
-[示例代码](/examples/webpack/02/)
+[示例代码](/examples/webpack/demos/02/)
 
-### 按需加载，动态导入
+### 3.3 按需加载，动态导入
 
 使用 ES6 提供的 `import()` 方法导入模块时，webpack 会自动将导入的模块打包为单独的 chunk。
 
@@ -157,9 +524,9 @@ asset utils.js 126 bytes [emitted] [minimized] (name: utils)
 - `webpackPreload`：布尔值，提示浏览器在后台预加载模块。
 - `webpackPrefetch`：布尔值，提示浏览器预取模块以供将来使用。
 
-[示例代码](/examples/webpack/03/)
+[示例代码](/examples/webpack/demos/03/)
 
-## 预加载/预获取
+## 四、预加载/预获取
 
 使用预加载（Preload）或者预获取（Prefetch），可以在不阻塞浏览器渲染的前提下，提前下载某些资源，以确保他们尽早可用。
 
@@ -170,9 +537,9 @@ asset utils.js 126 bytes [emitted] [minimized] (name: utils)
 
 webpack 中配置 `preload` 和 `prefetch` 有两种方式，使用魔法注释或者使用 `preload-webpack-plugin` 插件。下面分别进行介绍。
 
-### 使用魔法注释
+### 4.1 使用魔法注释
 
-### 使用 `@vue/preload-webpack-plugin`
+### 4.2 使用 `@vue/preload-webpack-plugin`
 
 [`@vue/preload-webpack-plugin`](https://github.com/vuejs/preload-webpack-plugin) 插件将不同的模块，通过 `<link rel='preload' href='...'>` 或者 `<link rel='prefetch' href='...'>` 的形式，注入到页面的 `<head>` 标签中。
 
@@ -238,7 +605,7 @@ module.exports = {
 
 注意，`@vue/preload-webpack-plugin` [不支持](https://github.com/vuejs/preload-webpack-plugin/issues/22)为不同的模块，设置不同的导入策略。
 
-[示例代码](/examples/webpack/04/)
+[示例代码](/examples/webpack/demos/04/)
 
 ## JavaScript Polyfill
 
@@ -281,7 +648,7 @@ asset main.js 34.6 KiB [emitted] [minimized] (name: main)
 
 注意，在使用 `core-js` 之前，要先安装，并且要安装在 `dependencies` 下。
 
-[示例代码](/examples/webpack/05/)
+[示例代码](/examples/webpack/demos/05/)
 
 ### 自动导入
 
@@ -326,7 +693,7 @@ module.exports = {
 npm i -D babel-loader @babel/preset-env
 ```
 
-[示例代码](/examples/webpack/06/)
+[示例代码](/examples/webpack/demos/06/)
 
 ## 渐进式 Web 应用
 
