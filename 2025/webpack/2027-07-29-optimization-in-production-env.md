@@ -2,7 +2,9 @@
 
 ## 一、介绍
 
-## 二、压缩代码
+## 二、代码压缩
+
+### 2.1 压缩 HTML
 
 ### 2.1 压缩脚本资源
 
@@ -20,59 +22,140 @@ Tree Shaking 依赖于 ES6 模块的三个静态结构特性。
 
 ```javascript
 // utils.js
+export function add(a, b) {
+  return a + b;
+}
+
 export { add };
 
 // index.js
 import { add } from './utils';
 import debounce from 'lodash/debounce';
-// 或者，使用支持 Tree Shaking 的版本
-import { debounce } from 'lodash-es';
+import { debounce } from 'lodash-es'; // 或者，使用支持 Tree Shaking 的版本
 ```
 
 通过上面的方式导出和导入的模块，都支持 Tree Shaking。
 
-#### （2）使用限制
+#### （2）原理
+
+Tree Shaking 执行的过程，分为两个阶段。
+
+第一阶段：**标记阶段**。
+
+webpack 分析模块依赖，标记哪些导出被使用，哪些未被使用。同时分析哪些模块有副作用，哪些没有副作用。这一阶段主要依赖于三个属性配置。
+
+- `optimization.usedExports`：告诉 webpack **是否启用标记**，以标记哪些导出被使用了，哪些没有被使用。在打包后的代码中，未使用的导出会被标记为 `/* unused harmony export */`。这个是布尔值，默认值为 `true`。
+- `optimization.sideEffects`：这是一个全局属性，告诉 webpack 是否假设所有模块都没有副作用。这个是布尔值，默认值为 `true`。
+- `package.json` 中的 `sideEffects`：告诉 webpack 哪些文件有副作用，哪些没有。这个属性要比 `optimization.sideEffects` 更精确，是最精确的副作用控制方式。这个属性有多种配置方式，默认值为 `true`。
+
+  下面是这个属性的取值。
+
+  - `"sideEffects": true`：整个包都有副作用，所有代码都会被保留。
+  - `"sideEffects": false`：整个包都没有副作用，未使用的代码会被删除。
+  - `"sideEffects": ["*.css", "./src/utils.js"]`：只有 css 和 `utils.js` 文件有副作用，其他文件的未使用代码会被删除。
+  - `"sideEffects": ["*.css", "!*.css"]`：所有 css 文件都有副作用，但是 `!*.css` 文件没有副作用，这个文件中的没有使用的代码会被删除。
+
+上面的三个属性，按照优先级排序是，`package.json` 中的 `sideEffects` 属性 > `optimization.sideEffects` > `optimization.usedExports`。
+
+第二阶段：**清除阶段**。
+
+webpack 会删除标记的未使用代码，这是 Tree Shaking 真正生效的关键步骤。这一阶段主要依赖于两个属性配置。
+
+- `optimization.minimize`：布尔值。控制是否启用代码压缩。生产模式下为`true`，其他模式为 `false`。
+- `optimization.minimizer`：数组。指定用于代码压缩的插件。生产模式下默认为 `[new TerserPlugin()]`（即 `terser-webpack-plugin` 这个插件）。
+
+从上面两个阶段可以看出，在生产模式下，即在 `webpack.config.js` 中开启 `mode: 'production'` 的情况下，webpack 会自动开启 Tree Shaking。
+
+```javascript
+const TerserPlugin = require('terser-webpack-plugin');
+
+module.exports = {
+  mode: "production",
+  optimization: {
+    usedExports: true, // 默认为 `true`
+    sideEffects: true, // 默认为 `true`
+    minimize: true, // 默认为 `true`
+    minimizer: [
+      new TerserPlugin(), // 默认使用 `terser-webpack-plugin` 压缩代码
+    ],
+  },
+}
+```
+
+<!-- TODO：AST -->
+
+注意，代码分析过程，与抽象语法树（AST）有关。
+
+#### （3）使用限制
 
 并不是所有的模块和第三方库都支持 Tree Shaking，在使用时有一些限制。
 
-首先，`ESM` 中的默认导入、默认导出和 `import()` 动态导入，以及`CommonJS` 模块，都不支持 Tree Shaking。所以，应该尽量避免下面的写法。
+首先，`ESM` 中的默认导入、默认导出和 `import()` 动态导入，以及`CommonJS` 模块，都不支持或者仅有限支持 Tree Shaking。所以，应该尽量避免下面的写法。
 
 ```javascript
+// 完全不支持 Tree Shaking
 const utils = require('./utils');
-
 import * as utils from './utils';
-
-import React from 'react';
-
 import('./utils').then(module => {
   console.log(module.add(1, 2));
 });
 
+// 可能影响 Tree Shaking
+import utils from './utils';
 export default { add };
 ```
 
-其次，有副作用的代码可能被误删，应该尽量避免在模块顶层，执行有副作用的代码。
+上面的写法中，要特别注意 `import()` 动态导入的模块，对于动态导入的模块，webpack 无法在编译时确定哪些导出会被使用，所以会保留模块中的所有导出，即使模块中有死代码，这些代码也会被保留。
+
+其次，有副作用的代码可能被误删，应该尽量避免在模块顶层，执行有副作用的代码。下面的代码，都属于有副作用的代码。
 
 ```javascript
-// utils.js
-console.log('Code with side effects.');
-window.foo = 'Global side effect variable.';
+// 全局变量修改
+window.foo = 'bar';
+
+// 控制台输出
+console.log('Side effect');
+
+// DOM操作
+document.title = 'New Title';
+
+// 网络请求
+fetch('/api/data');
+
+// 定时器
+setTimeout(() => {}, 1000);
 ```
 
-要避免副作用代码被误删，可以将副作用代码放入一个函数中。
+目前，有两种方式，可以将代码块（注意，这里说的是代码块，而不是模块）标记为没有副作用，然后，webpack 就可以放心地删除。
+
+一是将有副作用的代码放入一个函数中。
 
 ```javascript
 export function addSideEffect() {
-  console.log('Utils loaded with side effect.');
-  window.foo = 'Global side effect variable.';
+  window.foo = 'bar';
+  console.log('Side effect');
+  document.title = 'New Title';
+  fetch('/api/data');
+  setTimeout(() => {}, 1000);
 }
 ```
 
-此外，如果代码没有副作用，可以在代码前插入 `/*#__PURE__*/` 注释，告诉 webpack 可以放心地删除。
+上面的代码，如果 `addSideEffect()` 方法没有被其他模块使用，会被 Tree Shaking 优化。
+
+二是在代码前插入 `/*#__PURE__*/` 注释。
 
 ```javascript
-/*#__PURE__*/ console.log('Side effect code, will be removed.');
+// 不会被优化
+/*#__PURE__*/ window.foo = 'bar';
+
+// 会被优化
+/*#__PURE__*/ console.log('Side effect');
+/*#__PURE__*/ document.title = 'New Title';
+/*#__PURE__*/ fetch('/api/data');
+/*#__PURE__*/ setTimeout(() => {}, 1000);
 ```
+
+上面代码中，除了 `window.foo`，其它方式定义的副作用代码，都会被删除。所以，应该尽量避免向全局对象中，添加属性和方法。
 
 循环依赖的模块，可能影响优化效果。
 
@@ -92,26 +175,9 @@ export const bar = foo;
 import _ from 'lodash';
 ```
 
-#### （3）配置
+#### （4）自定义配置
 
-在生产模式下，即在 `webpack.config.js` 中开启 `mode: 'production'` 的情况下，webpack 会自动开启 Tree Shaking。除此之外，还有三个属性，共同决定了 Tree Shaking 的行为和效果。
-
-- `optimization.usedExports` 属性。
-- `optimization.sideEffects` 属性。
-- `package.json` 中的 `sideEffects` 属性。
-
-上面的三个属性，按照优先级排序是，`package.json` 中的 `sideEffects` 属性 > `optimization.sideEffects` > `optimization.usedExports`。
-
-```javascript
-// webpack.config.js
-module.exports = {
-  optimization: {
-    usedExports: /* ... */
-  },
-};
-```
-
-第一步，`optimization.usedExports` 是一个布尔值，告诉 webpack **是否启用标记**，以标记哪些导出被使用了，哪些没有被使用。
+第一步，配置 `optimization.usedExports` 属性。
 
 ```javascript
 // utils.js
@@ -127,25 +193,16 @@ export function subtract(a, b) {
 import { add } from './utils';
 ```
 
-对于上面的代码，当 `usedExports: false` 时，webpack 不会进行标记，所有的导出（上文中的 `add` 和 `subtract`）都会被保留。当 `usedExports: true` 时，webpack 会标记 `add` 为已使用，`subtract` 被标记为未使用。这意味着，构建后的代码会包含标记信息，但不会删除未使用的代码。在打包输出的文件中，会看到类似下面这样的注释。
+对于上面的代码，当 `usedExports: false` 时，webpack 不会进行标记，所有的导出（上文中的 `add` 和 `subtract`）都会被保留。当 `usedExports: true` 时，webpack 会标记 `add` 为已使用，`subtract` 被标记为未使用。这意味着，构建后的代码会包含标记信息，但这个阶段不会删除未使用的代码。在打包输出的文件中，会看到类似下面这样的注释。
 
 ```javascript
-  /* unused harmony export subtract */
-  /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
+/* unused harmony export subtract */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
 ```
 
-注意，这个属性只是告诉 webpack 是否标记代码，即使 `usedExports: true`，也不会删除未使用的代码。
+<!-- 注意，这个属性只是告诉 webpack 是否标记代码，即使 `usedExports: true`，也不会删除未使用的代码。 -->
 
-```javascript
-// webpack.config.js
-module.exports = {
-  optimization: {
-    sideEffects: /* ... */
-  },
-};
-```
-
-第二步，`optimization.sideEffects` 是一个布尔值，这是一个全局属性，告诉 webpack 是否假设所有模块都没有副作用。
+第二步，配置 `optimization.sideEffects` 属性。
 
 ```javascript
 // utils.js
@@ -168,14 +225,7 @@ module.exports = {
 
 上面的代码，告诉 webpack 启用标记，并且所有代码都没有副作用。此时未使用的代码会被删除，包括有副作用的代码。
 
-第三步，`package.json` 中的 `sideEffects` 属性告诉 webpack 哪些文件有副作用，哪些没有。这个属性要比 `optimization.sideEffects` 更精确，是最精确的副作用控制方式。
-
-下面是这个属性的取值。
-
-- `"sideEffects": true`：整个包都有副作用，所有代码都会被保留。
-- `"sideEffects": false`：整个包都没有副作用，未使用的代码会被删除。
-- `"sideEffects": ["*.css", "./src/utils.js"]`：只有 css 和 `utils.js` 文件有副作用，其他文件的未使用代码会被删除。
-- `"sideEffects": ["*.css", "!*.css"]`：所有 css 文件都有副作用，但是 `!*.css` 文件没有副作用，这个文件中的没有使用的代码会被删除。
+第三步，配置 `package.json` 中的 `sideEffects` 属性。
 
 ```json
 // package.json
@@ -219,10 +269,10 @@ module.exports = {
     sideEffects: false,  // 让 package.json 控制副作用
     minimize: true,
   },
-  stats: {
-    usedExports: true,     // 显示使用的导出
-    providedExports: true, // 显示提供的导出
-  },
+  // stats: {
+  //   usedExports: true,     // 显示使用的导出
+  //   providedExports: true, // 显示提供的导出
+  // },
 };
 ```
 
@@ -239,12 +289,41 @@ module.exports = {
 }
 ```
 
-#### （4）总结
+第四步，配置 `optimization` 的 `minimize` 和 `minimizer` 属性。
+
+要使 Tree Shaking 生效，必须设置 `minimize` 为 `true`。
+
+如果要使自定义 `terser-webpack-plugin` 的压缩行为，或者使用其他插件进行压缩，需要配置 `minimizer` 属性。
+
+```javascript
+const TerserPlugin = require("terser-webpack-plugin");
+
+module.exports = {
+  mode: "production",
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          mangle: true,         // 变量名混淆
+          compress: {
+            unused: true,       // 删除未使用的变量和函数
+            dead_code: true,    // 删除死代码
+            drop_console: true, // 删除 console.log
+          },
+        },
+      }),
+    ],
+  },
+}
+```
+
+#### （5）总结
 
 综上所述，要想使 Tree Shaking 达到预期效果，需要做到这些。
 
 - 使用 ES6 模块语法（`import` / `export`），避免使用 CommonJS 模块化语法。
-- 配置 `mode: 'production'`
+- 配置 `mode: 'production'`。
 - 配置 `optimization` 的 `usedExports: true`、`sideEffects` 以及 `package.json` 中的 `sideEffects`。
 - 避免在模块顶层执行副作用操作。
 
@@ -268,7 +347,7 @@ module.exports = {
 
 ### 2.2 压缩样式资源
 
-#### (1) CSS 的 Tree Shaking
+<!-- #### (1) CSS 的 Tree Shaking
 
 ```javascript
 // 使用 PurgeCSS 移除未使用的 CSS
@@ -281,7 +360,7 @@ module.exports = {
     }),
   ],
 };
-```
+``` -->
 
 #### (2)
 
@@ -526,7 +605,23 @@ asset utils.js 126 bytes [emitted] [minimized] (name: utils)
 
 [示例代码](/examples/webpack/demos/03/)
 
-## 四、预加载/预获取
+## 四、资源优化
+
+### 4.1 图片压缩
+
+### 4.2 字体优化
+
+### 4.3 资源内联
+
+## 五、缓存优化
+
+### 5.1 文件名哈希
+
+### 5.2 模块标识符优化
+
+### 5.3 运行时优化
+
+## 六、预加载/预获取
 
 使用预加载（Preload）或者预获取（Prefetch），可以在不阻塞浏览器渲染的前提下，提前下载某些资源，以确保他们尽早可用。
 
@@ -606,6 +701,8 @@ module.exports = {
 注意，`@vue/preload-webpack-plugin` [不支持](https://github.com/vuejs/preload-webpack-plugin/issues/22)为不同的模块，设置不同的导入策略。
 
 [示例代码](/examples/webpack/demos/04/)
+
+## 七、模块解析优化
 
 ## JavaScript Polyfill
 
@@ -738,6 +835,12 @@ module.exports = {
 5. 执行 `serve dist` 命令。
 
 按照上述步骤，现在，项目应该可以支持离线访问了。
+
+## 性能监控优化
+
+### Bundle分析
+
+### 性能提示
 
 ## 参考
 
