@@ -3,4 +3,11 @@ function typeOf(o) {
   return s.match(/\[object (.*?)\]/)[1].toLowerCase();
 }
 
-module.exports = typeOf;
+function isArray(o) {
+  return o && typeOf(o) === 'array';
+}
+
+module.exports = {
+  typeOf,
+  isArray,
+};
