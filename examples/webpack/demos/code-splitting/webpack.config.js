@@ -1,7 +1,14 @@
 module.exports = {
   entry: {
-    app: './src/app.js',
-    main: './src/main.js',
+    app: {
+      import: './src/app.js',
+      dependOn: 'shared',
+    },
+    main: {
+      import: './src/main.js',
+      dependOn: 'shared',
+    },
+    shared: ['lodash']
   },
   optimization: {
     splitChunks: {
@@ -43,5 +50,5 @@ module.exports = {
       },
     },
   },
-  mode: 'development'
+  mode: 'production',
 };
