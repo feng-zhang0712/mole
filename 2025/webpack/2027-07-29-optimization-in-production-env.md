@@ -6,6 +6,111 @@
 
 ### 2.1 压缩 HTML
 
+#### （1）基本使用
+
+HTML 压缩的主要目标是减少 HTML 文件的大小，提高页面加载速度。[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 是处理 HTML 文件的核心插件，它可以生成 HTML 文件，还提供了基础的压缩功能。
+
+```javascript
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      hash: true, // 添加缓存破坏，防止浏览器缓存
+    }), 
+  ],
+};
+```
+
+上面的代码，打包时 `html-webpack-plugin` 以 `./public/index.html` 为模板，生成一个新的 `index.html` 文件，并将打包后的资源注入到 `index.html` 中。
+
+`minify` 属性用于控制代码的压缩。生产模式下，此属性默认值为 `true`，此时，使用内置的 [html-minifier-terser](https://github.com/DanielRuf/html-minifier-terser)插件，压缩 HTML 代码。其他模式下，此属性为 `false`，表示不开启压缩。
+
+#### （2）自定义压缩行为
+
+通过自定义 `minify` 属性，可以实现更细致的压缩行为。下面是这个属性的默认值。
+
+```javascript
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      minify: {
+        // 默认值
+        collapseWhitespace: true, // 移除空白符
+        removeComments: true, // 移除HTML注释
+        keepClosingSlash: false, // 移除自闭合标签的斜杠
+        removeRedundantAttributes: true, // 移除冗余属性
+        removeScriptTypeAttributes: true, // 移除script的type属性
+        removeStyleLinkTypeAttributes: true, // 移除style和link的type属性
+        useShortDoctype: true, // 使用短文档类型
+      },
+    }),
+  ],
+};
+```
+
+#### （3）HTML 模板优化
+
+优化 HTML 模板结构，可以提高 SEO 和性能。
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  
+  <!-- DNS预解析 -->
+  <link rel="dns-prefetch" href="//cdn.example.com">
+  
+  <!-- 预连接 -->
+  <link rel="preconnect" href="https://cdn.example.com">
+  
+  <!-- 关键CSS内联 -->
+  <style>
+    /* 首屏关键样式 */
+    body { margin: 0; font-family: Arial, sans-serif; }
+    .header { background: #f0f0f0; padding: 20px; }
+  </style>
+  
+  <!-- 非关键CSS异步加载 -->
+  <link rel="preload" href="<%= htmlWebpackPlugin.files.css[0] %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>"></noscript>
+</head>
+<body>
+  <div id="app"></div>
+  
+  <!-- 异步加载JavaScript -->
+  <script>
+    // 异步加载非关键JavaScript
+    function loadScript(src) {
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+    }
+    
+    // 延迟加载非关键功能
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        loadScript('<%= htmlWebpackPlugin.files.js[1] %>');
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
+```
+
+[示例代码](/examples/webpack/demos/html-optimization/)
+
 ### 2.1 压缩脚本资源
 
 #### （1）介绍
@@ -35,6 +140,8 @@ import { debounce } from 'lodash-es'; // 或者，使用支持 Tree Shaking 的�
 ```
 
 通过上面的方式导出和导入的模块，都支持 Tree Shaking。
+
+Tree Shaking 的实现，需要借助 `terser-webpack-plugin` 插件，webpack 内置了此插件。不只是脚本模，内联的脚本资源也会被压缩。
 
 #### （2）原理
 
@@ -345,22 +452,88 @@ module.exports = {
 };
 ```
 
-### 2.2 压缩样式资源
+[示例代码]()
 
-<!-- #### (1) CSS 的 Tree Shaking
+### 2.2 压缩样式资源】
+
+对于HTML中的内联CSS代码，也会被压缩。
+
+对于HTML中的内联CSS代码，可以使用 `css-minimizer-webpack-plugin` 进行压缩。
 
 ```javascript
-// 使用 PurgeCSS 移除未使用的 CSS
-const PurgeCSSPlugin = require('purgecss-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+
+module.exports = {
+  optimization: {
+    minimizer: [
+      `...`, // 保留其他minimizer
+      new CssMinimizerPlugin({
+        minimizerOptions: {
+          preset: [
+            'default',
+            {
+              discardComments: { removeAll: true }, // 移除所有注释
+              normalizeWhitespace: true,            // 标准化空白符
+              minifyFontValues: true,               // 压缩字体值
+              minifySelectors: true,                // 压缩选择器
+            },
+          ],
+        },
+      }),
+    ],
+  },
+};
+```
+
+将小体积的CSS和JavaScript文件内联到HTML中，减少HTTP请求数量。
+
+```javascript
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   plugins: [
-    new PurgeCSSPlugin({
-      paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+      filename: 'index.html',
+      // 内联配置
+      inlineSource: '.(js|css)$', // 内联小于指定大小的文件
+      inject: true,
+    }),
+  ],
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+        ],
+      },
+    ],
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
     }),
   ],
 };
-``` -->
+```
+
+<!-- // #### (1) CSS 的 Tree Shaking
+
+// ```javascript
+// // 使用 PurgeCSS 移除未使用的 CSS
+// const PurgeCSSPlugin = require('purgecss-webpack-plugin');
+
+// module.exports = {
+//   plugins: [
+//     new PurgeCSSPlugin({
+//       paths: glob.sync(`${path.join(__dirname, 'src')}/**/*`, { nodir: true }),
+//     }),
+//   ],
+// };
+// ``` -->
 
 #### (2)
 
@@ -445,6 +618,51 @@ module.exports = {
     }),
   ],
   mode: "production",
+};
+```
+
+使用 `image-webpack-loader` 优化图片资源。
+
+```javascript
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192, // 小于8kb的图片转为base64
+              name: 'images/[name].[hash:8].[ext]',
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65,
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4,
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 75,
+              },
+            },
+          },
+        ],
+      },
+    ],
+  },
 };
 ```
 
@@ -841,6 +1059,25 @@ module.exports = {
 ### Bundle分析
 
 ### 性能提示
+
+## 其他优化措施
+
+使用 `contenthash` 实现长期缓存。
+
+```javascript
+module.exports = {
+  output: {
+    filename: '[name].[contenthash:8].js',
+    chunkFilename: '[name].[contenthash:8].chunk.js',
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash:8].css',
+      chunkFilename: '[id].[contenthash:8].css',
+    }),
+  ],
+};
+```
 
 ## 参考
 
