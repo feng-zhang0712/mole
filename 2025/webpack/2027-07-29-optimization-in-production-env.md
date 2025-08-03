@@ -10,26 +10,36 @@
 
 HTML 压缩的主要目标是减少 HTML 文件的大小，提高页面加载速度。[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 是处理 HTML 文件的核心插件，它可以生成 HTML 文件，还提供了基础的压缩功能。
 
+下面列出了一些常见的属性。
+
+- `template`：指定使用哪个 HTML 文件作为模板。插件会读取这个模板文件，然后将打包后的资源注入到模板中。
+- `filename`：指定生成的 HTML 文件名，通常使用占位符指定。默认为 `'index.html'`。
+- `inject`：控制是否自动注入打包后的资源到 HTML 中。默认为 `true`，如果指定为 `'head'`，则注入到 `<head>` 标签中。
+- `title`：设置 HTML 页面的标题。这个值会替换模板中的 `<%= htmlWebpackPlugin.options.title %>`。
+- `templateParameters`：对象类型。向模板传递自定义参数。可以在模板中使用这些参数。比如，`<title><%= appName %> v<%= version %></title>`。
+- `chunks`：指定要注入到 HTML 中的 chunk。
+- `meta`：通过键值对的形式，指定一个或多个 meta 标签。
+- `minify`：详细控制 HTML 压缩的各种选项。
+
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-      hash: true, // 添加缓存破坏，防止浏览器缓存
+      template: './public/index.html'
     }), 
   ],
 };
 ```
 
-上面的代码，打包时 `html-webpack-plugin` 以 `./public/index.html` 为模板，生成一个新的 `index.html` 文件，并将打包后的资源注入到 `index.html` 中。
-
-`minify` 属性用于控制代码的压缩。生产模式下，此属性默认值为 `true`，此时，使用内置的 [html-minifier-terser](https://github.com/DanielRuf/html-minifier-terser)插件，压缩 HTML 代码。其他模式下，此属性为 `false`，表示不开启压缩。
+上面的代码，打包时 `html-webpack-plugin` 以 `./public/index.html` 为模板，生成一个新的 `index.html` 文件，并将打包后的资源注入到新生成的文件中。
 
 #### （2）自定义压缩行为
 
-通过自定义 `minify` 属性，可以实现更细致的压缩行为。下面是这个属性的默认值。
+`minify` 属性用于控制代码的压缩。生产模式下，此属性默认值为 `true`，此时，使用内置的 [html-minifier-terser](https://github.com/DanielRuf/html-minifier-terser)插件，压缩 HTML 代码。其他模式下，此属性为 `false`，表示不开启压缩。
+
+通过自定义 `minify` 属性，可以控制更精确的压缩行为。下面是这个属性的默认值。
 
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -52,62 +62,166 @@ module.exports = {
 };
 ```
 
-#### （3）HTML 模板优化
+除了上面的默认属性，还可以考虑配置下面的几个属性。
 
-优化 HTML 模板结构，可以提高 SEO 和性能。
+- `minifyJS: true`：压缩内联 JavaScript。
+- `minifyCSS: true`：压缩内联 CSS。
+- `minifyURLs: true`：压缩 URL。
+- `removeEmptyElements: true`：移除空元素。
+- `removeEmptyAttributes: true`：移除空属性。
+- `collapseBooleanAttributes: true`：压缩布尔属性。
+
+#### （3）变量注入
+
+`html-webpack-plugin` 提供了强大的变量注入功能，允许在 HTML 模板中使用各种 webpack 和插件提供的变量。这些变量可以帮助我们动态生成HTML内容，实现更灵活的模板配置。
+
+`htmlWebpackPlugin.options` 对象包含了传递给 `HtmlWebpackPlugin` 的所有配置选项。
+
+`htmlWebpackPlugin.files` 对象包含了 webpack 打包后的文件信息。通过这个对象，可以获取所有需要被注入的样式、脚本和 chunks 数组。
 
 ```html
+<!-- 注入所有 CSS 文件 -->
+<% htmlWebpackPlugin.files.css.forEach(function(cssFile) { %>
+  <link href="<%= cssFile %>" rel="stylesheet">
+<% }); %>
+
+<!-- 注入所有 JS 文件 -->
+<% htmlWebpackPlugin.files.js.forEach(function(jsFile) { %>
+  <script src="<%= jsFile %>"></script>
+<% }); %>
+
+<!-- 遍历所有 chunks -->
+<% Object.keys(htmlWebpackPlugin.files.chunks).forEach(function(chunkName) { %>
+  <% var chunk = htmlWebpackPlugin.files.chunks[chunkName]; %>
+  <% if (chunk.css) { %>
+    <% chunk.css.forEach(function(cssFile) { %>
+      <link href="<%= cssFile %>" rel="stylesheet">
+    <% }); %>
+  <% } %>
+  <% if (chunk.js) { %>
+    <% chunk.js.forEach(function(jsFile) { %>
+      <script src="<%= jsFile %>"></script>
+    <% }); %>
+  <% } %>
+<% }); %>
+```
+
+通过 `templateParameters` 属性，可以注入自定义变量到模板中。
+
+```javascript
+// webpack.config.js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+module.exports = {
+  plugins: [
+    new HtmlWebpackPlugin({
+      templateParameters: {
+        // 应用信息
+        appName: 'React应用',
+        version: '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        
+        // 配置信息
+        cdnUrl: process.env.CDN_URL || 'https://cdn.example.com',
+        
+        // 功能开关
+        enableAnalytics: process.env.NODE_ENV === 'production',
+        enableDebug: process.env.NODE_ENV === 'development',
+        
+        // 自定义函数
+        formatDate: function(date) {
+          return new Date(date).toLocaleDateString();
+        },
+        
+        // 复杂对象
+        config: {
+          theme: 'light',
+          language: 'zh-CN',
+          features: ['feature1', 'feature2'],
+        },
+      },
+    }),
+  ],
+};
+```
+
+```html
+<!-- public/index.html -->
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="<%= config.language %>">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title><%= htmlWebpackPlugin.options.title %></title>
+  <title><%= appName %> v<%= version %></title>
   
-  <!-- DNS预解析 -->
-  <link rel="dns-prefetch" href="//cdn.example.com">
+  <!-- 应用信息 -->
+  <meta name="app-name" content="<%= appName %>">
+  <meta name="version" content="<%= version %>">
+  <meta name="environment" content="<%= environment %>">
   
-  <!-- 预连接 -->
-  <link rel="preconnect" href="https://cdn.example.com">
+  <!-- 配置信息 -->
+  <meta name="cdn-url" content="<%= cdnUrl %>">
+
+  <!-- 使用条件渲染避免不必要的代码 -->
+  <% if (environment === 'production') { %>
+    <!-- 生产环境特定代码 -->
+    <meta name="robots" content="index, follow">
+    <script src="https://analytics.example.com/tracker.js"></script>
+  <% } else { %>
+    <!-- 开发环境特定代码 -->
+    <meta name="robots" content="noindex, nofollow">
+    <script>
+      console.log('开发模式已启用');
+    </script>
+  <% } %>
+    
+  <!-- 条件渲染 -->
+  <% if (enableAnalytics) { %>
+    <script>
+      // 生产环境分析代码
+      window.analytics = {
+        enabled: true,
+        track: function(event) {
+          console.log('Analytics:', event);
+        }
+      };
+    </script>
+  <% } %>
   
-  <!-- 关键CSS内联 -->
-  <style>
-    /* 首屏关键样式 */
-    body { margin: 0; font-family: Arial, sans-serif; }
-    .header { background: #f0f0f0; padding: 20px; }
-  </style>
+  <% if (enableDebug) { %>
+    <script>
+      // 开发环境调试代码
+      window.debug = {
+        enabled: true,
+        log: function(message) {
+          console.log('Debug:', message);
+        }
+      };
+    </script>
+  <% } %>
   
-  <!-- 非关键CSS异步加载 -->
-  <link rel="preload" href="<%= htmlWebpackPlugin.files.css[0] %>" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="<%= htmlWebpackPlugin.files.css[0] %>"></noscript>
+  <!-- 主题配置 -->
+  <script>
+    window.appConfig = {
+      theme: '<%= config.theme %>',
+      language: '<%= config.language %>',
+      features: <%- JSON.stringify(config.features) %>,
+    };
+  </script>
 </head>
 <body>
-  <div id="app"></div>
-  
-  <!-- 异步加载JavaScript -->
-  <script>
-    // 异步加载非关键JavaScript
-    function loadScript(src) {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    }
-    
-    // 延迟加载非关键功能
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        loadScript('<%= htmlWebpackPlugin.files.js[1] %>');
-      }, 2000);
-    });
-  </script>
+  <div style="display: none;">
+    <p>应用名称: <%= appName %></p>
+    <p>版本: <%= version %></p>
+    <p>环境: <%= environment %></p>
+  </div>
 </body>
 </html>
 ```
+
+#### （4）模板优化
+
+这部分内容，在 [模板优化](/2025/react/2025-08-04-optimization.md) 有详细介绍。
 
 [示例代码](/examples/webpack/demos/html-optimization/)
 
@@ -141,7 +255,7 @@ import { debounce } from 'lodash-es'; // 或者，使用支持 Tree Shaking 的�
 
 通过上面的方式导出和导入的模块，都支持 Tree Shaking。
 
-Tree Shaking 的实现，需要借助 `terser-webpack-plugin` 插件，webpack 内置了此插件。不只是脚本模，内联的脚本资源也会被压缩。
+Tree Shaking 的实现，需要借助 `terser-webpack-plugin` 插件，webpack 内置了此插件。
 
 #### （2）原理
 
@@ -452,13 +566,9 @@ module.exports = {
 };
 ```
 
-[示例代码]()
+[示例代码](/examples/webpack/demos/tree-shaking/)
 
 ### 2.2 压缩样式资源】
-
-对于HTML中的内联CSS代码，也会被压缩。
-
-对于HTML中的内联CSS代码，可以使用 `css-minimizer-webpack-plugin` 进行压缩。
 
 ```javascript
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -482,41 +592,6 @@ module.exports = {
       }),
     ],
   },
-};
-```
-
-将小体积的CSS和JavaScript文件内联到HTML中，减少HTTP请求数量。
-
-```javascript
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
-module.exports = {
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'index.html',
-      // 内联配置
-      inlineSource: '.(js|css)$', // 内联小于指定大小的文件
-      inject: true,
-    }),
-  ],
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-        ],
-      },
-    ],
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-    }),
-  ],
 };
 ```
 
@@ -666,7 +741,7 @@ module.exports = {
 };
 ```
 
-[示例代码](/examples/webpack/demos/09/)
+[示例代码](/examples/webpack/demos/image-optimization/)
 
 ## 三、代码分割
 
@@ -710,8 +785,6 @@ asset app.js 1.24 KiB [emitted] (name: app)
 ```
 
 上面代码中，`app` 和 `main` 通过 `shared` 字段告诉 webpack，他们共同引用了 `lodash` 模块，这样，`lodash` 就会被单独打包到一个 bundle 文件中，也就是上面控制台输出中的 `shared.js`。
-
-[示例代码](/examples/webpack/demos/01/)
 
 ### 3.2 配置 `splitChunks`
 
@@ -767,8 +840,6 @@ module.exports = {
 
 你可以参考 [官网](https://webpack.docschina.org/plugins/split-chunks-plugin#optimizationsplitchunks)，来获取 `splitChunks` 的更多配置信息。
 
-[示例代码](/examples/webpack/demos/02/)
-
 ### 3.3 按需加载，动态导入
 
 使用 ES6 提供的 `import()` 方法导入模块时，webpack 会自动将导入的模块打包为单独的 chunk。
@@ -821,7 +892,7 @@ asset utils.js 126 bytes [emitted] [minimized] (name: utils)
 - `webpackPreload`：布尔值，提示浏览器在后台预加载模块。
 - `webpackPrefetch`：布尔值，提示浏览器预取模块以供将来使用。
 
-[示例代码](/examples/webpack/demos/03/)
+[示例代码](/examples/webpack/demos/code-splitting/)
 
 ## 四、资源优化
 
@@ -918,7 +989,7 @@ module.exports = {
 
 注意，`@vue/preload-webpack-plugin` [不支持](https://github.com/vuejs/preload-webpack-plugin/issues/22)为不同的模块，设置不同的导入策略。
 
-[示例代码](/examples/webpack/demos/04/)
+[示例代码](/examples/webpack/demos/preload-prefetch/)
 
 ## 七、模块解析优化
 
@@ -963,8 +1034,6 @@ asset main.js 34.6 KiB [emitted] [minimized] (name: main)
 
 注意，在使用 `core-js` 之前，要先安装，并且要安装在 `dependencies` 下。
 
-[示例代码](/examples/webpack/demos/05/)
-
 ### 自动导入
 
 除了手动导入，还可以借助 `@babel/preset-env`，它会自动添加项目中对 `core-js` 模块的依赖。
@@ -1008,7 +1077,7 @@ module.exports = {
 npm i -D babel-loader @babel/preset-env
 ```
 
-[示例代码](/examples/webpack/demos/06/)
+[示例代码](/examples/webpack/demos/polyfill/)
 
 ## 渐进式 Web 应用
 
@@ -1053,6 +1122,8 @@ module.exports = {
 5. 执行 `serve dist` 命令。
 
 按照上述步骤，现在，项目应该可以支持离线访问了。
+
+[示例代码](/examples/webpack/demos/pwa/)
 
 ## 性能监控优化
 
