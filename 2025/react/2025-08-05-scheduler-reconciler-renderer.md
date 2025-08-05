@@ -1,33 +1,25 @@
 # Scheduler、Reconciler 和 Renderer
 
-## Scheduler
+## 一、Scheduler
 
-### 概述
+### 1.1 概述
 
-React Scheduler（调度器）是 React 并发特性的核心组件，负责管理和调度任务的执行。它实现了时间切片（Time Slicing）机制，确保高优先级任务能够及时响应，同时不阻塞用户交互。
+React Scheduler（调度器）负责管理和调度任务的执行。它实现了时间切片（Time Slicing）机制，确保高优先级任务能够及时响应，同时不阻塞用户交互。
+
+Scheduler 的作用主要有三个。
+
+- 实现时间切片，避免阻塞主线程。
+- 管理任务优先级，确保关键任务优先执行。
+- 提供任务调度和取消机制。
 
 Scheduler 有两个核心概念：**优先级系统**和**任务队列**。
 
-Scheduler 定义了 5 个优先级级别。
+### 1.2 核心数据结构
 
-- `NoPriority`：
-- `ImmediatePriority`：立即执行。
-- `UserBlockingPriority`：用户阻塞优先级。
-- `NormalPriority`：正常先级。
-- `LowPriority`：低优先级。
-- `IdlePriority`：空闲优先级。
-
-Scheduler 使用两个队列管理任务。
-
-- taskQueue：立即执行的任务队列（最小堆）。
-- timerQueue：延迟执行的任务队列（最小堆）。
-
-### 核心数据结构
-
-#### Task 对象
+#### （1）Task 对象
 
 ```javascript
-export type Task = {
+type Task = {
   id: number,                    // 任务唯一标识
   callback: Callback | null,     // 任务回调函数
   priorityLevel: PriorityLevel,  // 优先级级别
@@ -38,25 +30,25 @@ export type Task = {
 };
 ```
 
-#### 最小堆实现
+#### （2）最小堆实现
 
-Scheduler 使用最小堆来管理任务队列，确保优先级最高的任务始终在堆顶。
+Scheduler 使用**最小堆**来管理任务队列，确保优先级最高的任务始终在堆顶。
 
 ```javascript
-// 插入任务
-export function push<T: Node>(heap: Heap<T>, node: T): void {
+// 插入任务，任务按 expirationTime 排序（小顶堆）
+export function push(heap: Array<Task> node: T): void {
   const index = heap.length;
   heap.push(node);
   siftUp(heap, node, index);
 }
 
 // 获取堆顶任务
-export function peek<T: Node>(heap: Heap<T>): T | null {
+export function peek(heap: Array<Task>): T | null {
   return heap.length === 0 ? null : heap[0];
 }
 
 // 移除堆顶任务
-export function pop<T: Node>(heap: Heap<T>): T | null {
+export function pop(heap: Array<Task>): T | null {
   if (heap.length === 0) {
     return null;
   }
@@ -68,23 +60,80 @@ export function pop<T: Node>(heap: Heap<T>): T | null {
   }
   return first;
 }
+
+function siftUp(heap: Array<Task>, node: Task, i: number): void {
+  let index = i;
+  while (index > 0) {
+    const parentIndex = (index - 1) >>> 1;
+    const parent = heap[parentIndex];
+    if (compare(parent, node) > 0) {
+      // 父节点优先级更低，交换
+      heap[parentIndex] = node;
+      heap[index] = parent;
+      index = parentIndex;
+    } else {
+      return;
+    }
+  }
+}
+
+function compare(a: Task, b: Task): number {
+  // 首先按 sortIndex 排序（expirationTime）
+  const diff = a.sortIndex - b.sortIndex;
+  if (diff !== 0) {
+    return diff;
+  }
+  // 其次按id排序（插入顺序）
+  return a.id - b.id;
+}
 ```
 
-### 核心API
+### 1.3 核心 API
 
-#### 1. 调度任务
+#### （1）调度任务
 
-根据优先级调度任务。
+Scheduler 使用两个队列管理任务。`taskQueue` 保存立即执行的任务，`timerQueue` 保存延迟执行的任务。他们都使用**最小堆**算法实现。
 
 ```javascript
+// 根据优先级调度任务
 function unstable_scheduleCallback(
   priorityLevel: PriorityLevel, // 任务优先级
   callback: Callback, // 任务回调函数
-  options?: {delay?: number, timeout?: number} // 可选配置（延迟时间、超时时间）
-): Task
+  options?: {delay: number}, // 可选配置（延迟时间）
+): Task {
+  var currentTime = getCurrentTime();
+  const startTime = options?.delay ? currentTime + options.delay : currentTime;
+
+  var timeout;
+  // 根据优先级确定超时时间
+  switch (priorityLevel) {
+    //...
+  }
+
+  const expirationTime = startTime + timeout;
+  const newTask = {
+    id: taskIdCounter++,
+    callback,
+    priorityLevel,
+    startTime,
+    expirationTime,
+    sortIndex: expirationTime,
+  };
+  
+  // 根据开始时间决定加入哪个队列
+  if (startTime > currentTime) {
+    // 延迟任务，加入 timerQueue
+    push(timerQueue, newTask); 
+  } else {
+    // 立即任务，加入 taskQueue
+    push(taskQueue, newTask);
+  }
+
+  return newTask;
+}
 ```
 
-#### 2. 取消任务
+#### （2）取消任务
 
 取消已调度的任务。
 
@@ -92,7 +141,7 @@ function unstable_scheduleCallback(
 function unstable_cancelCallback(task: Task): void
 ```
 
-#### 3. 获取当前优先级
+#### （3）获取当前优先级
 
 获取当前正在执行任务的优先级。
 
@@ -100,7 +149,7 @@ function unstable_cancelCallback(task: Task): void
 function unstable_getCurrentPriorityLevel(): PriorityLevel
 ```
 
-#### 4. 检查是否应该让出控制权
+#### （4）检查是否应该让出控制权
 
 检查是否应该让出控制权给浏览器。
 
@@ -108,30 +157,29 @@ function unstable_getCurrentPriorityLevel(): PriorityLevel
 function shouldYieldToHost(): boolean
 ```
 
-### 工作循环机制
+### 1.4 工作循环机制
 
-#### 1. 主工作循环
+#### （1）主工作循环
 
 ```javascript
 function workLoop(initialTime: number) {
   let currentTime = initialTime;
-  advanceTimers(currentTime);
-  currentTask = peek(taskQueue);
+  advanceTimers(currentTime); // 1. 推进延迟任务
+  currentTask = peek(taskQueue); // 2. 获取最高优先级任务
   
   while (currentTask !== null) {
-    // 检查是否应该让出控制权
+    // 3. 检查是否需要让出控制权
     if (currentTask.expirationTime > currentTime && shouldYieldToHost()) {
       break;
     }
-    
+    // 4. 执行任务
     const callback = currentTask.callback;
     if (typeof callback === 'function') {
       currentTask.callback = null;
       currentPriorityLevel = currentTask.priorityLevel;
-      const didUserCallbackTimeout = currentTask.expirationTime <= currentTime;
+      const didUserCallbackTimeout = currentTask.expirationTime <= currentTime; // 5. 检查任务是否超时
       
-      // 执行任务回调
-      const continuationCallback = callback(didUserCallbackTimeout);
+      const continuationCallback = callback(didUserCallbackTimeout); // 6. 执行任务回调
       currentTime = getCurrentTime();
       
       if (typeof continuationCallback === 'function') {
@@ -145,16 +193,18 @@ function workLoop(initialTime: number) {
         }
       }
     } else {
-      pop(taskQueue);
+      pop(taskQueue); // 任务被取消，从队列中移除
     }
-    currentTask = peek(taskQueue);
+    currentTask = peek(taskQueue); // 7. 获取下一个任务
   }
   
   return currentTask !== null;
 }
 ```
 
-#### 2. 时间切片机制
+#### （2）时间切片机制
+
+时间切片原理是，将长时间任务分割成小的时间片，在时间片之间让出控制权给浏览器，从而确保用户交互的响应性。
 
 Scheduler 通过 `shouldYieldToHost()` 函数实现时间切片。
 
@@ -170,24 +220,35 @@ function shouldYieldToHost(): boolean {
 }
 ```
 
-### 调度策略
+### 1.5 调度策略
 
-#### 1. 优先级调度
+#### （1）优先级调度
 
 - `ImmediatePriority`: 立即执行，不参与时间切片。
 - `UserBlockingPriority`: 用户交互相关，高优先级。
-  `NormalPriority`: 普通任务，参与时间切片。
+- `NormalPriority`: 普通任务，参与时间切片。
 - `LowPriority`: 低优先级任务，可被中断。
 - `IdlePriority`: 空闲时执行。
 
-#### 2. 任务调度流程
+Scheduler 定义了五个级别的优先级，优先级决定了任务的超时时间和执行顺序。
+
+- `NoPriority`：
+- `ImmediatePriority`：立即优先级。拥有最高优先级，立即超时（超时时间 -1）、立即执行、不参与时间切片。比如，Legacy 模式下的同步更新、从错误边界恢复、紧急的 DOM 操作和关键的用户交互响应等，都属于这个优先级。
+- `UserBlockingPriority`：用户阻塞优先级。超时时间 250ms，参与时间切片但优先级较高。比如，用户输入事件（点击、输入、滚动）、手势事件、动画帧回调等都属于这个优先级。
+- `NormalPriority`：普通优先级。超时时间 5000ms，参与时间切片。比如，网络请求响应、数据获取完成、常规的状态更新等。
+- `LowPriority`：低优先级。超时时间 10000ms，可被中断、参与时间切片。比如，非紧急的UI更新、后台数据处理、预加载操作等。
+- `IdlePriority`：空闲优先级。这类任务永不超时，只在浏览器空闲时执行。比如，分析统计、日志记录和清理工作等。
+
+5个优先级级别的设计。不同优先级任务的调度策略。优先级对任务执行顺序的影响。
+
+#### （2）任务调度流程
 
 1. 任务入队: 根据优先级和过期时间决定进入哪个队列
 2. 时间片分配: 为每个任务分配执行时间
 3. 让出控制权: 时间片用完时让出控制权给浏览器
 4. 任务恢复: 浏览器空闲时恢复任务执行
 
-#### 3. 延迟任务处理
+#### （3）延迟任务处理
 
 ```javascript
 function advanceTimers(currentTime: number) {
@@ -210,27 +271,6 @@ function advanceTimers(currentTime: number) {
 }
 ```
 
-### 与 React 的集成
-
-#### 1. React Reconciler 中的使用
-
-```javascript
-// packages/react-reconciler/src/Scheduler.js
-import * as Scheduler from 'scheduler';
-
-export const scheduleCallback = Scheduler.unstable_scheduleCallback;
-export const cancelCallback = Scheduler.unstable_cancelCallback;
-export const shouldYield = Scheduler.unstable_shouldYield;
-export const requestPaint = Scheduler.unstable_requestPaint;
-export const now = Scheduler.unstable_now;
-```
-
-#### 2. 在 Fiber 工作循环中的应用
-
-- React 使用 Scheduler 来调度 Fiber 节点的处理
-- 高优先级的更新（如用户交互）会立即调度
-- 低优先级的更新会被延迟执行
-
 ### 性能优化特性
 
 #### 1. 时间切片
@@ -251,80 +291,37 @@ export const now = Scheduler.unstable_now;
 - 避免不必要的计算
 - 优化性能
 
-### 面试重点
+## 二、Reconciler
 
-#### 1. Scheduler 的作用
+### 2.1 概述
 
-- 实现时间切片，避免阻塞主线程
-- 管理任务优先级，确保关键任务优先执行
-- 提供任务调度和取消机制
+React Reconciler（协调器）负责管理组件的渲染和更新过程，实现 React 的虚拟 DOM diff 算法和状态管理。
 
-#### 2. 时间切片原理
+Reconciler 的核心职责有三个，**实现虚拟 DOM 的 diff 算法**、**状态管理**和**优先级调度**。
 
-- 将长时间任务分割成小的时间片
-- 在时间片之间让出控制权给浏览器
-- 确保用户交互的响应性
+- 实现虚拟 DOM 的 diff 算法：比较新旧虚拟 DOM 树的差异，生成最小化的 DOM 操作指令，并管理组件的生命周期。
+- 状态管理：管理组件的状态更新，处理 Hooks 的状态逻辑，协调批量更新。
+- 优先级调度：与 Scheduler 协作进行任务调度，处理不同优先级的更新，实现时间切片。
 
-#### 3. 优先级系统
+下面列出了 Reconciler 核心文件结构及其主要职责，这些文件在 `packages/react-reconciler/src/` 目录下。
 
-- 5个优先级级别的设计
-- 不同优先级任务的调度策略
-- 优先级对任务执行顺序的影响
+- `ReactFiberReconciler.js`：协调器入口。
+- `ReactFiberWorkLoop.js`：工作循环。
+- `ReactFiberBeginWork.js`：开始工作。
+- `ReactFiberCompleteWork.js`：完成工作。
+- `ReactFiberCommitWork.js`：提交工作。
+- `ReactFiberHooks.js`：Hooks 实现。
+- `ReactFiberLane.js`：优先级系统。
+- `ReactFiber.js`：Fiber 节点定义。
+- `ReactInternalTypes.js`：内部类型定义。
 
-#### 4. 与 React 的协作
+### 2.2 核心API
 
-- Scheduler 为 React 提供调度能力
-- React 使用 Scheduler 实现并发特性
-- 两者共同实现 React 18 的并发渲染
-
-## Reconciler
-
-### 概述
-
-React Reconciler（协调器）是 React 的核心协调器，负责管理组件的渲染和更新过程。它是 React 三大核心模块之一，与 Scheduler 和 Renderer 协同工作，实现 React 的虚拟 DOM diff 算法和状态管理。
-
-### 核心职责
-
-#### 1. 虚拟DOM协调
-
-- 比较新旧虚拟DOM树的差异
-- 生成最小化的DOM操作指令
-- 管理组件的生命周期
-
-#### 2. 状态管理
-
-- 管理组件的状态更新
-- 处理Hooks的状态逻辑
-- 协调批量更新
-
-#### 3. 优先级调度
-
-- 与Scheduler协作进行任务调度
-- 处理不同优先级的更新
-- 实现时间切片
-
-### 核心文件结构
-
-```text
-packages/react-reconciler/src/
-├── ReactFiberReconciler.js    # 协调器入口 ⭐⭐⭐⭐⭐
-├── ReactFiberWorkLoop.js      # 工作循环 ⭐⭐⭐⭐⭐
-├── ReactFiberBeginWork.js     # 开始工作 ⭐⭐⭐⭐
-├── ReactFiberCompleteWork.js  # 完成工作 ⭐⭐⭐⭐
-├── ReactFiberCommitWork.js    # 提交工作 ⭐⭐⭐⭐
-├── ReactFiberHooks.js         # Hooks实现 ⭐⭐⭐⭐⭐
-├── ReactFiberLane.js          # 优先级系统 ⭐⭐⭐⭐⭐
-├── ReactFiber.js              # Fiber节点定义 ⭐⭐⭐⭐⭐
-└── ReactInternalTypes.js      # 内部类型定义 ⭐⭐⭐
-```
-
-### 核心API
-
-#### 1. 容器创建
+#### （1）容器创建
 
 创建 React 根容器。
 
-```typescript
+```javascript
 export function createContainer(
   containerInfo: Container, // 容器信息（如DOM元素）
   tag: RootTag, // 根类型（LegacyRoot、ConcurrentRoot等）
@@ -339,7 +336,7 @@ export function createContainer(
 ): OpaqueRoot
 ```
 
-#### 2. 容器更新
+#### （2）容器更新
 
 更新容器内容。
 
@@ -352,7 +349,7 @@ export function updateContainer(
 ): Lane
 ```
 
-#### 3. 同步更新
+#### （3）同步更新
 
 同步更新容器（绕过调度器）。
 
@@ -365,9 +362,9 @@ export function updateContainerSync(
 ): Lane
 ```
 
-### 工作循环机制
+### 2.3 工作循环机制
 
-#### 1. 渲染阶段 (Render Phase)
+#### （1）渲染阶段 (Render Phase)
 
 ```javascript
 function renderRootSync(
@@ -387,7 +384,7 @@ function renderRootSync(
 }
 ```
 
-#### 2. 并发渲染
+#### （2）并发渲染
 
 ```javascript
 function renderRootConcurrent(
@@ -406,7 +403,7 @@ function renderRootConcurrent(
 }
 ```
 
-#### 3. 工作循环
+#### （3）工作循环
 
 ```javascript
 function workLoopSync() {
@@ -422,16 +419,16 @@ function workLoopConcurrent() {
 }
 ```
 
-### 协调算法
+### 2.4 协调算法
 
-#### 1. 双缓存机制
+#### （1）双缓存机制
 
-Reconciler 使用双缓存机制来管理 Fiber 树：
+Reconciler 使用双缓存机制来管理 Fiber 树，避免直接操作当前树，保证渲染的稳定性。
 
-- current树: 当前已渲染的 Fiber 树。
-- workInProgress树: 正在构建的新 Fiber 树。
+- `current` 树: 当前已渲染的 Fiber 树。
+- `workInProgress` 树: 正在构建的新 Fiber 树。
 
-#### 2. 深度优先遍历
+#### （2）深度优先遍历
 
 ```javascript
 function performUnitOfWork(unitOfWork: Fiber): void {
@@ -453,7 +450,7 @@ function performUnitOfWork(unitOfWork: Fiber): void {
 }
 ```
 
-#### 3. 开始工作 (Begin Work)
+#### （3）开始工作 (Begin Work)
 
 ```javascript
 function beginWork(
@@ -474,7 +471,7 @@ function beginWork(
 }
 ```
 
-#### 4. 完成工作 (Complete Work)
+#### （4）完成工作 (Complete Work)
 
 ```javascript
 function completeWork(
@@ -505,9 +502,9 @@ function completeWork(
 }
 ```
 
-### 更新机制
+### 2.5 更新机制
 
-#### 1. 更新队列
+#### （1）新队列
 
 ```javascript
 function updateContainerImpl(
@@ -532,7 +529,7 @@ function updateContainerImpl(
 }
 ```
 
-#### 2. 批量更新
+#### （2）批量更新
 
 ```javascript
 export function batchedUpdates<A, R>(
@@ -552,9 +549,9 @@ export function batchedUpdates<A, R>(
 }
 ```
 
-### 错误处理
+### 2.6 错误处理
 
-#### 1. 错误边界
+#### （1）错误边界
 
 ```javascript
 function throwIfInfiniteUpdateLoopDetected() {
@@ -575,7 +572,7 @@ function throwIfInfiniteUpdateLoopDetected() {
 }
 ```
 
-#### 2. 错误恢复
+#### （2）错误恢复
 
 ```javascript
 function handleError(
@@ -589,9 +586,9 @@ function handleError(
 }
 ```
 
-### 性能优化
+### 2.7 性能优化
 
-#### 1. 早期退出
+#### （1）早期退出
 
 ```javascript
 function bailoutOnAlreadyFinishedWork(
@@ -610,7 +607,7 @@ function bailoutOnAlreadyFinishedWork(
 }
 ```
 
-#### 2. 优先级调度
+#### （2）优先级调度
 
 ```javascript
 function requestUpdateLane(fiber: Fiber): Lane {
@@ -640,11 +637,11 @@ function requestUpdateLane(fiber: Fiber): Lane {
 }
 ```
 
-### 与 Renderer 的协作
+### 2.8 与 Renderer 的协作
 
-#### 1. 副作用收集
+#### （1）副作用收集
 
-Reconciler 在渲染阶段收集副作用，在提交阶段交给 Renderer 执行：
+Reconciler 在渲染阶段收集副作用，在提交阶段交给 Renderer 执行。
 
 ```javascript
 // 渲染阶段：收集副作用
@@ -666,7 +663,7 @@ function commitDeletion(finishedWork: Fiber): void {
 }
 ```
 
-#### 2. 事件处理
+#### （2）事件处理
 
 ```javascript
 function commitEventEffects(
@@ -681,107 +678,44 @@ function commitEventEffects(
 }
 ```
 
-### 面试重点
+## 三、Renderer
 
-#### 1. Reconciler的作用
+### 3.1 概述
 
-- 实现虚拟DOM的diff算法
-- 管理组件的渲染和更新
-- 与Scheduler协作实现并发渲染
-- 收集副作用交给Renderer执行
+React Renderer（渲染器）负责将 Reconciler 生成的虚拟 DOM 转换为实际的平台特定代码。React 支持多种渲染器，包括 React DOM（Web）、React Native（移动端）等。
 
-#### 2. 双缓存机制
+Renderer 的核心职责有三个：平台特定渲染、事件处理和副作用执行。
 
-- current树：当前已渲染的Fiber树
-- workInProgress树：正在构建的新Fiber树
-- 避免直接操作当前树，保证渲染的稳定性
+- 平台特定渲染：将虚拟 DOM 转换为平台特定的 UI 元素，处理平台特定的 API 和属性，管理平台特定的生命周期。
+- 事件处理：实现跨平台的事件系统，处理用户交互事件，提供统一的事件 API。
+- 副作用执行：执行 Reconciler 收集的副作用，管理 DOM 操作，处理样式和属性更新。
 
-#### 3. 工作循环
+Renderer 的核心文件主要位于两个目录中。
 
-- 深度优先遍历Fiber树
-- 分为开始工作和完成工作两个阶段
-- 支持时间切片和优先级调度
+其一是 `packages/react-dom/src/` 目录下的核心模块。
 
-#### 4. 更新机制
+- `client/ReactDOMClient.js`：客户端入口
+- `client/ReactDOMRoot.js`：根容器管理
+- `client/ReactDOMRootFB.js`：Facebook 特定版本
+- `server/ReactDOMServer.js`：服务端渲染
+- `shared/ReactDOMSharedInternals.js`：共享内部 API
 
-- 基于优先级的更新调度
-- 批量更新优化
-- 早期退出机制
+另一个是 `packages/react-dom-bindings/src/` 目录下的核心模块。
 
-#### 5. 错误处理
+- `client/ReactDOMComponent.js`：DOM组件实现。
+- `client/ReactFiberConfigDOM.js`：DOM配置。
+- `client/DOMPropertyOperations.js`：DOM属性操作。
+- `client/CSSPropertyOperations.js`：CSS样式操作。
+- `client/ReactDOMComponentTree.js`：DOM组件树。
+- `events/DOMPluginEventSystem.js`：事件系统。
+- `events/SyntheticEvent.js`：合成事件。
+- `events/plugins/`：事件插件。
 
-- 错误边界机制
-- 错误恢复和重试
-- 无限循环检测
+### 3.2 核心 API
 
+#### （1）创建根容器
 
-
-
-
-
-## Renderer
-
-### 概述
-
-React Renderer（渲染器详）是 React 三大核心模块之一，负责将 Reconciler 生成的虚拟 DO M转换为实际的平台特定代码。React 支持多种渲染器，包括 React DOM（Web）、React Native（移动端）、React Art（Canvas）等。
-
-### 核心职责
-
-#### 1. 平台特定渲染
-
-- 将虚拟DOM转换为平台特定的UI元素
-- 处理平台特定的API和属性
-- 管理平台特定的生命周期
-
-#### 2. 事件处理
-
-- 实现跨平台的事件系统
-- 处理用户交互事件
-- 提供统一的事件API
-
-#### 3. 副作用执行
-
-- 执行Reconciler收集的副作用
-- 管理DOM操作
-- 处理样式和属性更新
-
-### React DOM 渲染器架构
-
-#### 1. 核心文件结构
-
-```text
-packages/react-dom/
-├── src/
-│   ├── client/
-│   │   ├── ReactDOMClient.js      # 客户端入口 ⭐⭐⭐⭐⭐
-│   │   ├── ReactDOMRoot.js        # 根容器管理 ⭐⭐⭐⭐⭐
-│   │   └── ReactDOMRootFB.js      # Facebook特定版本
-│   ├── server/
-│   │   └── ReactDOMServer.js      # 服务端渲染
-│   └── shared/
-│       └── ReactDOMSharedInternals.js # 共享内部API
-```
-
-```text
-packages/react-dom-bindings/
-├── src/
-│   ├── client/
-│   │   ├── ReactDOMComponent.js   # DOM组件实现 ⭐⭐⭐⭐⭐
-│   │   ├── ReactFiberConfigDOM.js # DOM配置 ⭐⭐⭐⭐
-│   │   ├── DOMPropertyOperations.js # DOM属性操作 ⭐⭐⭐⭐
-│   │   ├── CSSPropertyOperations.js # CSS样式操作 ⭐⭐⭐⭐
-│   │   └── ReactDOMComponentTree.js # DOM组件树 ⭐⭐⭐
-│   └── events/
-│       ├── DOMPluginEventSystem.js # 事件系统 ⭐⭐⭐⭐⭐
-│       ├── SyntheticEvent.js      # 合成事件 ⭐⭐⭐⭐
-│       └── plugins/               # 事件插件
-```
-
-### 核心API
-
-#### 1. 创建根容器
-
-创建React 18的并发根容器。
+创建 React 18 的并发根容器。
 
 ```javascript
 export function createRoot(
@@ -809,7 +743,7 @@ export function createRoot(
 }
 ```
 
-#### 2. 渲染方法
+#### （2）渲染方法
 
 渲染 React 元素到容器。
 
@@ -824,7 +758,7 @@ ReactDOMRoot.prototype.render = function(children: ReactNodeList): void {
 };
 ```
 
-#### 3. 卸载方法
+#### （3）卸载方法
 
 卸载 React 应用。
 
@@ -839,9 +773,9 @@ ReactDOMRoot.prototype.unmount = function(): void {
 };
 ```
 
-### DOM 组件实现
+### 3.3 DOM 组件实现
 
-#### 1. 组件创建
+#### （1）组件创建
 
 ```javascript
 export function createInstance(
@@ -856,7 +790,7 @@ export function createInstance(
 }
 ```
 
-#### 2. 属性设置
+#### （2）属性设置
 
 ```javascript
 export function setInitialProperties(
@@ -876,7 +810,7 @@ export function setInitialProperties(
 }
 ```
 
-#### 3. 属性更新
+#### （3）属性更新
 
 ```javascript
 export function updateProperties(
@@ -906,9 +840,11 @@ export function updateProperties(
 }
 ```
 
-### 事件系统
+### 3.4 事件系统
 
-#### 1. 事件注册
+合成事件机制、事件委托优化、跨平台事件处理、事件优先级。
+
+#### （1）事件注册
 
 ```javascript
 export function listenToAllSupportedEvents(rootContainerElement: EventTarget) {
@@ -921,7 +857,7 @@ export function listenToAllSupportedEvents(rootContainerElement: EventTarget) {
 }
 ```
 
-#### 2. 事件分发
+#### （2）事件分发
 
 ```javascript
 export function dispatchEventForPluginEventSystem(
@@ -954,7 +890,7 @@ export function dispatchEventForPluginEventSystem(
 }
 ```
 
-#### 3. 合成事件
+#### （3）合成事件
 
 ```javascript
 export class SyntheticEvent {
@@ -996,9 +932,9 @@ export class SyntheticEvent {
 }
 ```
 
-### 样式处理
+### 3.5 样式处理
 
-#### 1. CSS 属性操作
+#### （1）CSS 属性操作
 
 ```javascript
 export function setValueForStyles(
@@ -1035,7 +971,7 @@ export function setValueForStyles(
 }
 ```
 
-#### 2. 样式验证
+#### （2）样式验证
 
 ```javascript
 export function validateShorthandPropertyCollisionInDev(
@@ -1064,9 +1000,11 @@ export function validateShorthandPropertyCollisionInDev(
 }
 ```
 
-### 水合(Hydration)
+### 3.6 水合机制（Hydration）
 
-#### 1. 水合根容器
+服务端渲染集成、客户端水合过程、水合错误处理、性能优化。
+
+#### （1）水合根容器
 
 ```javascript
 export function hydrateRoot(
@@ -1097,7 +1035,7 @@ export function hydrateRoot(
 }
 ```
 
-#### 2. 水合属性
+#### （2）水合属性
 
 ```javascript
 export function hydrateProperties(
@@ -1118,9 +1056,9 @@ export function hydrateProperties(
 }
 ```
 
-### 错误处理
+### 3.7 错误处理
 
-#### 1. 错误边界集成
+#### （1）错误边界集成
 
 ```javascript
 function handleError(
@@ -1137,7 +1075,7 @@ function handleError(
 }
 ```
 
-#### 2. 开发环境警告
+#### （2）开发环境警告
 
 ```javascript
 function validateContainer(container: Element): void {
@@ -1151,9 +1089,9 @@ function validateContainer(container: Element): void {
 }
 ```
 
-### 性能优化
+### 3.8 性能优化
 
-#### 1. 批量更新
+#### （1）批量更新
 
 ```javascript
 export function batchedUpdates<A, R>(
@@ -1173,7 +1111,7 @@ export function batchedUpdates<A, R>(
 }
 ```
 
-#### 2. 事件委托
+#### （2）事件委托
 
 ```javascript
 function addTrappedEventListener(
@@ -1197,9 +1135,9 @@ function addTrappedEventListener(
 }
 ```
 
-### 与其他模块的协作
+### 3。9 与其他模块的协作
 
-#### 1. 与 Reconciler 的协作
+#### （1）与 Reconciler 的协作
 
 ```javascript
 // Reconciler 收集副作用
@@ -1222,7 +1160,7 @@ function commitPlacement(finishedWork: Fiber): void {
 }
 ```
 
-#### 2. 与 Scheduler 的协作
+#### （2）与 Scheduler 的协作
 
 ```javascript
 // 使用 Scheduler 进行优先级调度
@@ -1246,75 +1184,15 @@ function commitRoot(root: FiberRoot): void {
 }
 ```
 
-### 面试重点
+## 四、三大核心模块协作机制
 
-#### 1. Renderer 的作用
+### 4.1 概述
 
-- 将虚拟DOM转换为平台特定代码
-- 执行Reconciler收集的副作用
-- 提供统一的事件系统
-- 处理平台特定的API
+React 的三大核心模块 Scheduler、Reconciler 和 Renderer 通过精心设计的协作机制，实现了高效的虚拟 DOM 渲染和更新，构成了 React 的核心架构。
 
-#### 2. 事件系统
+### 4.2 整体工作流程
 
-- 合成事件机制
-- 事件委托优化
-- 跨平台事件处理
-- 事件优先级
-
-#### 3. 水合机制
-
-- 服务端渲染集成
-- 客户端水合过程
-- 水合错误处理
-- 性能优化
-
-#### 4. 性能优化
-
-- 批量更新机制
-- 事件委托
-- 样式优化
-- 错误边界
-
-#### 5. 平台适配
-
-- 多平台支持
-- 平台特定API
-- 统一接口设计
-- 扩展性考虑
-
-
-
-
-## 三大核心模块协作机制
-
-### 概述
-
-React 的三大核心模块（Scheduler、Reconciler、Renderer）通过精心设计的协作机制，实现了高效的虚拟DOM渲染和更新。这三个模块各司其职，相互配合，构成了 React 的核心架构。
-
-### 三大模块职责分工
-
-#### 1. Scheduler（调度器）
-
-- **职责**: 任务优先级调度、时间切片、让出控制权
-- **核心功能**: 管理任务队列、决定何时执行任务、何时让出控制权
-- **关键API**: `scheduleCallback`、`shouldYield`、`requestPaint`
-
-#### 2. Reconciler（协调器）
-
-- **职责**: 虚拟DOM diff、Fiber 树构建、副作用收集
-- **核心功能**: 比较新旧虚拟DOM、生成更新计划、收集副作用
-- **关键API**: `beginWork`、`completeWork`、`performUnitOfWork`
-
-#### 3. Renderer（渲染器）
-
-- **职责**: 平台特定渲染、副作用执行、事件处理
-- **核心功能**: 将虚拟 DOM 转换为平台代码、执行DOM操作、处理用户交互
-- **关键API**: `commitPlacement`、`commitUpdate`、`commitDeletion`
-
-### 整体工作流程
-
-#### 阶段1: 触发更新
+#### 阶段 1: 触发更新
 
 ```javascript
 // 用户交互或程序触发更新
@@ -1323,10 +1201,10 @@ setState(newState);
 dispatch(action);
 ```
 
-#### 阶段2: 创建更新
+#### 阶段 2: 创建更新
 
 ```javascript
-// Reconciler创建更新对象
+// Reconciler 创建更新对象
 function createUpdate(lane: Lane): Update<State> {
   const update: Update<State> = {
     lane,
@@ -1360,10 +1238,10 @@ function enqueueUpdate(fiber: Fiber, update: Update<State>, lane: Lane): FiberRo
 }
 ```
 
-#### 阶段3: 调度更新
+#### 阶段 3: 调度更新
 
 ```javascript
-// Scheduler根据优先级调度任务
+// Scheduler 根据优先级调度任务，高优先级任务可以抢占低优先级任务
 function scheduleUpdateOnFiber(root: FiberRoot, fiber: Fiber, lane: Lane): void {
   const priorityLevel = getCurrentPriorityLevel();
   
@@ -1382,7 +1260,7 @@ function scheduleUpdateOnFiber(root: FiberRoot, fiber: Fiber, lane: Lane): void 
 }
 ```
 
-#### 阶段4: 渲染阶段（Render Phase）
+#### 阶段 4: 渲染阶段（Render Phase）
 
 ##### 4.1 开始渲染
 
@@ -1523,7 +1401,7 @@ function completeWork(
 }
 ```
 
-#### 阶段5: 提交阶段（Commit Phase）
+#### 阶段 5: 提交阶段（Commit Phase）
 
 ##### 5.1 开始提交
 
@@ -1548,7 +1426,7 @@ function commitRootImpl(
   // 提交前副作用
   commitBeforeMutationEffects(root, finishedWork, lanes);
   
-  // 提交DOM变更
+  // 提交 DOM 变更
   commitMutationEffects(root, finishedWork, lanes);
   
   // 提交后副作用
@@ -1559,7 +1437,7 @@ function commitRootImpl(
 }
 ```
 
-##### 5.2 提交DOM变更
+##### 5.2 提交 DOM 变更
 
 ```javascript
 function commitMutationEffects(
@@ -1567,7 +1445,7 @@ function commitMutationEffects(
   finishedWork: Fiber,
   lanes: Lanes,
 ): void {
-  // 遍历Fiber树，执行DOM变更
+  // 遍历 Fiber 树，执行 DOM 变更
   recursivelyTraverseMutationEffects(root, finishedWork, lanes);
 }
 
@@ -1598,7 +1476,7 @@ function commitMutationEffectsOnFiber(
 ##### 5.3 Renderer 执行副作用
 
 ```javascript
-// Renderer执行DOM插入
+// Renderer 执行 DOM 插入
 function commitPlacement(finishedWork: Fiber): void {
   const parentFiber = getHostParentFiber(finishedWork);
   const parent = parentFiber.stateNode;
@@ -1607,17 +1485,17 @@ function commitPlacement(finishedWork: Fiber): void {
   insertOrAppendPlacementNode(finishedWork, before, parent);
 }
 
-// Renderer执行DOM更新
+// Renderer 执行 DOM 更新
 function commitUpdate(finishedWork: Fiber): void {
   const instance = finishedWork.stateNode;
   const newProps = finishedWork.memoizedProps;
   const oldProps = finishedWork.memoizedProps;
   
-  // 更新DOM属性
+  // 更新 DOM 属性
   updateProperties(instance, finishedWork.type, oldProps, newProps);
 }
 
-// Renderer执行DOM删除
+// Renderer 执行 DOM 删除
 function commitDeletion(finishedWork: Fiber): void {
   const parentFiber = getHostParentFiber(finishedWork);
   const parent = parentFiber.stateNode;
@@ -1626,21 +1504,21 @@ function commitDeletion(finishedWork: Fiber): void {
 }
 ```
 
-### 三大模块协作机制
+### 4.3 三大模块协作机制
 
 #### 1. Scheduler 与 Reconciler 的协作
 
 ##### 1.1 优先级调度
 
 ```javascript
-// Scheduler提供优先级API
+// Scheduler 提供优先级 API
 import {
   scheduleCallback,
   shouldYield,
   getCurrentPriorityLevel,
 } from 'scheduler';
 
-// Reconciler使用Scheduler进行任务调度
+// Reconciler 使用 Scheduler 进行任务调度
 function scheduleUpdateOnFiber(root: FiberRoot, fiber: Fiber, lane: Lane): void {
   const priorityLevel = getCurrentPriorityLevel();
   
@@ -1661,7 +1539,7 @@ function scheduleUpdateOnFiber(root: FiberRoot, fiber: Fiber, lane: Lane): void 
 ##### 1.2 时间切片
 
 ```javascript
-// Scheduler检查是否需要让出控制权
+// Scheduler 检查是否需要让出控制权
 function shouldYieldToHost(): boolean {
   const timeElapsed = getCurrentTime() - startTime;
   if (timeElapsed < frameInterval) {
@@ -1670,7 +1548,7 @@ function shouldYieldToHost(): boolean {
   return true;
 }
 
-// Reconciler在工作循环中检查是否需要让出
+// Reconciler 在工作循环中检查是否需要让出
 function workLoopConcurrent(): void {
   while (workInProgress !== null && !shouldYield()) {
     performUnitOfWork(workInProgress);
@@ -1683,7 +1561,7 @@ function workLoopConcurrent(): void {
 ##### 2.1 副作用收集与执行
 
 ```javascript
-// Reconciler在渲染阶段收集副作用
+// Reconciler在 渲染阶段收集副作用
 function completeWork(current: Fiber | null, workInProgress: Fiber): void {
   switch (workInProgress.tag) {
     case HostComponent: {
@@ -1696,7 +1574,7 @@ function completeWork(current: Fiber | null, workInProgress: Fiber): void {
   }
 }
 
-// Renderer在提交阶段执行副作用
+// Renderer 在提交阶段执行副作用
 function commitMutationEffectsOnFiber(finishedWork: Fiber): void {
   const flags = finishedWork.flags;
   
@@ -1715,7 +1593,7 @@ function commitMutationEffectsOnFiber(finishedWork: Fiber): void {
 ##### 2.2 事件系统协作
 
 ```javascript
-// Reconciler处理事件监听器
+// Reconciler 处理事件监听器
 function updateHostComponent(current: Fiber, workInProgress: Fiber): Fiber | null {
   const type = workInProgress.type;
   const nextProps = workInProgress.pendingProps;
@@ -1728,7 +1606,7 @@ function updateHostComponent(current: Fiber, workInProgress: Fiber): Fiber | nul
   return workInProgress.child;
 }
 
-// Renderer执行事件绑定
+// Renderer 执行事件绑定
 function commitUpdate(finishedWork: Fiber): void {
   const instance = finishedWork.stateNode;
   const newProps = finishedWork.memoizedProps;
@@ -1748,24 +1626,24 @@ function commitUpdate(finishedWork: Fiber): void {
 // 1. 触发更新
 setState(newState);
 
-// 2. Reconciler创建更新
+// 2. Reconciler 创建更新
 const update = createUpdate(lane);
 enqueueUpdate(fiber, update, lane);
 
-// 3. Scheduler调度任务
+// 3. Scheduler 调度任务
 scheduleUpdateOnFiber(root, fiber, lane);
 
-// 4. Reconciler执行渲染
+// 4. Reconciler 执行渲染
 performConcurrentWorkOnRoot(root);
 
-// 5. Renderer执行副作用
+// 5. Renderer 执行副作用
 commitRoot(root);
 ```
 
 ##### 3.2 错误处理协作
 
 ```javascript
-// Reconciler捕获错误
+// Reconciler 捕获错误
 function handleError(root: FiberRoot, thrownValue: mixed): void {
   // 查找错误边界
   const errorBoundary = findErrorBoundary(workInProgress);
@@ -1774,24 +1652,24 @@ function handleError(root: FiberRoot, thrownValue: mixed): void {
     // 调用错误边界
     callErrorBoundary(errorBoundary, thrownValue);
   } else {
-    // 没有错误边界，交给Renderer处理
+    // 没有错误边界，交给 Renderer 处理
     commitRootError(root, thrownValue);
   }
 }
 
-// Renderer处理未捕获错误
+// Renderer 处理未捕获错误
 function commitRootError(root: FiberRoot, thrownValue: mixed): void {
   // 显示错误UI
   showErrorUI(thrownValue);
 }
 ```
 
-### 性能优化机制
+### 4.4 性能优化机制
 
 #### 1. 批量更新
 
 ```javascript
-// Scheduler提供批量更新机制
+// Scheduler 提供批量更新机制
 function batchedUpdates<A, R>(fn: A => R, a: A): R {
   const prevExecutionContext = executionContext;
   executionContext |= BatchedContext;
@@ -1809,7 +1687,7 @@ function batchedUpdates<A, R>(fn: A => R, a: A): R {
 #### 2. 优先级调度
 
 ```javascript
-// Scheduler根据优先级调度任务
+// Scheduler 根据优先级调度任务
 function scheduleCallback(priorityLevel: PriorityLevel, callback: Function): Task {
   const currentTime = getCurrentTime();
   const startTime = currentTime;
@@ -1838,7 +1716,7 @@ function scheduleCallback(priorityLevel: PriorityLevel, callback: Function): Tas
 #### 3. 早期退出
 
 ```javascript
-// Reconciler实现早期退出
+// Reconciler 实现早期退出
 function bailoutOnAlreadyFinishedWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -1855,38 +1733,3 @@ function bailoutOnAlreadyFinishedWork(
   return workInProgress.child;
 }
 ```
-
-### 面试重点
-
-#### 1. 三大模块的作用
-
-- **Scheduler**: 任务调度、优先级管理、时间切片
-- **Reconciler**: 虚拟 DOM diff、Fiber 树构建、副作用收集
-- **Renderer**: 平台特定渲染、副作用执行、事件处理
-
-#### 2. 协作机制
-
-- **Scheduler与Reconciler**: 优先级调度、时间切片、让出控制权
-- **Reconciler与Renderer**: 副作用收集与执行、事件系统协作
-- **三大模块协调**: 更新流程、错误处理、性能优化
-
-#### 3. 工作流程
-
-- **触发更新**: 用户交互或程序触发
-- **创建更新**: Reconciler 创建更新对象
-- **调度更新**: Scheduler 根据优先级调度
-- **渲染阶段**: Reconciler 执行虚拟DOM diff
-- **提交阶段**: Renderer 执行副作用
-
-#### 4. 性能优化
-
-- **批量更新**: 减少渲染次数
-- **优先级调度**: 优先处理重要任务
-- **时间切片**: 避免阻塞主线程
-- **早期退出**: 避免不必要的计算
-
-#### 5. 错误处理
-
-- **错误边界**: 捕获组件错误
-- **错误恢复**: 显示错误 UI
-- **错误传播**: 向上传播未处理错误
