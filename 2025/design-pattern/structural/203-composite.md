@@ -2,32 +2,35 @@
 
 ## 一、介绍
 
-组合模式是一种结构型设计模式， 你可以使用它将对象组合成树状结构， 并且能像使用独立对象一样使用它们。
+组合模式（Composite Pattern）是一种**结构型**设计模式，它将对象组合成树形结构以表示"部分-整体"的层次结构。组合模式使得用户对单个对象和组合对象的使用具有一致性。
 
-## 二、结构
+组合模式的核心思想是，通过将对象组织成树形结构，使得客户端可以统一地处理单个对象和对象组合，而无需关心它们之间的差异。这样可以简化客户端代码，同时提供灵活的对象结构。
 
-![组合模式结构](./assets/composite-structure.png)
+通过组合模式，可以实现树形结构的统一处理、递归操作和复杂对象的简化管理等功能。不过，使用组合模式，会增加系统的复杂性，造成类型检查困难，以及违反单一职责原则等。
 
-1. 组件 （Component） 接口描述了树中简单项目和复杂项目所共有的操作。
-2. 叶节点 （Leaf） 是树的基本结构， 它不包含子项目。一般情况下， 叶节点最终会完成大部分的实际工作， 因为它们无法将工作指派给其他部分。
-3. 容器 （Container）——又名 “组合 （Composite）”——是包含叶节点或其他容器等子项目的单位。 容器不知道其子项目所属的具体类， 它只通过通用的组件接口与其子项目交互。容器接收到请求后会将工作分配给自己的子项目， 处理中间结果， 然后将最终结果返回给客户端。
-4. 客户端 （Client） 通过组件接口与所有项目交互。 因此， 客户端能以相同方式与树状结构中的简单或复杂项目交互。
+组合模式中有三个参与者。
 
-## 三、代码
+- **组件**（Component）：为组合中的对象声明接口，在适当的情况下，实现所有类共有接口的默认行为。声明一个接口用于访问和管理 Component 的子组件。
+- **叶子**（Leaf）：在组合中表示叶子节点对象，叶子节点没有子节点。在组合中定义对象的行为。
+- **组合**（Composite）：定义有子部件的那些部件的行为。存储子部件。在 Component 接口中实现与子部件有关的操作。
+
+## 二、伪代码实现
 
 ```typescript
 abstract class Component {
-  protected parent!: Component | null;
+  protected parent: Component | null = null;
 
   public setParent(parent: Component | null) {
     this.parent = parent;
   }
+
   public getParent(): Component | null {
     return this.parent;
   }
 
-  public add(component: Component): void { }
-  public remove(component: Component): void { }
+  public add(component: Component): void {}
+
+  public remove(component: Component): void {}
 
   public isComposite(): boolean {
     return false;
@@ -38,7 +41,7 @@ abstract class Component {
 
 class Leaf extends Component {
   public operation(): string {
-    return 'Leaf';
+    return "Leaf";
   }
 }
 
@@ -49,6 +52,7 @@ class Composite extends Component {
     this.children.push(component);
     component.setParent(this);
   }
+
   public remove(component: Component): void {
     const componentIndex = this.children.indexOf(component);
     this.children.splice(componentIndex, 1);
@@ -60,38 +64,22 @@ class Composite extends Component {
   }
 
   public operation(): string {
-    const results = [];
+    const results: string[] = [];
     for (const child of this.children) {
       results.push(child.operation());
     }
 
-    return `Branch(${results.join('+')})`;
+    return `Branch(${results.join("+")})`;
   }
 }
+```
 
+下面是一个示例代码。
+
+```typescript
 function clientCode(component: Component) {
   console.log(`RESULT: ${component.operation()}`);
 }
-
-const simple = new Leaf();
-console.log('Client: I\'ve got a simple component:');
-clientCode(simple);
-console.log('');
-
-/**
- * ...as well as the complex composites.
- */
-const tree = new Composite();
-const branch1 = new Composite();
-branch1.add(new Leaf());
-branch1.add(new Leaf());
-const branch2 = new Composite();
-branch2.add(new Leaf());
-tree.add(branch1);
-tree.add(branch2);
-console.log('Client: Now I\'ve got a composite tree:');
-clientCode(tree);
-console.log('');
 
 function clientCode2(component1: Component, component2: Component) {
   if (component1.isComposite()) {
@@ -100,48 +88,505 @@ function clientCode2(component1: Component, component2: Component) {
   console.log(`RESULT: ${component1.operation()}`);
 }
 
-console.log('Client: I don\'t need to check the components classes even when managing the tree:');
-clientCode2(tree, simple);
+const tree = new Composite();
+const branch1 = new Composite();
+branch1.add(new Leaf());
+branch1.add(new Leaf());
+const branch2 = new Composite();
+branch2.add(new Leaf());
+tree.add(branch1);
+tree.add(branch2);
+
+console.log("Client: Now I've got a composite tree:");
+clientCode(tree);
+console.log("");
+
+console.log("Client: I don't need to check the components classes even when managing the tree:");
+clientCode2(tree, new Leaf());
 ```
 
-上面的代码，结果输出如下。
+## 三、React 中的组合模式应用
 
-```text
-Client: I've got a simple component:
-RESULT: Leaf
+### 3.1 React 组件树 - 组件组合
 
-Client: Now I've got a composite tree:
-RESULT: Branch(Branch(Leaf+Leaf)+Branch(Leaf))
+React 的组件树本身就是组合模式的典型应用，组件可以包含子组件，形成树形结构。
 
-Client: I don't need to check the components classes even when managing the tree:
-RESULT: Branch(Branch(Leaf+Leaf)+Branch(Leaf)+Leaf)
+```typescript
+// 抽象组件接口
+interface ComponentProps {
+  children?: React.ReactNode;
+}
+
+// 叶子组件
+const LeafComponent: React.FC<ComponentProps> = ({ children }) => {
+  return <div className="leaf">{children}</div>;
+};
+
+// 组合组件
+const CompositeComponent: React.FC<ComponentProps> = ({ children }) => {
+  return <div className="composite">{children}</div>;
+};
+
+// 使用组合模式构建组件树
+const App: React.FC = () => {
+  return (
+    <CompositeComponent>
+      <LeafComponent>Leaf 1</LeafComponent>
+      <CompositeComponent>
+        <LeafComponent>Leaf 2</LeafComponent>
+        <LeafComponent>Leaf 3</LeafComponent>
+      </CompositeComponent>
+      <LeafComponent>Leaf 4</LeafComponent>
+    </CompositeComponent>
+  );
+};
 ```
 
-## 四、特点
+下面是示例代码。
 
-- 你可以利用多态和递归机制更方便地使用复杂树结构。
-- 开闭原则。 无需更改现有代码， 你就可以在应用中添加新元素， 使其成为对象树的一部分。
+```typescript
+// 更复杂的组件组合示例
+const Layout: React.FC<ComponentProps> = ({ children }) => {
+  return <div className="layout">{children}</div>;
+};
 
-对于功能差异较大的类， 提供公共接口或许会有困难。 在特定情况下， 你需要过度一般化组件接口， 使其变得令人难以理解。
+const Header: React.FC<ComponentProps> = ({ children }) => {
+  return <header className="header">{children}</header>;
+};
 
-## 五、适用场景
+const Main: React.FC<ComponentProps> = ({ children }) => {
+  return <main className="main">{children}</main>;
+};
 
-- 如果你需要实现树状对象结构， 可以使用组合模式。
-- 如果你希望客户端代码以相同方式处理简单和复杂元素， 可以使用该模式。
+const Sidebar: React.FC<ComponentProps> = ({ children }) => {
+  return <aside className="sidebar">{children}</aside>;
+};
 
-## 六、与其他模式的关系
+const App: React.FC = () => {
+  return (
+    <Layout>
+      <Header>
+        <h1>My App</h1>
+        <nav>Navigation</nav>
+      </Header>
+      <Main>
+        <Sidebar>
+          <ul>
+            <li>Menu Item 1</li>
+            <li>Menu Item 2</li>
+          </ul>
+        </Sidebar>
+        <div className="content">
+          <h2>Main Content</h2>
+          <p>This is the main content area.</p>
+        </div>
+      </Main>
+    </Layout>
+  );
+};
+```
 
-- 桥接模式、 状态模式和策略模式 （在某种程度上包括适配器模式） 模式的接口非常相似。 实际上， 它们都基于组合模式——即将工作委派给其他对象， 不过也各自解决
-- 不同的问题。 模式并不只是以特定方式组织代码的配方， 你还可以使用它们来和其他开发者讨论模式所解决的问题。
-- 你可以在创建复杂组合树时使用生成器模式， 因为这可使其构造步骤以递归的方式运行。
-- 责任链模式通常和组合模式结合使用。 在这种情况下， 叶组件接收到请求后， 可以将请求沿包含全体父组件的链一直传递至对象树的底部。
-- 你可以使用迭代器模式来遍历组合树。
-- 你可以使用访问者模式对整个组合树执行操作。
-- 你可以使用享元模式实现组合树的共享叶节点以节省内存。
-- 组合和装饰模式的结构图很相似， 因为两者都依赖递归组合来组织无限数量的对象。
-  1. 装饰类似于组合， 但其只有一个子组件。 此外还有一个明显不同： 装饰为被封装对象添加了额外的职责， 组合仅对其子节点的结果进行了 “求和”。
-  2. 但是， 模式也可以相互合作： 你可以使用装饰来扩展组合树中特定对象的行为。
+### 3.2 表单组件组合 - 表单元素组合
 
-- 大量使用组合和装饰的设计通常可从对于原型模式的使用中获益。 你可以通过该模式来复制复杂结构， 而非从零开始重新构造。
+表单组件可以通过组合模式构建复杂的表单结构。
 
-## 七、参考
+```typescript
+// 抽象表单组件
+interface FormComponentProps {
+  children?: React.ReactNode;
+  onSubmit?: (data: any) => void;
+}
+
+// 叶子组件 - 输入框
+const Input: React.FC<{ name: string; placeholder?: string }> = ({ name, placeholder }) => {
+  return <input name={name} placeholder={placeholder} />;
+};
+
+// 叶子组件 - 按钮
+const Button: React.FC<{ type: 'submit' | 'button'; children: React.ReactNode }> = ({ type, children }) => {
+  return <button type={type}>{children}</button>;
+};
+
+// 组合组件 - 表单组
+const FormGroup: React.FC<ComponentProps> = ({ children }) => {
+  return <div className="form-group">{children}</div>;
+};
+
+// 组合组件 - 表单
+const Form: React.FC<FormComponentProps> = ({ children, onSubmit }) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement);
+    onSubmit?.(Object.fromEntries(formData));
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {children}
+    </form>
+  );
+};
+```
+
+下面是示例代码。
+
+```typescript
+// 使用组合模式构建表单
+const ContactForm: React.FC = () => {
+  const handleSubmit = (data: any) => {
+    console.log('Form submitted:', data);
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <FormGroup>
+        <label>Name:</label>
+        <Input name="name" placeholder="Enter your name" />
+      </FormGroup>
+      <FormGroup>
+        <label>Email:</label>
+        <Input name="email" placeholder="Enter your email" />
+      </FormGroup>
+      <FormGroup>
+        <label>Message:</label>
+        <textarea name="message" placeholder="Enter your message" />
+      </FormGroup>
+      <FormGroup>
+        <Button type="submit">Submit</Button>
+        <Button type="button">Cancel</Button>
+      </FormGroup>
+    </Form>
+  );
+};
+```
+
+### 3.3 菜单组件组合 - 菜单项组合
+
+菜单组件可以通过组合模式构建多级菜单结构。
+
+```typescript
+// 抽象菜单组件
+interface MenuComponentProps {
+  children?: React.ReactNode;
+  label: string;
+  onClick?: () => void;
+}
+
+// 叶子组件 - 菜单项
+const MenuItem: React.FC<MenuComponentProps> = ({ label, onClick }) => {
+  return (
+    <li className="menu-item" onClick={onClick}>
+      {label}
+    </li>
+  );
+};
+
+// 组合组件 - 子菜单
+const SubMenu: React.FC<MenuComponentProps> = ({ label, children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <li className="submenu">
+      <div className="submenu-header" onClick={() => setIsOpen(!isOpen)}>
+        {label}
+        <span className="arrow">{isOpen ? '▼' : '▶'}</span>
+      </div>
+      {isOpen && <ul className="submenu-items">{children}</ul>}
+    </li>
+  );
+};
+
+// 组合组件 - 主菜单
+const Menu: React.FC<ComponentProps> = ({ children }) => {
+  return <ul className="menu">{children}</ul>;
+};
+```
+
+下面是示例代码。
+
+```typescript
+// 使用组合模式构建多级菜单
+const NavigationMenu: React.FC = () => {
+  return (
+    <Menu>
+      <MenuItem label="Home" onClick={() => console.log('Navigate to Home')} />
+      <SubMenu label="Products">
+        <MenuItem label="Electronics" onClick={() => console.log('Navigate to Electronics')} />
+        <MenuItem label="Clothing" onClick={() => console.log('Navigate to Clothing')} />
+        <SubMenu label="Books">
+          <MenuItem label="Fiction" onClick={() => console.log('Navigate to Fiction')} />
+          <MenuItem label="Non-Fiction" onClick={() => console.log('Navigate to Non-Fiction')} />
+        </SubMenu>
+      </SubMenu>
+      <MenuItem label="About" onClick={() => console.log('Navigate to About')} />
+      <MenuItem label="Contact" onClick={() => console.log('Navigate to Contact')} />
+    </Menu>
+  );
+};
+```
+
+### 3.4 卡片组件组合 - 卡片内容组合
+
+卡片组件可以通过组合模式构建复杂的卡片布局。
+
+```typescript
+// 抽象卡片组件
+interface CardComponentProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+// 叶子组件 - 卡片标题
+const CardTitle: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <h3 className="card-title">{children}</h3>;
+};
+
+// 叶子组件 - 卡片内容
+const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <div className="card-content">{children}</div>;
+};
+
+// 叶子组件 - 卡片操作
+const CardActions: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <div className="card-actions">{children}</div>;
+};
+
+// 组合组件 - 卡片
+const Card: React.FC<CardComponentProps> = ({ children, className }) => {
+  return <div className={`card ${className || ''}`}>{children}</div>;
+};
+```
+
+下面是示例代码。
+
+```typescript
+// 使用组合模式构建卡片
+const ProductCard: React.FC = () => {
+  return (
+    <Card className="product-card">
+      <CardTitle>Product Name</CardTitle>
+      <CardContent>
+        <p>This is a description of the product.</p>
+        <p>Price: $99.99</p>
+      </CardContent>
+      <CardActions>
+        <button>Add to Cart</button>
+        <button>View Details</button>
+      </CardActions>
+    </Card>
+  );
+};
+
+const UserCard: React.FC = () => {
+  return (
+    <Card className="user-card">
+      <CardTitle>John Doe</CardTitle>
+      <CardContent>
+        <p>Email: john@example.com</p>
+        <p>Role: Developer</p>
+      </CardContent>
+      <CardActions>
+        <button>Edit</button>
+        <button>Delete</button>
+      </CardActions>
+    </Card>
+  );
+};
+```
+
+### 3.5 布局组件组合 - 布局元素组合
+
+布局组件可以通过组合模式构建复杂的页面布局。
+
+```typescript
+// 抽象布局组件
+interface LayoutComponentProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+// 叶子组件 - 文本
+const Text: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <span className="text">{children}</span>;
+};
+
+// 叶子组件 - 图片
+const Image: React.FC<{ src: string; alt: string }> = ({ src, alt }) => {
+  return <img src={src} alt={alt} className="image" />;
+};
+
+// 组合组件 - 容器
+const Container: React.FC<LayoutComponentProps> = ({ children, className }) => {
+  return <div className={`container ${className || ''}`}>{children}</div>;
+};
+
+// 组合组件 - 行
+const Row: React.FC<LayoutComponentProps> = ({ children, className }) => {
+  return <div className={`row ${className || ''}`}>{children}</div>;
+};
+
+// 组合组件 - 列
+const Column: React.FC<LayoutComponentProps> = ({ children, className }) => {
+  return <div className={`column ${className || ''}`}>{children}</div>;
+};
+```
+
+下面是示例代码。
+
+```typescript
+// 使用组合模式构建布局
+const PageLayout: React.FC = () => {
+  return (
+    <Container className="page">
+      <Row className="header">
+        <Column>
+          <Text>Logo</Text>
+        </Column>
+        <Column>
+          <Text>Navigation</Text>
+        </Column>
+      </Row>
+      <Row className="main">
+        <Column className="sidebar">
+          <Text>Sidebar Content</Text>
+        </Column>
+        <Column className="content">
+          <Text>Main Content</Text>
+          <Image src="/image.jpg" alt="Content Image" />
+        </Column>
+      </Row>
+      <Row className="footer">
+        <Column>
+          <Text>Footer Content</Text>
+        </Column>
+      </Row>
+    </Container>
+  );
+};
+```
+
+### 3.6 数据展示组件组合 - 数据元素组合
+
+数据展示组件可以通过组合模式构建复杂的数据展示结构。
+
+```typescript
+// 抽象数据组件
+interface DataComponentProps {
+  children?: React.ReactNode;
+  data?: any;
+}
+
+// 叶子组件 - 数据字段
+const DataField: React.FC<{ label: string; value: string | number }> = ({ label, value }) => {
+  return (
+    <div className="data-field">
+      <span className="label">{label}:</span>
+      <span className="value">{value}</span>
+    </div>
+  );
+};
+
+// 叶子组件 - 数据列表项
+const DataListItem: React.FC<{ item: any }> = ({ item }) => {
+  return (
+    <li className="data-list-item">
+      {Object.entries(item).map(([key, value]) => (
+        <DataField key={key} label={key} value={value as string} />
+      ))}
+    </li>
+  );
+};
+
+// 组合组件 - 数据列表
+const DataList: React.FC<DataComponentProps> = ({ data }) => {
+  return (
+    <ul className="data-list">
+      {data?.map((item: any, index: number) => (
+        <DataListItem key={index} item={item} />
+      ))}
+    </ul>
+  );
+};
+
+// 组合组件 - 数据表格
+const DataTable: React.FC<DataComponentProps> = ({ children }) => {
+  return <table className="data-table">{children}</table>;
+};
+
+// 组合组件 - 表格行
+const TableRow: React.FC<DataComponentProps> = ({ children }) => {
+  return <tr className="table-row">{children}</tr>;
+};
+
+// 组合组件 - 表格单元格
+const TableCell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return <td className="table-cell">{children}</td>;
+};
+```
+
+下面是示例代码。
+
+```typescript
+// 使用组合模式构建数据展示
+const UserDataDisplay: React.FC = () => {
+  const userData = [
+    { name: 'John', age: 30, email: 'john@example.com' },
+    { name: 'Jane', age: 25, email: 'jane@example.com' },
+  ];
+
+  return (
+    <Container>
+      <DataTable>
+        <TableRow>
+          <TableCell>Name</TableCell>
+          <TableCell>Age</TableCell>
+          <TableCell>Email</TableCell>
+        </TableRow>
+        {userData.map((user, index) => (
+          <TableRow key={index}>
+            <TableCell>{user.name}</TableCell>
+            <TableCell>{user.age}</TableCell>
+            <TableCell>{user.email}</TableCell>
+          </TableRow>
+        ))}
+      </DataTable>
+    </Container>
+  );
+};
+```
+
+## 四、不是组合模式的 React 模式
+
+以下模式虽然看起来类似，但不是组合模式：
+
+### 4.1 高阶组件（HOC）
+```typescript
+// 这不是组合模式，而是装饰者模式
+const withUserData = (Component: React.ComponentType<any>) => {
+  return (props: any) => {
+    const [userData, setUserData] = useState(null);
+    return <Component {...props} userData={userData} />;
+  };
+};
+```
+
+### 4.2 渲染属性（Render Props）
+```typescript
+// 这不是组合模式，而是策略模式
+const DataFetcher: React.FC<{ render: (data: any) => React.ReactNode }> = ({ render }) => {
+  const [data, setData] = useState(null);
+  return <>{render(data)}</>;
+};
+```
+
+### 4.3 组件继承
+```typescript
+// 这不是组合模式，而是继承
+class BaseComponent extends React.Component {
+  // 基础功能
+}
+
+class ExtendedComponent extends BaseComponent {
+  // 扩展功能
+}
+```
