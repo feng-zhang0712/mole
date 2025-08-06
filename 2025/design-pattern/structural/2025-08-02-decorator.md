@@ -74,18 +74,15 @@ clientCode(decorator2);
 
 HOC 是 React 中装饰者模式的典型应用。
 
-```typescript
-// 组件（React 组件）
+```jsx
 interface ComponentProps {
   [key: string]: any;
 }
 
-// 具体组件
 const UserProfile: React.FC<ComponentProps> = (props) => {
   return <div>User Profile: {props.name}</div>;
 };
 
-// 装饰者（HOC 函数）
 function withUserData<P extends ComponentProps>(
   WrappedComponent: React.ComponentType<P>
 ) {
@@ -98,7 +95,6 @@ function withUserData<P extends ComponentProps>(
   };
 }
 
-// 具体装饰者（权限控制装饰者）
 function withAuth<P extends ComponentProps>(
   WrappedComponent: React.ComponentType<P>
 ) {
@@ -115,7 +111,6 @@ function withAuth<P extends ComponentProps>(
   };
 }
 
-// 具体装饰者（日志装饰者）
 function withLogging<P extends ComponentProps>(
   WrappedComponent: React.ComponentType<P>
 ) {
@@ -131,14 +126,52 @@ function withLogging<P extends ComponentProps>(
   };
 }
 
-// 使用装饰者模式组合多个 HOC
+// 组合多个装饰者
 const EnhancedUserProfile = withLogging(withAuth(withUserData(UserProfile)));
 ```
 
-### 3.2 React Context 作为装饰者
+### 3.2 中间件模式（Redux）
 
-```typescript
-// 主题装饰者
+Redux 中间件是装饰者模式的典型应用。
+
+```jsx
+interface Store {
+  dispatch: (action: any) => any;
+  getState: () => any;
+}
+
+type Middleware = (store: Store) => (next: any) => (action: any) => any;
+
+const loggerMiddleware: Middleware = (store) => (next) => (action) => {
+  console.log('Dispatching:', action);
+  const result = next(action);
+  console.log('Next State:', store.getState());
+  return result;
+};
+
+const asyncMiddleware: Middleware = (store) => (next) => (action) => {
+  if (typeof action === 'function') {
+    return action(store.dispatch, store.getState);
+  }
+  return next(action);
+};
+
+function applyMiddleware(...middlewares: Middleware[]) {
+  return (createStore: any) => (reducer: any) => {
+    const store = createStore(reducer);
+    let dispatch = store.dispatch;
+    
+    const chain = middlewares.map(middleware => middleware(store));
+    dispatch = chain.reduce((a, b) => (...args: any[]) => a(b(...args)))(dispatch);
+    
+    return { ...store, dispatch };
+  };
+}
+```
+
+### 3.3 React Context 作为装饰者
+
+```jsx
 const ThemeContext = React.createContext('light');
 
 const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -151,7 +184,6 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   );
 };
 
-// 语言装饰者
 const LanguageContext = React.createContext('en');
 
 const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -176,12 +208,11 @@ const App: React.FC = () => {
 };
 ```
 
-### 3. 自定义 Hook 作为装饰者
+### 3.4 自定义 Hook 作为装饰者
 
 自定义 Hook 可以视为函数式装饰者。
 
-```typescript
-// 具体装饰者 Hook
+```jsx
 function useUserData() {
   const [userData, setUserData] = useState(null);
   
@@ -190,7 +221,6 @@ function useUserData() {
   return userData;
 }
 
-// 具体装饰者 Hook（认证 Hook）
 function useAuth() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   
@@ -199,12 +229,11 @@ function useAuth() {
   return isAuthenticated;
 }
 
-// 具体装饰者 Hook - 主题 Hook
 function useTheme() {
   const [theme, setTheme] = useState('light');
   
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
-  
+
   return { theme, toggleTheme };
 }
 
@@ -223,48 +252,4 @@ const UserProfile: React.FC = () => {
     </div>
   );
 };
-```
-
-### 4. 中间件模式（Redux）
-
-Redux中间件是装饰者模式的典型应用。
-
-```typescript
-// 组件（Store）
-interface Store {
-  dispatch: (action: any) => any;
-  getState: () => any;
-}
-
-// 中间件装饰者
-type Middleware = (store: Store) => (next: any) => (action: any) => any;
-
-// 具体装饰者（日志中间件）
-const loggerMiddleware: Middleware = (store) => (next) => (action) => {
-  console.log('Dispatching:', action);
-  const result = next(action);
-  console.log('Next State:', store.getState());
-  return result;
-};
-
-// 具体装饰者（异步中间件）
-const asyncMiddleware: Middleware = (store) => (next) => (action) => {
-  if (typeof action === 'function') {
-    return action(store.dispatch, store.getState);
-  }
-  return next(action);
-};
-
-// 应用中间件装饰者
-function applyMiddleware(...middlewares: Middleware[]) {
-  return (createStore: any) => (reducer: any) => {
-    const store = createStore(reducer);
-    let dispatch = store.dispatch;
-    
-    const chain = middlewares.map(middleware => middleware(store));
-    dispatch = chain.reduce((a, b) => (...args: any[]) => a(b(...args)))(dispatch);
-    
-    return { ...store, dispatch };
-  };
-}
 ```

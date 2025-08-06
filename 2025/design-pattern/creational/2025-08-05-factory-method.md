@@ -15,7 +15,7 @@
 - **工厂**（Creator）：声明工厂方法，该方法返回一个产品类型的对象。
 - **具体工厂**（ConcreteCreator）：实现工厂方法，返回具体产品的实例。
 
-## 二、伪代码实现
+## 二、代码实现
 
 ```typescript
 interface Product {
@@ -73,7 +73,7 @@ clientCode(new ConcreteCreator2());
 
 `React.createElement` 是 React 中最典型的工厂方法模式应用，它根据传入的参数创建不同类型的 React 元素。
 
-```typescript
+```jsx
 // React.createElement 的工厂方法模式实现
 interface ReactElement {
   type: string | React.ComponentType<any>;
@@ -98,7 +98,7 @@ function createElement(
 
 下面是示例代码。
 
-```typescript
+```jsx
 // 使用工厂方法创建不同类型的元素
 const divElement = React.createElement('div', { className: 'container' }, 'Hello');
 const buttonElement = React.createElement('button', { onClick: handleClick }, 'Click me');
@@ -114,13 +114,11 @@ const jsxElementEquivalent = React.createElement('div', { className: 'container'
 
 React 的组件系统本身就是工厂方法模式的应用，不同类型的组件通过不同的工厂方法创建。
 
-```typescript
-// 抽象组件工厂
+```jsx
 abstract class ComponentFactory {
   abstract createComponent(props: any): React.Component;
 }
 
-// 具体组件工厂
 class ButtonFactory extends ComponentFactory {
   createComponent(props: any): React.Component {
     return new ButtonComponent(props);
@@ -132,31 +130,38 @@ class InputFactory extends ComponentFactory {
     return new InputComponent(props);
   }
 }
-```
 
-下面是示例代码。
-
-```typescript
-// 使用工厂方法创建组件
 const buttonFactory = new ButtonFactory();
 const inputFactory = new InputFactory();
 
 const button = buttonFactory.createComponent({ text: 'Click me' });
 const input = inputFactory.createComponent({ placeholder: 'Enter text' });
 
-// 组件工厂的实际应用
 const ComponentFactory = {
-  createButton: (props: any) => <button {...props} />,
-  createInput: (props: any) => <input {...props} />,
-  createDiv: (props: any) => <div {...props} />,
+  button: (props: any) => <button {...props} />,
+  input: (props: any) => <input {...props} />,
+  div: (props: any) => <div {...props} />,
 };
 
+const DynamicComponent = ({ type, ...props }) => {
+  const Component = ComponentFactory[type];
+  return Component ? <Component {...props} /> : null;
+};
+```
+
+下面是示例代码。
+
+```jsx
 const App: React.FC = () => {
   return (
     <div>
-      {ComponentFactory.createButton({ children: 'Click me' })}
-      {ComponentFactory.createInput({ placeholder: 'Enter text' })}
-      {ComponentFactory.createDiv({ children: 'Container' })}
+      <DynamicComponent type="button" onClick={() => alert('clicked')}>
+        Click me
+      </DynamicComponent>
+      <DynamicComponent type="input" placeholder="Enter text" />
+      <DynamicComponent type="div">
+        Container
+      </DynamicComponent>
     </div>
   );
 };
@@ -166,8 +171,7 @@ const App: React.FC = () => {
 
 自定义 Hook 可以作为工厂方法，根据不同的参数创建不同的 Hook 实例。
 
-```typescript
-// Hook 工厂方法
+```jsx
 function createDataHook<T>(fetchFunction: () => Promise<T>) {
   return function useData() {
     const [data, setData] = useState<T | null>(null);
@@ -197,8 +201,7 @@ function createDataHook<T>(fetchFunction: () => Promise<T>) {
 
 下面是示例代码。
 
-```typescript
-// 使用 Hook 工厂创建不同的数据 Hook
+```jsx
 const useUserData = createDataHook(() => fetch('/api/users').then(res => res.json()));
 const usePostData = createDataHook(() => fetch('/api/posts').then(res => res.json()));
 
@@ -216,8 +219,7 @@ const UserComponent: React.FC = () => {
 
 React Context 的创建过程也是工厂方法模式的应用。
 
-```typescript
-// Context 工厂方法
+```jsx
 function createContext<T>(defaultValue: T) {
   const Context = React.createContext<T>(defaultValue);
   
@@ -239,8 +241,7 @@ function createContext<T>(defaultValue: T) {
 
 下面是示例代码。
 
-```typescript
-// 使用 Context 工厂创建不同的 Context
+```jsx
 const { Context: UserContext, Provider: UserProvider } = createContext(null);
 const { Context: ThemeContext, Provider: ThemeProvider } = createContext('light');
 
@@ -259,8 +260,7 @@ const App: React.FC = () => {
 
 React Router 中的路由创建也是工厂方法模式的应用。
 
-```typescript
-// 路由工厂方法
+```jsx
 function createRoute(path: string, component: React.ComponentType<any>) {
   return {
     path,
@@ -268,7 +268,6 @@ function createRoute(path: string, component: React.ComponentType<any>) {
   };
 }
 
-// 路由配置工厂
 function createRouter(routes: Array<{ path: string; component: React.ComponentType<any> }>) {
   return routes.map(route => createRoute(route.path, route.component));
 }
@@ -276,8 +275,7 @@ function createRouter(routes: Array<{ path: string; component: React.ComponentTy
 
 下面是示例代码。
 
-```typescript
-// 使用路由工厂创建路由配置
+```jsx
 const routes = createRouter([
   { path: '/', component: HomeComponent },
   { path: '/about', component: AboutComponent },
@@ -297,55 +295,27 @@ const App: React.FC = () => {
 };
 ```
 
-### 3.6 表单工厂 - 表单组件创建
+### 3.6 动态组件工厂 - 创建不同类型组件
 
-表单组件的创建也可以使用工厂方法模式。
+```jsx
+import React from 'react';
 
-```typescript
-// 表单组件工厂
-const FormComponentFactory = {
-  createInput: (type: string, props: any) => {
-    switch (type) {
-      case 'text':
-        return <input type="text" {...props} />;
-      case 'email':
-        return <input type="email" {...props} />;
-      case 'password':
-        return <input type="password" {...props} />;
-      case 'textarea':
-        return <textarea {...props} />;
-      default:
-        return <input type="text" {...props} />;
-    }
-  },
-  
-  createButton: (variant: string, props: any) => {
-    switch (variant) {
-      case 'primary':
-        return <button className="btn-primary" {...props} />;
-      case 'secondary':
-        return <button className="btn-secondary" {...props} />;
-      case 'danger':
-        return <button className="btn-danger" {...props} />;
-      default:
-        return <button {...props} />;
-    }
-  },
+const ComponentFactory = {
+  button: (props) => <button {...props} />,
+  input: (props) => <input {...props} />,
+  select: (props) => <select {...props} />,
+};
+
+const DynamicComponent = ({ type, ...props }) => {
+  const Component = ComponentFactory[type];
+  return Component ? <Component {...props} /> : null;
 };
 ```
 
 下面是示例代码。
 
-```typescript
-// 使用表单工厂创建表单组件
-const ContactForm: React.FC = () => {
-  return (
-    <form>
-      {FormComponentFactory.createInput('text', { placeholder: 'Name' })}
-      {FormComponentFactory.createInput('email', { placeholder: 'Email' })}
-      {FormComponentFactory.createTextarea({ placeholder: 'Message' })}
-      {FormComponentFactory.createButton('primary', { children: 'Submit' })}
-    </form>
-  );
-};
+```jsx
+<DynamicComponent type="button" onClick={() => alert('clicked')}>
+  Click me
+</DynamicComponent>
 ```

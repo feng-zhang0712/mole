@@ -47,8 +47,7 @@ ins1 === ins2; // true
 
 React Context 可以作为全局状态的单例，确保整个应用中只有一个状态实例。
 
-```typescript
-// 全局状态单例
+```jsx
 class GlobalState {
   private static instance: GlobalState;
   private state: any = {};
@@ -87,8 +86,7 @@ const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
 下面是示例代码。
 
-```typescript
-// 使用全局状态单例
+```jsx
 const App: React.FC = () => {
   return (
     <GlobalProvider>
@@ -101,9 +99,7 @@ const App: React.FC = () => {
 const ComponentA: React.FC = () => {
   const globalState = useContext(GlobalContext)!;
   
-  const updateState = () => {
-    globalState.setState({ user: 'John' });
-  };
+  const updateState = () => globalState.setState({ user: 'John' });
 
   return <button onClick={updateState}>Update State</button>;
 };
@@ -119,8 +115,7 @@ const ComponentB: React.FC = () => {
 
 API 服务类可以作为单例，确保整个应用中只有一个服务实例。
 
-```typescript
-// API 服务单例
+```jsx
 class ApiService {
   private static instance: ApiService;
   private baseURL: string;
@@ -154,8 +149,7 @@ class ApiService {
 
 下面是示例代码。
 
-```typescript
-// 使用 API 服务单例
+```jsx
 const UserComponent: React.FC = () => {
   const [users, setUsers] = useState([]);
   const apiService = ApiService.getInstance();
@@ -176,8 +170,7 @@ const UserComponent: React.FC = () => {
 
 应用配置可以作为单例，确保整个应用中只有一个配置实例。
 
-```typescript
-// 配置管理单例
+```jsx
 class AppConfig {
   private static instance: AppConfig;
   private config: any = {};
@@ -213,8 +206,7 @@ class AppConfig {
 
 下面是示例代码。
 
-```typescript
-// 使用配置管理单例
+```jsx
 const ConfigComponent: React.FC = () => {
   const config = AppConfig.getInstance();
   
@@ -232,8 +224,7 @@ const ConfigComponent: React.FC = () => {
 
 事件总线可以作为单例，提供全局的事件管理功能。
 
-```typescript
-// 事件总线单例
+```jsx
 class EventBus {
   private static instance: EventBus;
   private listeners: Map<string, Function[]> = new Map();
@@ -274,8 +265,7 @@ class EventBus {
 
 下面是示例代码。
 
-```typescript
-// 使用事件总线单例
+```jsx
 const EventComponent: React.FC = () => {
   const eventBus = EventBus.getInstance();
 
@@ -286,9 +276,7 @@ const EventComponent: React.FC = () => {
 
     eventBus.on('user:update', handleUserUpdate);
 
-    return () => {
-      eventBus.off('user:update', handleUserUpdate);
-    };
+    return () => eventBus.off('user:update', handleUserUpdate);
   }, []);
 
   const handleClick = () => {
@@ -299,174 +287,14 @@ const EventComponent: React.FC = () => {
 };
 ```
 
-### 3.5 缓存管理单例 - 全局缓存
+### 3.5 Redux Store - 状态管理单例
 
-缓存管理可以作为单例，提供全局的缓存功能。
+```jsx
+import { createStore } from 'redux';
 
-```typescript
-// 缓存管理单例
-class CacheManager {
-  private static instance: CacheManager;
-  private cache: Map<string, any> = new Map();
-  private maxSize: number = 100;
+// Redux Store 是典型的单例模式
+const store = createStore(reducer);
 
-  private constructor() {}
-
-  public static getInstance(): CacheManager {
-    if (!CacheManager.instance) {
-      CacheManager.instance = new CacheManager();
-    }
-    return CacheManager.instance;
-  }
-
-  public set(key: string, value: any, ttl?: number): void {
-    if (this.cache.size >= this.maxSize) {
-      const firstKey = this.cache.keys().next().value;
-      this.cache.delete(firstKey);
-    }
-
-    const item = {
-      value,
-      timestamp: Date.now(),
-      ttl: ttl || 60000, // 默认1分钟
-    };
-
-    this.cache.set(key, item);
-  }
-
-  public get(key: string): any {
-    const item = this.cache.get(key);
-    if (!item) return null;
-
-    const now = Date.now();
-    if (now - item.timestamp > item.ttl) {
-      this.cache.delete(key);
-      return null;
-    }
-
-    return item.value;
-  }
-
-  public clear(): void {
-    this.cache.clear();
-  }
-
-  public size(): number {
-    return this.cache.size;
-  }
-}
-```
-
-下面是示例代码。
-
-```typescript
-// 使用缓存管理单例
-const CacheComponent: React.FC = () => {
-  const cacheManager = CacheManager.getInstance();
-
-  const fetchData = async (key: string) => {
-    // 先尝试从缓存获取
-    const cachedData = cacheManager.get(key);
-    if (cachedData) {
-      return cachedData;
-    }
-
-    // 如果缓存中没有，则从API获取
-    const response = await fetch(`/api/${key}`);
-    const data = await response.json();
-    
-    // 存入缓存，设置5分钟过期
-    cacheManager.set(key, data, 300000);
-    
-    return data;
-  };
-
-  return <div>Cache size: {cacheManager.size()}</div>;
-};
-```
-
-### 3.6 日志管理单例 - 全局日志
-
-日志管理可以作为单例，提供全局的日志记录功能。
-
-```typescript
-// 日志管理单例
-class Logger {
-  private static instance: Logger;
-  private logs: string[] = [];
-  private maxLogs: number = 1000;
-
-  private constructor() {}
-
-  public static getInstance(): Logger {
-    if (!Logger.instance) {
-      Logger.instance = new Logger();
-    }
-    return Logger.instance;
-  }
-
-  public log(level: string, message: string, data?: any): void {
-    const logEntry = {
-      timestamp: new Date().toISOString(),
-      level,
-      message,
-      data,
-    };
-
-    this.logs.push(JSON.stringify(logEntry));
-
-    if (this.logs.length > this.maxLogs) {
-      this.logs.shift();
-    }
-
-    // 在开发环境下输出到控制台
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`[${level}] ${message}`, data);
-    }
-  }
-
-  public info(message: string, data?: any): void {
-    this.log('INFO', message, data);
-  }
-
-  public warn(message: string, data?: any): void {
-    this.log('WARN', message, data);
-  }
-
-  public error(message: string, data?: any): void {
-    this.log('ERROR', message, data);
-  }
-
-  public getLogs(): string[] {
-    return [...this.logs];
-  }
-
-  public clear(): void {
-    this.logs = [];
-  }
-}
-```
-
-下面是示例代码。
-
-```typescript
-// 使用日志管理单例
-const LoggerComponent: React.FC = () => {
-  const logger = Logger.getInstance();
-
-  const handleClick = () => {
-    logger.info('Button clicked', { timestamp: Date.now() });
-  };
-
-  const handleError = () => {
-    logger.error('An error occurred', { error: 'Something went wrong' });
-  };
-
-  return (
-    <div>
-      <button onClick={handleClick}>Log Info</button>
-      <button onClick={handleError}>Log Error</button>
-    </div>
-  );
-};
+// 在整个应用中只有一个 store 实例
+export default store;
 ```
