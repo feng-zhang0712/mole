@@ -1720,7 +1720,256 @@ module.exports = {
 
 ## 七、模块解析优化
 
+模块解析优化是指通过配置webpack的 `resolve` 选项，优化模块的查找、定位和加载过程，从而提升构建性能和开发体验。webpack在打包过程中需要解析大量的模块依赖关系，合理的解析配置可以显著减少模块查找时间，避免重复解析，提高整体构建效率。
 
+### 7.1 路径别名配置
+
+路径别名是指为常用的模块路径创建简短的别名，避免使用冗长的相对路径。当 webpack 遇到别名时，会直接替换为对应的真实路径，跳过复杂的路径解析过程。通过配置路径别名，可以减少路径计算、提高查找效率以及增强代码可读性。
+
+路径别名通过配置 `resolve.alias` 实现。
+
+```javascript
+const path = require('path');
+
+module.exports = {
+  resolve: {
+    alias: {
+      // 使用函数动态生成别名
+      '@': path.resolve(__dirname, 'src'),
+      
+      // 为特定文件创建别名
+      'lodash': 'lodash-es',
+      'moment': 'moment/min/moment.min.js',
+      
+      // 条件别名（根据环境配置）
+      ...(process.env.NODE_ENV === 'development' && {
+        'react': 'react/development',
+      }),
+      
+      // 包级别的别名
+      'package-name': path.resolve(__dirname, 'node_modules/package-name/src'),
+      
+      // 目录索引别名
+      '@components': path.resolve(__dirname, 'src/components/index.js'),
+
+      // 使用正则表达式进行更精确的匹配
+      '^@/(.*)$': path.resolve(__dirname, 'src/$1'),
+
+      // 支持函数形式的别名配置
+      '@': (info) => {
+        const { request } = info;
+        if (request.startsWith('@/components/')) {
+          return path.resolve(__dirname, 'src/components', request.slice(12));
+        }
+        if (request.startsWith('@/utils/')) {
+          return path.resolve(__dirname, 'src/utils', request.slice(7));
+        }
+        return path.resolve(__dirname, 'src');
+      },
+      
+      // 支持对象形式的详细配置
+      '@components': {
+        alias: path.resolve(__dirname, 'src/components'),
+        onlyModule: true, // 只对模块请求生效
+      },
+    },
+  },
+};
+```
+
+```javascript
+// 优化前：使用相对路径
+import Button from '../../../components/Button/Button.jsx';
+
+// 优化后：使用别名
+import Button from '@components/Button/Button.jsx';
+```
+
+使用 `@` 作为根目录别名，这是业界常见做法，使用描述性的名称，如 `@components`、`@utils` 等。
+
+也要避免创建过多的别名，这会增加 webpack 的解析开销。使用绝对路径而不是相对路径，提高解析效率。考虑使用`resolve.modules`配合别名使用。
+
+### 7.2 文件扩展名配置
+
+文件扩展名配置是指告诉 webpack 在导入模块时可以省略哪些文件扩展名。webpack 会按照配置的顺序依次尝试添加扩展名，直到找到匹配的文件。
+
+文件扩展名通过配置 `resolve.extensions` 实现，可以按照使用频率、文件大小或者解析复杂度进行排序，靠前的扩展名会被优先解析。
+
+```javascript
+module.exports = {
+  resolve: {
+    extensions: [
+      // 1. 只包含真正需要的扩展名，避免不必要的查找
+      '.js', '.jsx', '.ts', '.tsx', '.json',
+      
+      // 2. 按照项目实际使用的文件类型配置
+      ...(process.env.USE_TYPESCRIPT && ['.ts', '.tsx']),
+      ...(process.env.USE_SCSS && ['.scss']),
+      
+      // 3. 避免包含需要特殊处理的文件类型
+      // 不要包含 .css, .scss 等需要loader处理的文件
+      
+      // 4. 考虑文件大小和解析性能
+      '.json', '.js', '.jsx', '.ts', '.tsx',
+    ],
+  },
+};
+```
+
+```javascript
+// 优化前：需要写完整的扩展名
+import Button from './components/Button.jsx';
+import { formatDate } from './utils/dateUtils.js';
+import config from './config.json';
+import './styles/main.css';
+
+// 优化后：可以省略扩展名
+import Button from './components/Button';
+import { formatDate } from './utils/dateUtils';
+import config from './config';
+import './styles/main';
+```
+
+- 将最常用的扩展名放在前面
+- 将编译后的文件扩展名放在前面（生产环境）
+- 将源码文件扩展名放在前面（开发环境）
+- 避免配置过多的扩展名，这会增加webpack的查找开销
+- 根据项目实际使用的文件类型进行配置
+- 考虑使用`resolve.mainFiles`配合扩展名使用
+- 在生产环境中，优先使用编译后的文件扩展名
+
+### 7.3 模块搜索路径优化（`resolve.modules`）
+
+模块搜索路径优化是指配置 webpack 查找模块的目录路径。默认情况下，webpack 会在`node_modules` 目录中查找模块，但我们可以通过配置来优化搜索路径，提高模块查找效率。
+
+- **减少搜索范围**：明确指定搜索路径，避免在无关目录中查找
+- **提高查找速度**：优先搜索常用目录，减少查找时间
+- **支持自定义模块**：将自定义模块目录添加到搜索路径中
+- **优化缓存效果**：明确的路径配置有助于webpack的缓存优化
+
+模块搜索路径优化通过 `resolve.modules` 配置项实现。
+
+```javascript
+// webpack.config.js
+const path = require('path');
+
+module.exports = {
+  resolve: {
+    modules: [
+      // 1. 明确指定搜索顺序，避免歧义
+      path.resolve(__dirname, 'src'),
+      path.resolve(__dirname, 'src/components'),
+      path.resolve(__dirname, 'src/utils'),
+      'node_modules',
+      
+      // 2. 避免过多的搜索路径，影响性能
+      // 建议控制在5-10个路径以内
+      
+      // 3. 使用绝对路径，避免相对路径的复杂性
+      path.resolve(__dirname, 'src'),
+      
+      // 4. 考虑模块的依赖关系，合理排序
+      // 被依赖的模块目录放在前面
+    ],
+  },
+};
+```
+
+```javascript
+// 优化前：webpack 只在 node_modules 中查找
+import Button from 'Button'; // 可能找不到，因为不在 node_modules 中
+
+// 优化后：webpack 会在多个目录中查找
+import Button from 'Button'; // 会在 src/components 中找到
+import { formatDate } from 'dateUtils'; // 会在 src/utils 中找到
+```
+
+- 将最常用的路径放在前面，提高查找效率
+- 避免配置过多的搜索路径，这会增加webpack的查找开销
+- 使用绝对路径而不是相对路径，提高配置的可维护性
+- 合理使用 `resolve.modules`，避免不必要的文件系统查找
+- 考虑使用 `resolve.alias` 配合模块搜索路径使用
+- 在生产环境中，优先使用编译后的目录
+- 确保配置的搜索路径不会导致意外的模块被导入
+- 避免将敏感目录添加到搜索路径中
+
+### 7.4 外部依赖配置（`resolve.externals`）
+
+外部依赖配置是指告诉 webpack 某些模块不需要打包，而是从外部获取。这些模块通常是通过 CDN 引入的第三方库，或者是宿主环境提供的全局变量。
+
+- 减少打包体积：外部依赖不会被打包到 bundle 中。
+- 提高构建速度：webpack 不需要处理外部依赖的模块。
+- 利用 CDN 缓存：外部依赖可以通过 CDN 缓存，提高加载速度。
+- 支持模块联邦：为微前端架构提供基础支持。
+
+外部依赖配置通过 `resolve.externals` 实现。
+
+```javascript
+module.exports = {
+  externals: {
+    // 普通方式配置
+    jquery: 'jQuery',
+    
+    // 对象形式配置
+    lodash: {
+      root: '_', // 全局变量名
+      commonjs: 'lodash', // CommonJS模块名
+      commonjs2: 'lodash', // CommonJS2模块名
+      amd: 'lodash', // AMD模块名
+    },
+
+    // 函数形式配置
+    function(context, request, callback) {
+      // 检查请求的模块
+      if (request === 'jquery') {
+        // 返回外部依赖配置
+        return callback(null, 'jQuery');
+      }
+      
+      if (request === 'lodash') {
+        return callback(null, '_');
+      }
+      
+      if (request.startsWith('@angular/')) {
+        // 将 Angular 相关模块配置为外部依赖
+        const moduleName = request.replace('@angular/', 'ng.');
+        return callback(null, moduleName);
+      }
+      
+      // 不是外部依赖，继续正常处理
+      callback();
+    },
+  },
+};
+```
+
+```javascript
+module.exports = {
+  externals: [
+    // 使用正则表达式匹配模块名
+    /^jquery$/,
+    /^lodash$/,
+    /^react$/,
+    /^react-dom$/,
+    /^@angular\/.+$/,  // 匹配所有Angular模块
+    /^@vue\/.+$/,      // 匹配所有Vue模块
+  ],
+  externalsType: 'umd', // 设置外部依赖的类型
+};
+```
+
+- 对于简单的模块名映射，使用对象形式配置
+- 对于复杂的匹配逻辑，使用函数形式配置
+- 对于批量模块配置，使用正则表达式配置
+- 将常用的第三方库配置为外部依赖
+- 使用CDN加载外部依赖，提高加载速度
+- 考虑使用HTTP/2的多路复用特性
+- 确保外部依赖的CDN链接是安全的
+- 考虑使用SRI（Subresource Integrity）验证外部依赖的完整性
+- 在生产环境中，使用可靠的CDN服务商
+- 确保外部依赖的版本与项目兼容
+- 考虑不同环境下的兼容性问题
+- 提供外部依赖加载失败的回退方案
 
 ## 代码兼容性处理
 
@@ -1918,10 +2167,10 @@ module.exports = {
 - 资源懒加载
 
 ### 6. 模块解析优化
-- 路径别名配置（resolve.alias）
+<!-- - 路径别名配置（resolve.alias）
 - 文件扩展名配置（resolve.extensions）
 - 模块搜索路径优化（resolve.modules）
-- 外部依赖配置（externals）
+- 外部依赖配置（externals） -->
 
 ## 三、构建性能优化（中优先级）
 
