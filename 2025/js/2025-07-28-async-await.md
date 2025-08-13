@@ -12,7 +12,7 @@ async function name() {
 }
 ```
 
-async 函数内部，可以使用 `await` 表达式，这允许我们可以像书写同步代码那样，执行异步操作，进而可以使用 `try/catch` 代码块，来捕获函数执行过程中抛出的错误。
+async 函数内部，可以使用 `await` 表达式，这允许我们可以像书写同步代码那样，执行异步操作，并且可以使用 `try/catch` 代码块，来捕获函数执行过程中抛出的错误。
 
 ```javascript
 async function foo() {
@@ -26,7 +26,7 @@ async function foo() {
 foo();
 ```
 
-上面代码中， `x` 是一个为定义的变量，`await` 后面的表达式的抛出错误后，就会被 `try/catch` 捕获。
+上面代码中， `x` 是一个未定义的变量，`await` 后面的表达式抛出错误后，就会被 `try/catch` 捕获。
 
 async 函数总是返回一个 Promise 对象，如果返回值不是 Promise 对象，它会被包裹为一个 Promise 对象。
 
@@ -41,26 +41,36 @@ function foo() {
 }
 ```
 
-如果 async 函数中，试图返回一个 Promise 对象，则**该异步函数会返回一个跟原 Promise 对象不同的引用，而 `Promise.resolve` 会返回相同的引用**。
+如果 async 函数中，试图返回一个 Promise 对象，则**该异步函数会返回一个跟原 Promise 不同的对象，而 `Promise.resolve` 会返回同一个对象**。
 
 ```javascript
 const p = new Promise(resolve => resolve(1));
 
-async function asyncReturn() {
-  return p;
-}
-
 function basicReturn() {
   return Promise.resolve(p);
+}
+
+async function asyncReturn() {
+  return p;
 }
 
 console.log(p === basicReturn()); // true
 console.log(p === asyncReturn()); // false
 ```
 
-上面代码中，`asyncReturn` 函数返回的 Promise 对象和原始的 `p` 是不同对象，而 `Promise.resolve` 函数返回的 Promise 对象和 `p` 是同一个对象。
+上面代码中，`Promise.resolve` 返回的 Promise 对象和 `p` 是同一个对象，而 `asyncReturn` 返回的 Promise 对象和原始的 `p` 不是同一个对象。
 
-异步函数的函数体，可以被看作是由零个或者多个 `await` 表达式分割开来的。从该函数的顶层代码直到（并包括）第一个 `await` 表达式（如果有的话），代码都是同步运行的。这也就意味着，如果异步函数中，不包含 `await` 表达式，那么异步函数中的代码就是同步执行的。
+异步函数的函数体，可以被看作是由零个或者多个 `await` 表达式分割开来的。从该函数体的顶层代码直到（并包括）第一个 `await` 表达式（如果有的话）都是同步运行的。这意味着，如果异步函数中，不包含 `await` 表达式，那么异步函数中的代码就是同步执行的。
+
+```javascript
+async function foo() {
+  return 1;
+}
+```
+
+上面 `foo` 函数中的代码，是同步执行的，结果会立即返回。
+
+如果函数体内包含 `await` 表达式，则异步函数就一定会异步完成。
 
 ```javascript
 async function foo() {
@@ -72,8 +82,6 @@ function foo() {
   return Promise.resolve(1).then(() => undefined);
 }
 ```
-
-每个 `await` 表达式之后的代码，可以被认为存在于 `.then` 回调中。通过这种方式，可以通过函数的每个可重入步骤来逐步构建 promise 链。而返回值构成了链中的最后一个环。
 
 注意，`async function` 声明的函数，同样存在提升行为，它的行为类似于 `function`，会被提升到所在作用于的顶部。
 
@@ -88,27 +96,28 @@ function co(gen) {
   return new Promise((resolve, reject) => {
     const iterator = gen();
     
-    function step(nextFn, argument) {
+    function step(next, argument) {
       let rst;
       try {
-        rst = nextFn.call(iterator, argument);
+        rst = next.call(iterator, argument);
       } catch (error) {
         return reject(error);
       }
+
       if (rst.done) {
         return resolve(rst.value);
       }
-      Promise.resolve(rst.value).then(function (response) {
-          return step(gen.next, response.value);
-        }, function (error) {
-          return step(gen.throw, error)
-        }
+
+      Promise.resolve(rst.value).then(
+        value => step(iterator.next, value),
+        reason => step(iterator.throw, reason),
       );
     }
 
     step(iterator.next);
   });
 }
+
 ```
 
 上面代码中，确保 `rst.value` 包装为 Promise，这样，不管 `rst.value` 是普通值还是 Promise，都可以按照统一的方式处理。
@@ -142,15 +151,15 @@ await expression;
 
 ### 1.2 await 的基本使用
 
-await 会对其后的表达式进行同步地求值处理，类似于 Promise.resolve()，如果 await 后面的表达式不是 Promise 对象，则会将其包装为一个 Promise 对象，然后等待其兑现。
+`await` 会对其后的表达式进行同步地求值处理，类似于 `Promise.resolve()`，如果 `await` 后面的表达式不是 Promise 对象，则会将其包装为一个 Promise 对象，然后等待其兑现。
 
-- 如果 await 后面的表达式，是 Promise 对象，await 会等待其兑现。
-- 如果 await 后面的表达式，是 thenable 对象，此对象会被包装成一个新的 Promise 对象，并调用它的 `then()` 方法。
-- 如果 await 后面的表达式，不是 thenable 对象，或者压根不是对象，那么该值会被包装为一个**已兑现的** Promise 对象，返回的结果就是该表达式的值。
+- 如果 `await` 后面的表达式，是 Promise 对象，`await` 会等待其兑现。
+- 如果 `await` 后面的表达式，是 thenable 对象，此对象会被包装成一个新的 Promise 对象，并调用它的 `then()` 方法。
+- 如果 `await` 后面的表达式，不是 thenable 对象，或者压根不是对象，那么该值会被包装为一个**已兑现的** Promise 对象，返回的结果就是该表达式的值。
 
 ### 1.3 顶层 await
 
-await 可以用在模块的顶层，此时，当前模块会等待 await 后面表达式的执行。
+`await` 可以用在模块的顶层，此时，当前模块会等待 `await` 后面表达式的执行。
 
 ### 1.4 await 对执行过程的影响
 
@@ -172,7 +181,7 @@ foo("Second");
 // Second end
 ```
 
-异步函数在执行过程中，如果遇到 `await`，后面的表达式会被立即执行，并且，后面代码的执行会被暂停，同时被推送到微任务队列中，然后主线程继续执行事件循环中的下一个任务。
+异步函数中如果存在多个 `await` 表达式，除了第一个 `await` 后面的表达式会立即执行，其余的每个 `await` 表达式后面的代码，都可以认为是存在于 Promise 的 `then` 回调中。此时，后面代码的执行会暂停，并被推送到微任务队列中，然后主线程继续执行事件循环中的下一个任务。
 
 ```javascript
 let i = 0;
@@ -212,7 +221,87 @@ console.log("script sync part end");
 // async function end
 ```
 
-## 三、参考
+## 三、常见用法
+
+### 3.1 并发执行
+
+`forEach` 方法和 `for...of` 循环都无法完成异步操作的并发执行，原因是 `forEach` 不支持异步操作，而 `for...of` 执行的其实是继发，而不是并发。
+
+要实现真正的并发操作，一种方法是使用数组的 `reduce` 方法。
+
+```javascript
+function readFile(file) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(file), 1000);
+  });
+}
+
+async function readFiles(files) {
+  const results = [];
+  await files.reduce(
+    async (_, file) => results.push(await readFile(file)), 
+    undefined,
+  );
+
+  return results;
+}
+```
+
+另一种方法是使用 `Promise.all` 方法，该方法里边的多个异步操作会并发而不是继发执行。
+
+```javascript
+async function readFiles(files) {
+  const promises = files.map(readFile);
+  const results =  await Promise.all(promises);
+
+  return results;
+}
+```
+
+### 3.2 按顺序执行
+
+实现异步操作按序执行，一种方式是使用数组的 `reduce` 方法。
+
+```javascript
+async function readFiles(files) {
+  files.reduce(
+    async (chain, file) => {
+      return chain.then(() => readFile(file))
+        .then(res => console.log(res));
+    },
+    Promise.resolve(),
+  );
+}
+```
+
+上面的代码会按序执行，每隔一秒输出文件读取的结果，但是这种写法可读性差。
+
+另一种方式是使用 `for` 或者 `for...of` 循环。
+
+```javascript
+async function readFiles(files) {
+  for (const file of files) {
+    console.log(await readFile(file));
+  }
+}
+```
+
+上面的代码，每隔一秒输出文件的读取结果，即只有第一个异步操作完成后，才会执行第二个，...，直到最后一个。这种方式可读性好，但是效率差，只有等到上一个异步操作完成，才会执行下一个操作。
+
+下面是使用数组的 `map` 方法跟 `for...of` 结合的例子。
+
+```javascript
+async function readFiles(files) {
+  const promises = files.map(readFile);
+  for (const promise of promises) {
+    console.log(await promise);
+  }
+}
+```
+
+上面的代码，首先使用 `map` 方法获取所有异步操作数组，然后使用 `for...of` 循环等待异步执行的结果。这种方式是并发执行的，所有操作会在一秒后完成，并且一次性地按序输出。`map` 方法虽然不会等待每个异步操作完成，但是每次执行 `readFile` 方法是，异步操作已经开始执行了。等到 `for...of` 等待完成第一个异步操作，其他所有的操作也都已经完成了。
+
+## 四、参考
 
 - [async](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/async_function)
 - [await](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/await)
