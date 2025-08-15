@@ -9,6 +9,11 @@ import Profile from '../pages/Profile.js';
 import Admin from '../pages/Admin.js';
 import Settings from '../pages/Settings.js';
 import AdvancedDemo from '../pages/AdvancedDemo.js';
+import HocDemo from '../pages/HocDemo.js';
+import HookDemo from '../pages/HookDemo.js';
+import AsyncDemo from '../pages/AsyncDemo.js';
+import ConditionalDemo from '../pages/ConditionalDemo.js';
+import GuardOverview from '../pages/GuardOverview.js';
 import Unauthorized from '../pages/Unauthorized.js';
 import NotFound from '../pages/NotFound.js';
 
@@ -75,6 +80,41 @@ export const routes = [
           <RouteGuard requiredPermissions={['read']}>
             <AdvancedDemo />
           </RouteGuard>
+        )
+      },
+      {
+        path: 'hoc-demo',
+        element: (
+          // 方式2: 使用 withAuth HOC
+          <HocDemo />
+        )
+      },
+      {
+        path: 'hook-demo',
+        element: (
+          // 方式3: 使用 useRouteGuard Hook
+          <HookDemo />
+        )
+      },
+      {
+        path: 'async-demo',
+        element: (
+          // 方式4: 使用 AsyncRouteGuard
+          <AsyncDemo />
+        )
+      },
+      {
+        path: 'conditional-demo',
+        element: (
+          // 方式5: 使用 ConditionalGuard
+          <ConditionalDemo />
+        )
+      },
+      {
+        path: 'overview',
+        element: (
+          // 路由守卫概览页面
+          <GuardOverview />
         )
       },
       {

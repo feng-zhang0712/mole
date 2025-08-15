@@ -21,6 +21,8 @@
 </RouteGuard>
 ```
 
+**特点：** 使用简单，适合包装单个组件，支持权限和角色验证。
+
 ### 2. 高阶组件守卫（withAuth）
 
 ```jsx
@@ -30,19 +32,35 @@ const ProtectedComponent = withAuth(Component, {
 });
 ```
 
+**特点：** 代码复用性高，适合批量应用权限控制，使用装饰器模式。
+
 ### 3. Hook 守卫（useRouteGuard）
 
 ```jsx
 const { canAccess, redirectPath } = useRouteGuard(['read'], ['user']);
 ```
 
-### 4. 异步权限检查守卫
+**特点：** 逻辑清晰，易于测试，支持复杂的权限判断逻辑，适合在组件内部使用。
+
+### 4. 异步权限检查守卫（AsyncRouteGuard）
 
 ```jsx
 <AsyncRouteGuard permissionCheck={asyncPermissionCheck}>
   <Component />
 </AsyncRouteGuard>
 ```
+
+**特点：** 支持异步权限验证，适合复杂权限逻辑，提供加载状态和错误处理。
+
+### 5. 条件渲染守卫（ConditionalGuard）
+
+```jsx
+<ConditionalGuard condition={user && user.role === 'admin'}>
+  <AdminPanel />
+</ConditionalGuard>
+```
+
+**特点：** 使用简单，逻辑清晰，适合简单的显示/隐藏场景。
 
 ## 权限系统
 
@@ -78,6 +96,11 @@ demos/
 │   │   ├── Profile.js      # 个人资料
 │   │   ├── Admin.js        # 管理面板
 │   │   ├── Settings.js     # 系统设置
+│   │   ├── AdvancedDemo.js # 高级演示
+│   │   ├── HocDemo.js      # HOC守卫演示
+│   │   ├── HookDemo.js     # Hook守卫演示
+│   │   ├── AsyncDemo.js    # 异步守卫演示
+│   │   ├── ConditionalDemo.js # 条件守卫演示
 │   │   ├── Unauthorized.js # 未授权页面
 │   │   └── NotFound.js     # 404页面
 │   ├── routes/

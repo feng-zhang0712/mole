@@ -50,6 +50,36 @@ const Layout = () => {
       label: '高级演示',
       icon: '🔐',
       permissions: ['read']
+    },
+    {
+      path: '/hoc-demo',
+      label: 'HOC守卫',
+      icon: '🔧',
+      permissions: ['read']
+    },
+    {
+      path: '/hook-demo',
+      label: 'Hook守卫',
+      icon: '🎣',
+      permissions: ['read']
+    },
+    {
+      path: '/async-demo',
+      label: '异步守卫',
+      icon: '⚡',
+      permissions: ['read']
+    },
+    {
+      path: '/conditional-demo',
+      label: '条件守卫',
+      icon: '🎯',
+      permissions: ['read']
+    },
+    {
+      path: '/overview',
+      label: '守卫概览',
+      icon: '🛡️',
+      permissions: ['read']
     }
   ];
 
