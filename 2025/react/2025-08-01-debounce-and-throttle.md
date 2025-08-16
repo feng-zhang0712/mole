@@ -62,11 +62,11 @@ export function useDebounceFn(fn, ms = 0, deps = []) {
     }
   }, []);
 
-  const debounce = useCallback(() => {
+  const debounce = useCallback((...args) => {
     clearTimer();
     
     timerRef.current = setTimeout(() => {
-      setState(fn(...arguments));
+      setState(fn(...args));
       timerRef.current = null;
     }, ms);
   }, [fn, ms, clearTimer]);
