@@ -83,7 +83,7 @@ function foo() {
 }
 ```
 
-注意，`async function` 声明的函数，同样存在提升行为，它的行为类似于 `function`，会被提升到所在作用于的顶部。
+注意，`async function` 声明的函数，同样存在提升行为，它的行为类似于 `function`，会被提升到所在作用域的顶部。
 
 ### 1.2 async 实现原理
 
@@ -96,22 +96,21 @@ function co(gen) {
   return new Promise((resolve, reject) => {
     const iterator = gen();
     
-    function step(next, argument) {
+    function step(next, arg) {
       let rst;
       try {
-        rst = next.call(iterator, argument);
+        rst = next.call(iterator, arg);
+        if (rst.done) {
+          return resolve(rst.value);
+        }
+
+        Promise.resolve(rst.value).then(
+          value => step(iterator.next, value),
+          reason => step(iterator.throw, reason),
+        );
       } catch (error) {
         return reject(error);
       }
-
-      if (rst.done) {
-        return resolve(rst.value);
-      }
-
-      Promise.resolve(rst.value).then(
-        value => step(iterator.next, value),
-        reason => step(iterator.throw, reason),
-      );
     }
 
     step(iterator.next);

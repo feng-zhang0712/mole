@@ -72,7 +72,7 @@
 
 ### 3.3 逻辑运算符
 
-逻辑运算符用于按照不同的逻辑，组合多个媒体查询，多个媒体查询使用逗号（`,`）进行分隔。注意，逗号既可以作为分隔符使用，也可以当作 `or` 使用，两者语义相同。
+逻辑运算符用于按照不同的逻辑，组合多个媒体查询。
 
 目前，共有四个逻辑运算符。
 
@@ -83,11 +83,13 @@
 @media screen and (min-width: 768px) { }
 ```
 
-`or` 或者逗号分隔符：或操作。
+`or` 或者逗号分隔符：或操作。这两个运算符完全等价，`or` 是媒体查询第四版中新增的一个关键字。
 
 ```css
 /* 宽度小于 480px 或大于 1200px */
 @media (max-width: 480px), (min-width: 1200px) { }
+
+/* 等价于 */
 @media (max-width: 480px) or (min-width: 1200px) { }
 ```
 
@@ -125,20 +127,36 @@
 }
 ```
 
-上边代码表示，仅在屏幕设备上，当视口宽度在 320px 到 480px 之间，且设备分辨率为 150dpi 时，将 `body` 设置为 1.4 倍行高。
+上边代码表示，仅在屏幕设备上，当视口宽度在 `320px` 到 `480px` 之间，且设备分辨率为 `150dpi` 时，将 `body` 设置为 1.4 倍行高。
 
 ## 断点
 
 比如，对于移动优先的站点，可以将 `768px`、`1024px` 和 `1200px` 等设置为断点。
 
 ```css
-
+@media (min-width: 768px) {
+  /* 平板 */
+}
+@media (min-width: 1024px) {
+  /* 小桌面 */
+}
+@media (min-width: 1200px) {
+  /* 大桌面 */
+}
 ```
 
 对于桌面优先的站点，可以设置 `767px`、`1023px` 等断点。
 
 ```css
-
+@media (max-width: 1199px) {
+  /* 小桌面 */
+}
+@media (max-width: 1023px) {
+  /* 平板 */
+}
+@media (max-width: 767px) {
+  /* 移动 */
+}
 ```
 
 ## 四、媒体查询的多种用法
@@ -167,6 +185,7 @@
   --font-size: 16px;
 }
 
+/* 检测用户是否开启了深色模式 */
 @media (prefers-color-scheme: dark) {
   :root {
     --primary-color: #0056b3;
@@ -215,13 +234,48 @@ $breakpoints: (
 }
 ```
 
-## 五、HTML 标签中的媒体查询
+## 五、媒体查询操作接口
+
+`window.matchMedia()` 方法检测当前文档是否匹配指定的媒体查询字符串，并返回一个 `MediaQueryList` 对象。
+
+```javascript
+// 检测屏幕宽度是否小于等于 768px
+const query = window.matchMedia('(max-width: 768px)');
+if (query.matches) {
+  // 屏幕宽度小于等于 768px
+}
+```
+
+`MediaQueryList` 对象表示媒体查询的结果，包含匹配状态和事件监听功能。该对象包含两个属性和方法。
+
+- `matches`：布尔值，表示当前是否匹配媒体查询。
+- `media`：字符串，表示媒体查询字符串。
+- `addEventListener(type, listener, options)`：添加事件监听器。
+- `removeEventListener(type, listener, options)`：移除事件监听器。
+
+当媒体查询匹配状态发生变化时会触发 `change` 事件，下面是 `MediaQueryList` 对象添加事件监听的用法。
+
+```javascript
+function handleMediaChange (event) {
+  event.matches // 查询状态
+  event.media // 媒体查询字符串
+  if (event.matches) {
+    // 媒体查询被匹配
+  }
+}
+
+const query = window.matchMedia('(max-width: 768px)');
+query.addEventListener('change', handleMediaChange);
+// query.removeEventListener('change', handleMediaChange);
+```
+
+## 六、HTML 标签中的媒体查询
 
 `<style>`、`<link>` 和 `<source>` 标签中的 `media` 属性，表示只有满足符合条件的媒体查询，对应的资源才会被加载。
 
-## 六、媒体查询第四版中的语法改进
+## 七、媒体查询第四版中的语法改进
 
-### 6.1 范围查询
+### 7.1 范围查询
 
 媒体查询第四版（Media Queries Level 4）引入了数学中常见的比较操作符。
 
@@ -244,19 +298,19 @@ $breakpoints: (
 }
 ```
 
-上边代码表示，当设备宽度在 `400px` 到 `700px `之间时，将 `body` 设置为 1.4 倍行高。
+上边代码表示，当设备宽度在 `400px` 到 `700px` 之间时，将 `body` 设置为 1.4 倍行高。
 
 ```css
 @media (768px <= width <= 1200px) and 
-  (600px <= height <= 900px) and 
-  (16/9 <= aspect-ratio <= 21/9) {
+       (600px <= height <= 900px) and 
+       (16/9 <= aspect-ratio <= 21/9) {
     /* CSS 样式 */
   }
 ```
 
 上面的查询条件，用于匹配宽度在 `768px` 到 `1200px` 之间、高度在 `600px` 到 `900px` 之间、宽高比在 `16/9` 到 `21/9` 之间的设备。
 
-### 6.2 新的媒体特性
+### 7.2 新的媒体特性
 
 `update` 检测显示器的更新频率，可选值为 `none`、`slow` 和 `fast`。
 
@@ -345,9 +399,9 @@ $breakpoints: (
 }
 ```
 
-### 6.3 媒体特性类型分类系统
+### 7.3 媒体特性类型分类系统
 
-媒体查询第四版将媒体特性分为两类：范围类型（Range）和 离散类型。
+媒体查询第四版将媒体特性分为两类：范围类型（Range）和离散类型。
 
 范围类型特性是指那些可以取连续数值的媒体特性，这些特性支持范围查询和比较操作。下面的特性都属于范围类型特性。
 
@@ -373,6 +427,6 @@ $breakpoints: (
 - `overflow-block`：块轴溢出处理。
 - `overflow-inline`：行内轴溢出处理。
 
-## 七、参考
+## 八、参考
 
 - [媒体查询](https://developer.mozilla.org/zh-CN/docs/Web/CSS/CSS_media_queries)，MDN
