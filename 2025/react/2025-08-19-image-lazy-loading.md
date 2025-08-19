@@ -46,81 +46,20 @@
         }); 
       });
 
-      document.querySelectorAll('.lazy-image').forEach(observer.observe);
+      document.querySelectorAll('.lazy-img').forEach(img => observer.observe(img));
     }
   </script>
 </body>
 </html>
 ```
 
-### 2.3 ResizeObserver API
-
-```jsx
-const container = document.querySelector('.container');
-
-const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const rect = entry.contentRect;
-    const isVisible = (
-      rect.top < windowHeight &&
-      rect.bottom > 0 &&
-      rect.left < windowWidth &&
-      rect.right > 0
-    );
-    if (isVisible) {
-      const lazyImages = entry.target.querySelectorAll('img[data-src]');
-      lazyImages.forEach(img => {
-        img.src = img.dataset.src;
-        observer.unobserve(entry.target);
-      });
-    }
-  }
-});
-
-observer.observe(container);
-```
-
-这种方式性能较好，但要考虑浏览器的兼容性。
-
-### 2.4 MutationObserver API
-
-```jsx
-const observer = new MutationObserver(() => {
-  const rect = imgRef.current.getBoundingClientRect();
-  const isVisible = (
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-  );
-  
-  if (isVisible) {
-    const lazyImages = entry.target.querySelectorAll('img[data-src]');
-    lazyImages.forEach(img => img.src = img.dataset.src);
-    observer.disconnect();
-  }
-});
-
-observer.observe(document.body, {
-  childList: true,
-  subtree: true,
-  attributes: true,
-  attributeFilter: ['style', 'class']
-});
-```
-
-这种方式可以监听 DOM 变化，但开销较大。
-
-### 2.5 `scroll` 事件监听
+### 2.3 `scroll` 事件监听
 
 监听窗口的 `scroll` 事件，判断 `<img>` 标签顶部或者左侧距离与视口的宽高差，为了防止 `scroll` 事件被频繁触发，使用了 `useThrottle` 进行节流控制。
 
 这种方式优点是实现简单，但性能较差。
 
 ```jsx
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { useThrottle } from './src/throttle';
-
 const LazyImage = ({ src, placeholder }) => {
   const [isInView, setIsInView] = useState(false);
   const imgRef = useRef(null);
@@ -133,7 +72,7 @@ const LazyImage = ({ src, placeholder }) => {
     const windowWidth = window.innerWidth || document.documentElement.clientWidth;
     
     const isVisible = (
-      rect.top < windowHeight + 100 && // 提前 100px 加载
+      rect.top < windowHeight + 100 &&
       rect.bottom > -100 &&
       rect.left < windowWidth + 100 &&
       rect.right > -100
@@ -144,10 +83,15 @@ const LazyImage = ({ src, placeholder }) => {
     }
   }, [isInView]);
 
-  const check = useThrottle(checkIfInView, 100);
+  // 使用 useCallback 确保 check 函数引用稳定
+  const check = useCallback(
+    throttle(checkIfInView, 100),
+    [checkIfInView]
+  );
 
   useEffect(() => {
     check();
+    
     window.addEventListener('scroll', check);
     window.addEventListener('resize', check);
 
@@ -166,17 +110,15 @@ const LazyImage = ({ src, placeholder }) => {
 };
 ```
 
-### 2.6 `scroll` + `content-visibility`（TODO：NOT FINISH YET）
+### 2.4 `scroll` + `content-visibility`
 
-CSS 的 `content-visibility` 属性控制元素是否渲染其内容，它使用户代理能够跳过元素的渲染工作（包括布局和绘制），直到需要时才进行渲染，这使得初始页面加载速度大大提升。
+CSS 的 `content-visibility` 属性控制元素是否渲染其内容，让浏览器能够跳过不在视口中的渲染工作（包括布局和绘制）。该属性有三个可选值。
 
-当设置了 `content-visibility: auto` 的元素的渲染工作，开始或停止被跳过时，`contentvisibilityautostatechange` 事件会在该元素上触发。这样就可以在不需要时启动或停止渲染过程（例如，在 `<canvas>` 上绘制），从而节省处理能力。
+<!-- 当设置了 `content-visibility: auto` 的元素的渲染工作，开始或停止被跳过时，`contentvisibilityautostatechange` 事件会在该元素上触发。这样就可以在不需要时启动或停止渲染过程（例如，在 `<canvas>` 上绘制），从而节省处理能力。 -->
 
-该属性有三个可选值。
-
-- `visible` 默认值，元素的内容正常渲染，不进行任何优化。
-- `hidden` 元素的内容被隐藏，且不会触发布局、样式和绘制等操作，但元素仍然占据空间（类似于 `display: none`）。
-- `auto` 浏览器会根据元素是否在视口中（viewport）来决定是否渲染其内容。如果元素不在视口中，浏览器会跳过其子树的布局、样式和绘制等操作，从而优化性能。
+- `visible` 默认值，元素内容正常渲染。
+- `hidden` 隐藏元素的内容，不进行任何渲染，但元素仍然占据空间（类似于 `visibility: hidden`）。
+- `auto` 浏览器根据元素是否在视口中来决定是否渲染其内容。如果元素不在视口中，浏览器不会执行渲染操作，从而优化性能。
 
 当使用 `content-visibility: auto` 时，如果元素没有明确的尺寸，可能会导致内容加载时发生布局偏移。因此，`content-visibility` 属性一般跟 `contain-intrinsic-size` 属性一起使用。
 
@@ -187,7 +129,7 @@ CSS 的 `content-visibility` 属性控制元素是否渲染其内容，它使用
 }
 ```
 
-上面代码中，`content-visibility: auto` 确保只有视口内的 `.section` 元素才会被渲染。`contain-intrinsic-size` 提供了一个估计的尺寸，防止页面在未渲染内容时出现布局偏移（layout shift）。
+上面代码中，`contain-intrinsic-size` 提供了一个估计的尺寸，防止页面在未渲染内容时出现布局偏移（layout shift）。
 
 下面是一个 `scroll` 监听配合 CSS 的 `content-visibility` 属性，实现图片懒加载的例子。
 
@@ -237,6 +179,77 @@ const LazyImage = ({ src, placeholder }) => {
 ```
 
 注意，`content-visibility` 在现代浏览器中支持较好，但在某些旧版本浏览器中，可能存在兼容性问题。
+
+### 2.5 `scroll` + ResizeObserver API
+
+```jsx
+const container = document.querySelector('.container');
+
+const observer = new ResizeObserver(() => checkLazyImages());
+observer.observe(container);
+
+function checkLazyImages() {
+  const lazyImages = container.querySelectorAll('img[data-src]');
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+  
+  lazyImages.forEach(img => {
+    if (img.dataset.src && !img.src) { // 还未加载的图片
+      const rect = img.getBoundingClientRect();
+      const isVisible = (
+        rect.top < windowHeight + 100 && // 提前 100px 加载
+        rect.bottom > -100
+      );
+      
+      if (isVisible) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+      }
+
+      observer.unobserve(img);
+    }
+  });
+}
+
+window.addEventListener('scroll', throttle(checkLazyImages, 100));
+
+// 页面加载时立即检查一次
+checkLazyImages();
+```
+
+这种方式性能较好，但要考虑浏览器的兼容性。
+
+### 2.6 MutationObserver API
+
+```jsx
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
+    mutation.addedNodes.forEach(node => {
+      if (node.nodeType === Node.ELEMENT_NODE) {
+        const lazyImages = node.querySelectorAll('img[data-src]');
+        lazyImages.forEach(img => {
+          const rect = img.getBoundingClientRect();
+          const isVisible = (
+            rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
+            rect.bottom > 0
+          );
+          
+          if (isVisible) {
+            img.src = img.dataset.src;
+            img.removeAttribute('data-src');
+          }
+        });
+      }
+    });
+  });
+});
+
+observer.observe(document.body, {
+  childList: true,
+  subtree: true
+});
+```
+
+这种方式可以监听 DOM 变化，但开销较大。
 
 ### 2.7 `scroll` + Web Worker
 

@@ -39,7 +39,12 @@ observer.observe(document.querySelector('div'));
 
 ### 构造函数
 
-ResizeObserver 接口能够监测开启了标准盒模型、替代盒模型以及 SVGElement 元素的替代盒模型的尺寸变化。
+ResizeObserver 监听的是元素的尺寸变化，这些变化包括：
+
+- 元素的宽度和高度变化。
+- 内容区域（content）的变化。
+- 内边距区域（padding）的变化。
+- 边框区域（border）的变化。
 
 ```javascript
 new ResizeObserver(callback)
@@ -225,46 +230,46 @@ observer.observe(divElem);
 ### 懒加载
 
 ```javascript
-// 根据容器尺寸变化触发懒加载
 const container = document.querySelector('.container');
 
 const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const { width, height } = entry.contentRect;
-    if (width > 0 && height > 0) {
-      // 容器可见，触发懒加载
-      const lazyImages = entry.target.querySelectorAll('img[data-src]');
-      lazyImages.forEach(img => {
+  checkLazyImages();
+});
+
+observer.observe(container);
+
+window.addEventListener('scroll', throttle(checkLazyImages, 100));
+
+// 页面加载时立即检查一次
+checkLazyImages();
+
+function checkLazyImages() {
+  const lazyImages = container.querySelectorAll('img[data-src]');
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+  
+  lazyImages.forEach(img => {
+    if (img.dataset.src && !img.src) { // 还未加载的图片
+      const rect = img.getBoundingClientRect();
+      const isVisible = (
+        rect.top < windowHeight + 100 && // 提前 100px 加载
+        rect.bottom > -100
+      );
+      
+      if (isVisible) {
         img.src = img.dataset.src;
-        img.classList.remove('lazy');
-      });
+        img.removeAttribute('data-src');
+      }
+
+      observer.unobserve(img);
     }
-  }
-});
-
-observer.observe(container);
-```
-
-### 响应式网格布局
-
-```javascript
-const container = document.querySelector('.container');
-
-const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const width = entry.contentRect.width;
-    const columns = Math.floor(width / 300); // 每列最小 300px
-    entry.target.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
-  }
-});
-
-observer.observe(container);
+  });
+}
 ```
 
 ### 自适应字体大小
 
 ```javascript
-// 根据容器宽度调整字体大小
+// 当容器宽度发生变化时，动态调整字体大小
 const container = document.querySelector('.adaptive-text');
 
 const observer = new ResizeObserver(entries => {
