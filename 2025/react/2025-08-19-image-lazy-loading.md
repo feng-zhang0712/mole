@@ -36,14 +36,20 @@
 
   <script>
     if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target;
-            img.src = img.dataset.src;
-            observer.unobserve(entry.target);
-          }
-        }); 
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const img = entry.target;
+              // 检查是否已经加载
+              if (!img.src && img.dataset.src) {
+                img.src = img.dataset.src;
+                observer.unobserve(img);
+              }
+            }
+          }); 
+      }, {
+        rootMargin: '100px 0px' // 提前 100px 触发 
       });
 
       document.querySelectorAll('.lazy-img').forEach(img => observer.observe(img));
@@ -55,59 +61,34 @@
 
 ### 2.3 `scroll` 事件监听
 
-监听窗口的 `scroll` 事件，判断 `<img>` 标签顶部或者左侧距离与视口的宽高差，为了防止 `scroll` 事件被频繁触发，使用了 `useThrottle` 进行节流控制。
-
-这种方式优点是实现简单，但性能较差。
-
 ```jsx
-const LazyImage = ({ src, placeholder }) => {
-  const [isInView, setIsInView] = useState(false);
-  const imgRef = useRef(null);
+const container = document.querySelector('.container');
 
-  const checkIfInView = useCallback(() => {
-    if (!imgRef.current) return;
-    
-    const rect = imgRef.current.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-    const windowWidth = window.innerWidth || document.documentElement.clientWidth;
-    
-    const isVisible = (
-      rect.top < windowHeight + 100 &&
-      rect.bottom > -100 &&
-      rect.left < windowWidth + 100 &&
-      rect.right > -100
-    );
-    
-    if (isVisible && !isInView) {
-      setIsInView(true);
+function checkLazyImages() {
+  const lazyImages = container.querySelectorAll('img[data-src]');
+  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+  
+  lazyImages.forEach(img => {
+    if (img.dataset.src && !img.src) {
+      const rect = img.getBoundingClientRect();
+      const isVisible = (
+        rect.top < windowHeight + 100 &&
+        rect.bottom > -100
+      );
+      
+      if (isVisible) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+      }
     }
-  }, [isInView]);
+  });
+}
 
-  // 使用 useCallback 确保 check 函数引用稳定
-  const check = useCallback(
-    throttle(checkIfInView, 100),
-    [checkIfInView]
-  );
+// 只依赖滚动事件
+window.addEventListener('scroll', throttle(checkLazyImages, 200));
+window.addEventListener('resize', throttle(checkLazyImages, 200));
 
-  useEffect(() => {
-    check();
-    
-    window.addEventListener('scroll', check);
-    window.addEventListener('resize', check);
-
-    return () => {
-      window.removeEventListener('scroll', check);
-      window.removeEventListener('resize', check);
-    };
-  }, [check]);
-
-  return (
-    <img
-      ref={imgRef}
-      src={isInView ? src : placeholder}
-    />
-  );
-};
+checkLazyImages(); // 初始检查
 ```
 
 ### 2.4 `scroll` + `content-visibility`
@@ -185,6 +166,8 @@ const LazyImage = ({ src, placeholder }) => {
 ```jsx
 const container = document.querySelector('.container');
 
+// 当 container 尺寸发生变化时，重新检查图片是否需要加载
+// 可以检测到窗口 resize 和其他方式改变的容器尺寸的变化
 const observer = new ResizeObserver(() => checkLazyImages());
 observer.observe(container);
 
