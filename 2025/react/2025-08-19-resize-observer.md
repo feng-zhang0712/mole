@@ -62,7 +62,7 @@ function callback(entries, observer) {
 
 #### `observe()`
 
-`observe()` 方法开始观察指定的 Element 或 SVGElement。
+`observe(target)` 方法开始观察指定的 Element 或 SVGElement。
 
 ```javascript
 observe(target)
@@ -95,7 +95,7 @@ div {
 
 #### `unobserve()`
 
-`unobserve()` 停止观察指定的 Element 或 SVGElement。
+`unobserve(target)` 停止观察指定的 Element 或 SVGElement。
 
 ```javascript
 observer.unobserve(target)
@@ -174,9 +174,9 @@ const resizeObserver = new ResizeObserver(entries => {
 
 该属性适用于高分辨率显示器适配、精确的像素级布局控制的场景、与 Canvas 或其他像素级操作结合使用以及处理不同设备像素比（DPR）的情况。
 
-#### `contentReact`
+#### `contentRect`
 
-`contentReact` 被观察元素的新尺寸，是一个 `DOMRectReadOnly` 类型的值。
+`contentRect` 被观察元素的新尺寸，是一个 `DOMRectReadOnly` 类型的值。
 
 - 对于 Element 对象，该属性返回标准盒模型信息。
 - 对于 SVGElement 对象，该属性返回替代盒模型信息。
@@ -191,6 +191,34 @@ const resizeObserver = new ResizeObserver(entries => {
 ```
 
 注意，该属性是 Resize Observer API 的早期实现，兼容性好，但以后可能会被移除。因此建议使用 `contentBoxSize` 和 `borderBoxSize`，因为这两个属性提供了更精确和标准化的尺寸信息。
+
+下面是一个 MDN 上的[例子](https://mdn.github.io/dom-examples/resize-observer/resize-observer-text.html)，
+
+```javascript
+const observer = new ResizeObserver(entries => {
+  for (const entry of entries) {
+    const { contentBoxSize } = entry;
+    if(contentBoxSize) {
+      if (contentBoxSize[0]) {
+        h1Elem.style.fontSize = Math.max(1.5, contentBoxSize[0].inlineSize/200) + 'rem';
+        pElem.style.fontSize = Math.max(1, contentBoxSize[0].inlineSize/600) + 'rem';
+      } else {
+        h1Elem.style.fontSize = Math.max(1.5, contentBoxSize.inlineSize/200) + 'rem';
+        pElem.style.fontSize = Math.max(1, contentBoxSize.inlineSize/600) + 'rem';
+      }
+    } else {
+      h1Elem.style.fontSize = Math.max(1.5, entry.contentRect.width/200) + 'rem';
+      pElem.style.fontSize = Math.max(1, entry.contentRect.width/600) + 'rem';
+    }
+  }
+});
+
+observer.observe(divElem);
+```
+
+最终显示的效果如下。
+
+![Resize Observer Example](/2025/assets/resize-observer-exmaple-by-mdn.gif)
 
 ## 应用场景
 
