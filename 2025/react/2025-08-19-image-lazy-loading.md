@@ -66,13 +66,12 @@ const container = document.querySelector('.container');
 
 function checkLazyImages() {
   const lazyImages = container.querySelectorAll('img[data-src]');
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
   
   lazyImages.forEach(img => {
     if (img.dataset.src && !img.src) {
       const rect = img.getBoundingClientRect();
       const isVisible = (
-        rect.top < windowHeight + 100 &&
+        rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
         rect.bottom > -100
       );
       
@@ -125,8 +124,8 @@ const LazyImage = ({ src, placeholder }) => {
     const checkIfInView = () => {
       const rect = containerRef.current.getBoundingClientRect();
       const isVisible = (
-        rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
-        rect.bottom > 0
+        rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
+        rect.bottom > -100
       );
       
       if (isVisible && !isInView) {
@@ -159,6 +158,8 @@ const LazyImage = ({ src, placeholder }) => {
 };
 ```
 
+上面的例子，通过监听 `scroll` 事件，确认图片的下载时机，并由浏览器通过 `content-visibility` 属性控制内容区域的渲染时间。
+
 注意，`content-visibility` 在现代浏览器中支持较好，但在某些旧版本浏览器中，可能存在兼容性问题。
 
 ### 2.5 `scroll` + ResizeObserver API
@@ -173,13 +174,12 @@ observer.observe(container);
 
 function checkLazyImages() {
   const lazyImages = container.querySelectorAll('img[data-src]');
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
   
   lazyImages.forEach(img => {
     if (img.dataset.src && !img.src) { // 还未加载的图片
       const rect = img.getBoundingClientRect();
       const isVisible = (
-        rect.top < windowHeight + 100 && // 提前 100px 加载
+        rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
         rect.bottom > -100
       );
       
@@ -212,8 +212,8 @@ const observer = new MutationObserver(mutations => {
         lazyImages.forEach(img => {
           const rect = img.getBoundingClientRect();
           const isVisible = (
-            rect.top < (window.innerHeight || document.documentElement.clientHeight) &&
-            rect.bottom > 0
+            rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
+            rect.bottom > -100
           );
           
           if (isVisible) {
