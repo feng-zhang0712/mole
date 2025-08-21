@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1px边框问题解决方案演示</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .content {
+      padding: 30px;
+    }
+
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border-radius: 8px;
+      background: #fafafa;
+    }
+
+    .section h2 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.5em;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 10px;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .demo-item {
+      background: white;
+      border-radius: 8px;
+      padding: 40px 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .demo-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .demo-title {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 1.1em;
+    }
+
+    .demo-description {
+      color: #666;
+      font-size: 0.9em;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
+    .demo-box {
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    /* 1. Transform Scale 方案 */
+    .transform-demo {
+      position: relative;
+    }
+
+    .transform-demo::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      border: 1px solid #000;
+      transform: scale(0.5);
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+
+    /* 2. Box Shadow 方案 */
+    .box-shadow-demo {
+      box-shadow: inset 0 0 0 1px #000;
+    }
+
+    /* 3. Border Image 方案 */
+    .border-image-demo {
+      border: 1px solid transparent;
+      border-image: linear-gradient(to bottom, #000 50%, transparent 50%) 1;
+    }
+
+    /* 4. CSS变量和媒体查询方案 */
+    :root {
+      --border-width: 1px;
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: 192dpi) {
+      :root {
+        --border-width: 0.5px;
+      }
+    }
+
+    .css-var-demo {
+      border: var(--border-width) solid #000;
+    }
+
+    /* 5. 伪元素 + 渐变方案 */
+    .gradient-demo {
+      position: relative;
+    }
+
+    .gradient-demo::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(to right, #000 0%, #000 50%, transparent 50%, transparent 100%);
+      background-size: 100% 1px;
+      background-repeat: no-repeat;
+      background-position: 0 0;
+      pointer-events: none;
+    }
+
+    /* 6. 普通1px边框（对比用） */
+    .normal-border {
+      border: 1px solid #000;
+    }
+
+    /* 底部边框变体 */
+    .border-bottom-transform {
+      position: relative;
+    }
+
+    .border-bottom-transform::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      border-bottom: 1px solid #000;
+      transform: scale(0.5);
+      transform-origin: 0 100%;
+      pointer-events: none;
+    }
+
+    .border-bottom-shadow {
+      box-shadow: inset 0 -1px 0 0 #000;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .header h1 {
+        font-size: 2em;
+      }
+
+      .content {
+        padding: 20px;
+      }
+    }
+
+    /* 设备像素比检测 */
+    .dpr-info {
+      background: #e8f5e8;
+      border: 1px solid #4caf50;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .dpr-info h3 {
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    .dpr-value {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #1b5e20;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>1px边框问题解决方案演示</h1>
+      <p>在高分辨率屏幕上解决CSS边框显示过粗的问题</p>
+    </div>
+
+    <div class="content">
+      <!-- 设备像素比信息 -->
+      <div class="dpr-info">
+        <h3>当前设备信息</h3>
+        <div class="dpr-value" id="dprInfo">检测中...</div>
+      </div>
+
+      <!-- 对比展示 -->
+      <div class="section">
+        <h2>对比展示</h2>
+        <div class="demo-grid">
+          <div class="demo-item">
+            <div class="demo-title">普通1px边框（问题展示）</div>
+            <div class="demo-description">在高DPR设备上会显示为2px或更粗</div>
+            <div class="demo-box normal-border">
+              普通边框
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 解决方案展示 -->
+      <div class="section">
+        <h2>解决方案</h2>
+        <div class="demo-grid">
+          <!-- Transform Scale 方案 -->
+          <div class="demo-item">
+            <div class="demo-title">1. Transform Scale 方案</div>
+            <div class="demo-description">将元素放大2倍后缩小0.5倍，实现0.5px边框效果</div>
+            <div class="demo-box transform-demo">
+              Transform 边框
+            </div>
+          </div>
+
+          <!-- Box Shadow 方案 -->
+          <div class="demo-item">
+            <div class="demo-title">2. Box Shadow 方案</div>
+            <div class="demo-description">使用内阴影模拟边框，实现细边框效果</div>
+            <div class="demo-box box-shadow-demo">
+              Box Shadow 边框
+            </div>
+          </div>
+
+          <!-- Border Image 方案 -->
+          <div class="demo-item">
+            <div class="demo-title">3. Border Image 方案</div>
+            <div class="demo-description">使用渐变图片作为边框，支持复杂边框效果</div>
+            <div class="demo-box border-image-demo">
+              Border Image 边框
+            </div>
+          </div>
+
+          <!-- CSS变量方案 -->
+          <div class="demo-item">
+            <div class="demo-title">4. CSS变量 + 媒体查询</div>
+            <div class="demo-description">根据设备DPR动态设置边框宽度</div>
+            <div class="demo-box css-var-demo">
+              CSS 变量边框
+            </div>
+          </div>
+
+          <!-- 渐变方案 -->
+          <div class="demo-item">
+            <div class="demo-title">5. 伪元素 + 渐变</div>
+            <div class="demo-description">使用渐变背景实现细边框效果</div>
+            <div class="demo-box gradient-demo">
+              渐变边框
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部边框变体 -->
+      <div class="section">
+        <h2>底部边框变体</h2>
+        <div class="demo-grid">
+          <div class="demo-item">
+            <div class="demo-title">Transform底部边框</div>
+            <div class="demo-description">使用transform实现底部细边框</div>
+            <div class="demo-box border-bottom-transform">
+              Transform底部边框
+            </div>
+          </div>
+
+          <div class="demo-item">
+            <div class="demo-title">Box Shadow底部边框</div>
+            <div class="demo-description">使用box-shadow实现底部细边框</div>
+            <div class="demo-box border-bottom-shadow">
+              Box Shadow底部边框
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 6px; padding: 20px;">
+          <h3 style="color: #856404; margin-bottom: 15px;">推荐方案：Transform Scale</h3>
+          <ul style="color: #856404; line-height: 1.6;">
+            <li><strong>兼容性最好：</strong>支持所有现代浏览器，包括移动端</li>
+            <li><strong>效果稳定：</strong>在各种设备上显示效果一致</li>
+            <li><strong>实现简单：</strong>代码逻辑清晰，易于理解和维护</li>
+            <li><strong>性能良好：</strong>transform是GPU加速的属性</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 检测设备像素比
+    function detectDPR() {
+      const dpr = window.devicePixelRatio || 1;
+      const resolution = window.screen.width * dpr + ' x ' + window.screen.height * dpr;
+      const cssPixels = window.screen.width + ' x ' + window.screen.height;
+      const physicalPixelsPerCSSPixel = dpr * dpr; // 每个CSS像素对应的物理像素数量
+
+      document.getElementById('dprInfo').innerHTML = `
+                DPR: ${dpr}<br>
+                CSS像素: ${cssPixels}<br>
+                物理像素: ${resolution}<br>
+                每个CSS像素对应: ${physicalPixelsPerCSSPixel}个物理像素
+            `;
+    }
+
+    // 页面加载完成后检测
+    window.addEventListener('load', detectDPR);
+
+    // 窗口大小改变时重新检测
+    window.addEventListener('resize', detectDPR);
+  </script>
+</body>
+
+</html>
