@@ -1,0 +1,93 @@
+.shared-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.shared-loading__spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.shared-loading__text {
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Sizes */
+.shared-loading--small .shared-loading__spinner {
+  width: 20px;
+  height: 20px;
+  border-width: 2px;
+}
+
+.shared-loading--small .shared-loading__text {
+  font-size: 0.8rem;
+}
+
+.shared-loading--medium .shared-loading__spinner {
+  width: 32px;
+  height: 32px;
+  border-width: 3px;
+}
+
+.shared-loading--medium .shared-loading__text {
+  font-size: 0.9rem;
+}
+
+.shared-loading--large .shared-loading__spinner {
+  width: 48px;
+  height: 48px;
+  border-width: 4px;
+}
+
+.shared-loading--large .shared-loading__text {
+  font-size: 1rem;
+}
+
+/* Variants */
+.shared-loading--dots .shared-loading__spinner {
+  border: none;
+  background: none;
+  display: flex;
+  gap: 0.25rem;
+}
+
+.shared-loading--dots .shared-loading__spinner::before,
+.shared-loading--dots .shared-loading__spinner::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: #667eea;
+  border-radius: 50%;
+  animation: dots 1.4s ease-in-out infinite both;
+}
+
+.shared-loading--dots .shared-loading__spinner::before {
+  animation-delay: -0.32s;
+}
+
+.shared-loading--dots .shared-loading__spinner::after {
+  animation-delay: -0.16s;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes dots {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

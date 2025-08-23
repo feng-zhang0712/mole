@@ -1,0 +1,137 @@
+.shared-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.shared-button:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+.shared-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Variants */
+.shared-button--primary {
+  background: #667eea;
+  color: white;
+}
+
+.shared-button--primary:hover:not(:disabled) {
+  background: #5a6fd8;
+  transform: translateY(-1px);
+}
+
+.shared-button--secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.shared-button--secondary:hover:not(:disabled) {
+  background: #5a6268;
+  transform: translateY(-1px);
+}
+
+.shared-button--success {
+  background: #28a745;
+  color: white;
+}
+
+.shared-button--success:hover:not(:disabled) {
+  background: #218838;
+  transform: translateY(-1px);
+}
+
+.shared-button--danger {
+  background: #dc3545;
+  color: white;
+}
+
+.shared-button--danger:hover:not(:disabled) {
+  background: #c82333;
+  transform: translateY(-1px);
+}
+
+.shared-button--warning {
+  background: #ffc107;
+  color: #212529;
+}
+
+.shared-button--warning:hover:not(:disabled) {
+  background: #e0a800;
+  transform: translateY(-1px);
+}
+
+.shared-button--info {
+  background: #17a2b8;
+  color: white;
+}
+
+.shared-button--info:hover:not(:disabled) {
+  background: #138496;
+  transform: translateY(-1px);
+}
+
+.shared-button--outline {
+  background: transparent;
+  border: 2px solid #667eea;
+  color: #667eea;
+}
+
+.shared-button--outline:hover:not(:disabled) {
+  background: #667eea;
+  color: white;
+}
+
+/* Sizes */
+.shared-button--small {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  min-height: 32px;
+}
+
+.shared-button--medium {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  min-height: 40px;
+}
+
+.shared-button--large {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  min-height: 48px;
+}
+
+/* Loading state */
+.shared-button--loading {
+  position: relative;
+  color: transparent;
+}
+
+.shared-button--loading::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

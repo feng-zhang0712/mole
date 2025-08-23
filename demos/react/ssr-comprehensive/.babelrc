@@ -1,0 +1,35 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "targets": {
+        "node": "current"
+      },
+      "modules": false
+    }],
+    ["@babel/preset-react", {
+      "runtime": "automatic"
+    }]
+  ],
+  "plugins": ["styled-jsx/babel"],
+  "env": {
+    "server": {
+      "presets": [
+        ["@babel/preset-env", {
+          "targets": {
+            "node": "current"
+          },
+          "modules": false
+        }]
+      ],
+      "plugins": ["styled-jsx/babel"]
+    },
+    "client": {
+      "presets": [
+        ["@babel/preset-env", {
+          "targets": "defaults"
+        }]
+      ],
+      "plugins": ["styled-jsx/babel"]
+    }
+  }
+}

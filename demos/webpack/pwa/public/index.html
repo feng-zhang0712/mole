@@ -1,18 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Service Worker Example</title>
+  <title>PWA Service Worker</title>
+  <meta name="description" content="PWA Service Worker 学习和演示项目">
+  <meta name="theme-color" content="#2196F3">
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .demo-section {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    .status {
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+    .success { background: #d4edda; color: #155724; }
+    .warning { background: #fff3cd; color: #856404; }
+    .error { background: #f8d7da; color: #721c24; }
+  </style>
 </head>
 <body>
-  <h2>Hello Webpack!</h2>
-  <pre>
-    Open debug board, click 'Network', then choose 'Offline', 
-    or close your internet connection.
-    After that, click refresh button.
-  </pre>
-  <br>
-  <img src="https://haileyjaderyan.com/wp-content/uploads/2016/08/giphy-6.gif" alt="">
+  <h1>PWA Service Worker 演示</h1>
+  
+  <div class="demo-section">
+    <h2>使用说明</h2>
+    <ol>
+      <li>打开浏览器开发者工具</li>
+      <li>切换到 Network 标签页</li>
+      <li>勾选 "Offline" 选项或关闭网络连接</li>
+      <li>刷新页面，观察缓存效果</li>
+    </ol>
+  </div>
+  
+  <div class="demo-section">
+    <h2>🔧 Service Worker 状态</h2>
+    <div id="sw-status" class="status warning">正在检查 Service Worker 状态...</div>
+    <div id="cache-status" class="status warning">正在检查缓存状态...</div>
+  </div>
+  
+  <div class="demo-section">
+    <h2>演示图片</h2>
+    <p>这张图片会被 Service Worker 缓存，离线时仍可访问：</p>
+    <img src="https://haileyjaderyan.com/wp-content/uploads/2016/08/giphy-6.gif" 
+         alt="演示图片" 
+         style="max-width: 100%; height: auto;">
+  </div>
+  
+  <div class="demo-section">
+    <h2>重要</h2>
+    <p>此项目已配置为仅在 <code>/webpack/pwa/</code> 路径下生效，不会影响其他项目。</p>
+    <p>如果遇到问题，可以：</p>
+    <ul>
+      <li>在开发者工具中手动注销 Service Worker</li>
+      <li>清除浏览器缓存和存储</li>
+      <li>使用无痕模式测试</li>
+    </ul>
+  </div>
+
+  <script>
+    // 检查 Service Worker 状态
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        const statusDiv = document.getElementById('sw-status');
+        if (registrations.length > 0) {
+          statusDiv.textContent = 'Service Worker 已注册';
+          statusDiv.className = 'status success';
+        } else {
+          statusDiv.textContent = 'Service Worker 未注册';
+          statusDiv.className = 'status error';
+        }
+      });
+    } else {
+      document.getElementById('sw-status').textContent = '浏览器不支持 Service Worker';
+      document.getElementById('sw-status').className = 'status warning';
+    }
+  </script>
 </body>
 </html>

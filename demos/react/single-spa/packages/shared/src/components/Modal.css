@@ -1,0 +1,126 @@
+.shared-modal__overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.shared-modal {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+.shared-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.shared-modal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.shared-modal__close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #666;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shared-modal__close:hover {
+  background: #f8f9fa;
+  color: #333;
+}
+
+.shared-modal__body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: calc(90vh - 120px);
+}
+
+/* Sizes */
+.shared-modal--small {
+  width: 400px;
+}
+
+.shared-modal--medium {
+  width: 600px;
+}
+
+.shared-modal--large {
+  width: 800px;
+}
+
+.shared-modal--full {
+  width: 95vw;
+  height: 95vh;
+}
+
+.shared-modal--full .shared-modal__body {
+  max-height: calc(95vh - 120px);
+}
+
+/* Animation */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .shared-modal__overlay {
+    padding: 0.5rem;
+  }
+  
+  .shared-modal {
+    width: 100%;
+    max-width: none;
+    max-height: 95vh;
+  }
+  
+  .shared-modal__header {
+    padding: 1rem 1rem 0;
+  }
+  
+  .shared-modal__body {
+    padding: 1rem;
+    max-height: calc(95vh - 100px);
+  }
+  
+  .shared-modal__title {
+    font-size: 1.1rem;
+  }
+}

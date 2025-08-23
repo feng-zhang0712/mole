@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "start": "npx webpack serve --mode development"
+  },
+  "dependencies": {
+    "shallowequal": "^1.1.0"
+  }
+}

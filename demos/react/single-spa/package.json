@@ -1,0 +1,37 @@
+{
+  "name": "micro-frontend-spa",
+  "version": "1.0.0",
+  "description": "A complete micro-frontend project based on Single-SPA architecture",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:root\" \"npm run start:app1\" \"npm run start:app2\" \"npm run start:app3\"",
+    "start:root": "cd root && npm start",
+    "start:app1": "cd apps/app1 && npm start",
+    "start:app2": "cd apps/app2 && npm start",
+    "start:app3": "cd apps/app3 && npm start",
+    "build": "npm run build:root && npm run build:app1 && npm run build:app2 && npm run build:app3",
+    "build:root": "cd root && npm run build",
+    "build:app1": "cd apps/app1 && npm run build",
+    "build:app2": "cd apps/app2 && npm run build",
+    "build:app3": "cd apps/app3 && npm run build",
+    "install:all": "npm install && cd root && npm install && cd ../apps/app1 && npm install && cd ../app2 && npm install && cd ../app3 && npm install && cd ../../packages/shared && npm install && cd ../utils && npm install",
+    "clean": "rimraf node_modules root/node_modules apps/*/node_modules packages/*/node_modules"
+  },
+  "keywords": [
+    "micro-frontend",
+    "single-spa",
+    "react",
+    "webpack"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "rimraf": "^5.0.5"
+  },
+  "workspaces": [
+    "root",
+    "apps/*",
+    "packages/*"
+  ]
+}
