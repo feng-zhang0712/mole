@@ -1,0 +1,384 @@
+/* 未授权页面样式 */
+.unauthorized {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.unauthorized-container {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  padding: 3rem;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.unauthorized-container h1 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.error-message {
+  margin: 0 0 2rem 0;
+  color: #6c757d;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.error-message strong {
+  color: #e74c3c;
+}
+
+/* 权限状态信息 */
+.permission-status {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef;
+}
+
+.permission-status h3 {
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.status-grid {
+  display: grid;
+  gap: 1rem;
+  text-align: left;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.status-label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.status-value {
+  color: #6c757d;
+}
+
+.status-values {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.role-badge,
+.permission-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.role-badge {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #bbdefb;
+}
+
+.permission-badge {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border: 1px solid #e1bee7;
+}
+
+.no-permission {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* 解决方案建议 */
+.solutions {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.solutions h3 {
+  margin: 0 0 1.5rem 0;
+  color: #856404;
+  font-size: 1.3rem;
+}
+
+.solution-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.solution-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  text-align: left;
+}
+
+.solution-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.solution-content h4 {
+  margin: 0 0 0.5rem 0;
+  color: #856404;
+  font-size: 1.1rem;
+}
+
+.solution-content p {
+  margin: 0;
+  color: #856404;
+  line-height: 1.6;
+}
+
+/* 导航选项 */
+.navigation-options {
+  background: #e8f5e8;
+  border: 1px solid #c3e6cb;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.navigation-options h3 {
+  margin: 0 0 1.5rem 0;
+  color: #155724;
+  font-size: 1.3rem;
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-btn.primary {
+  background: #28a745;
+  color: white;
+}
+
+.nav-btn.primary:hover {
+  background: #1e7e34;
+  transform: translateY(-2px);
+}
+
+.nav-btn.secondary {
+  background: #17a2b8;
+  color: white;
+}
+
+.nav-btn.secondary:hover {
+  background: #138496;
+  transform: translateY(-2px);
+}
+
+.nav-btn.outline {
+  background: transparent;
+  color: #155724;
+  border: 2px solid #155724;
+}
+
+.nav-btn.outline:hover {
+  background: #155724;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* 帮助信息 */
+.help-section {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.help-section h3 {
+  margin: 0 0 1.5rem 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.help-options {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.help-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.help-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.help-icon {
+  font-size: 1.5rem;
+}
+
+/* 路由守卫说明 */
+.guard-explanation {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.explanation-card h3 {
+  margin: 0 0 1rem 0;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+.explanation-card p {
+  margin: 0 0 1rem 0;
+  color: #495057;
+  line-height: 1.6;
+}
+
+.explanation-card ol {
+  margin: 0 0 1rem 0;
+  padding-left: 1.5rem;
+  color: #495057;
+  text-align: left;
+}
+
+.explanation-card li {
+  margin-bottom: 0.5rem;
+}
+
+.code-example {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.code-example pre {
+  margin: 0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.code-example code {
+  color: #2c3e50;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .unauthorized-container {
+    padding: 2rem;
+  }
+  
+  .unauthorized-container h1 {
+    font-size: 2rem;
+  }
+  
+  .error-icon {
+    font-size: 3rem;
+  }
+  
+  .status-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .nav-buttons {
+    flex-direction: column;
+  }
+  
+  .help-options {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .solution-item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .unauthorized {
+    padding: 1rem;
+  }
+  
+  .unauthorized-container {
+    padding: 1.5rem;
+  }
+  
+  .permission-status,
+  .solutions,
+  .navigation-options,
+  .help-section {
+    padding: 1.5rem;
+  }
+}
