@@ -300,6 +300,27 @@ async function readFiles(files) {
 
 上面的代码，首先使用 `map` 方法获取所有异步操作数组，然后使用 `for...of` 循环等待异步执行的结果。这种方式是并发执行的，所有操作会在一秒后完成，并且一次性地按序输出。`map` 方法虽然不会等待每个异步操作完成，但是每次执行 `readFile` 方法是，异步操作已经开始执行了。等到 `for...of` 等待完成第一个异步操作，其他所有的操作也都已经完成了。
 
+### 3.3 限制并发数
+
+```javascript
+async function limitedParallelLoop(items, limit = 3) {
+  const results = [];
+
+  for (let i = 0; i < items.length; i += limit) {
+    const batch = items.slice(i, i + limit);
+    const batchResults = await Promise.all(
+      batch.map(item => processItem(item))
+    );
+    
+    results.push(...batchResults);
+  }
+
+  return results;
+}
+```
+
+上面代码中，通过 `limit` 关键字限制每一轮执行的异步操作数量，它的原理是，通过数组的 `slice` 方法每次取出三个数据项，然后将其转换为三个异步的 Promise 操作，并将其放入 `Promise.all` 中执行。这样，只有在每一轮的三个异步操作执行完成后，才会继续取出下一轮的三个异步任务执行。
+
 ## 四、参考
 
 - [async](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/async_function)

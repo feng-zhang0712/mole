@@ -115,7 +115,7 @@ const factorial = currying(tailFactorial, 1);
 factorial(5) // 120
 ```
 
-### 4.3 函数参数的默认值
+### 4.2 函数参数的默认值
 
 ES6 中，函数的参数可以设置默认值，通过设置默认值，很容易就能实现尾递归。
 
