@@ -761,7 +761,7 @@ TCP 连接的建立采用客户服务器方式。主动发起连接建立的应�
 
 TCP 建立连接的过程叫作握手，握手需要在客户和服务器之间交换三个 TCP 报文段。
 
-![用三报文握手建立 TCP 连接](/2025/assets/computer-network/a-three-packet-handshake-is-used-to-establish-a-tcp-connection.png)
+![用三报文握手建立 TCP 连接](/2025/assets/computer-network/the-process-of-three-packet-handshake.png)
 
 1. 假定客户端（以下代指 A）和服务器（以下代指 B）最初都处于 **CLOSED**（关闭）状态，并分别创建传输控制块 TCB。之后，服务器处于 **LISTEN**（收听）状态，等待客户端的连接请求。
 
@@ -787,7 +787,7 @@ TCP 建立连接的过程叫作握手，握手需要在客户和服务器之间�
 
 注意，TCP 规定，`SYN` 报文段不能携带数据，但要消耗掉一个序号；`ACK` 报文段可以携带数据，但如果不携带数据则不消耗序号。
 
-*传输控制块 TCB（Transmission Control Block）存储了每个连接中的一些重要信息，比如，TCP 连接表，指向发送和接收缓存的指针、指向重传队列的指针，当前的发送和接收序号等。*
+注：传输控制块 TCB（Transmission Control Block）存储了每个连接中的一些重要信息，比如，TCP 连接表，指向发送和接收缓存的指针、指向重传队列的指针，当前的发送和接收序号等。
 
 ### 9.2 TCP 的连接释放
 
