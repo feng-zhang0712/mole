@@ -6,9 +6,9 @@
 
 ### 2.1 `构造函数`方式实现继承
 
-借助 `构造函数`（Constructor）方式实现继承，是最简单的继承方式。
+借助 `构造函数`（Constructor）的方式实现继承，是最简单的继承方式。
 
-优点是可以向父类的构造函数传递参数，缺点是只能继承父类的实例属性和方法，不能继承原型上的属性和方法，无法实现复用。
+这种方式的优点是可以向父类的构造函数传递参数，缺点是只能继承父类的实例属性和方法，不能继承原型上的属性和方法，无法实现复用。
 
 ```javascript
 function SuperType(name) {
@@ -36,7 +36,7 @@ ins.colors // ['red', 'blue', 'green', 'black']
 
 ### 2.2 `原型链`方式实现继承
 
-使用 `原型链`（Prototype）方式实现继承，优点是子类可以继承父类的属性和方法，以及父类原型上的属性和方法。
+使用 `原型链`（Prototype）的方式实现继承，优点是子类可以继承父类的属性和方法，以及父类原型上的属性和方法。
 
 缺点也很明显。
 
@@ -73,7 +73,7 @@ SubType.prototype.getSubValue = function() {
 
 ![原型式继承中，子类实例对象的结构](/2025/assets/instance-structure-while-using-prototype-inheritance.png)
 
-从上面可以看出，原型链指向是，`sub.__proto__` -> `SubType.prototype` -> `SuperType.prototype` -> `Object.prototype` -> `null`。
+从上面可以看出，原型链的指向是，`sub.__proto__` -> `SubType.prototype` -> `SuperType.prototype` -> `Object.prototype` -> `null`。
 
 对于构造函数来说，`sub.constructor === SuperType`，并且 `SubType.prototype.constructor = SuperType.prototype.constructor`。
 
@@ -147,10 +147,10 @@ ins2.colors // ['red', 'blue', 'green']
 
 `原型式`继承（Prototypal Inheritance）的原理，与使用 `Object.create()` 方式类似，本质是对父类对象执行了一次浅拷贝。
 
-这种方式优点是，能够实现父类中属性和方法的继承。缺点是：
+这种方式的优点是，能够实现父类中属性和方法的继承。缺点是：
 
 - 由于父类没有构造函数，所以无法传递参数；
-- 父类对象中的引用属性会被所有字类实例共享。
+- 父类对象中的引用属性被所有子类实例共享。
 
 这种方式适合不需要单独创建构造函数，但仍然需要在对象间共享信息的场合。但注意：引用类型的属性会被所有实例对象共享。
 
@@ -262,7 +262,7 @@ function create(obj) {
 }
 
 // 关键代码
-function inheritPrototype(subType, superType) {
+function extend(subType, superType) {
   const prototype = Object.create(superType.prototype); // 这里也可以使用 create(superType.prototype)
   prototype.constructor = subType; // 设置 subType.prototype.constructor 指向自身的构造函数
   subType.prototype = prototype;
@@ -281,7 +281,7 @@ function SubType(name, age) {
   this.age = age;
 }
 
-inheritPrototype(SubType, SuperType);
+extend(SubType, SuperType);
 
 SubType.prototype.sayAge = function() {
   console.log(this.age);  
@@ -350,6 +350,6 @@ Object.setPrototypeOf(SubType.prototype, SuperType.prototype);
 
 ## 三、参考
 
-- [继承与原型链，MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)
-- [JavaScript 高级程序设计，Matt Frisbie](https://book.douban.com/subject/35175321/)
-- [Class 的继承，阮一峰](https://es6.ruanyifeng.com/#docs/class-extends)
+- [Inheritance and the prototype chain](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain)，MDN
+- [JavaScript 高级程序设计](https://book.douban.com/subject/35175321/)，Matt Frisbie
+- [Class 的继承](https://es6.ruanyifeng.com/#docs/class-extends)，阮一峰
