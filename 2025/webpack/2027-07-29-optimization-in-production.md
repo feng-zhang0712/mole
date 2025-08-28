@@ -6,40 +6,7 @@
 
 ### 2.1 压缩 HTML
 
-#### （1）基本使用
-
-HTML 压缩的主要目标是减少 HTML 文件的大小，提高页面加载速度。[html-webpack-plugin](https://github.com/jantimon/html-webpack-plugin) 是处理 HTML 文件的核心插件，它可以生成 HTML 文件，还提供了基础的压缩功能。
-
-下面列出了一些常见的属性。
-
-- `template`：指定使用哪个 HTML 文件作为模板。插件会读取这个模板文件，然后将打包后的资源注入到模板中。
-- `filename`：指定生成的 HTML 文件名，通常使用占位符指定。默认为 `'index.html'`。
-- `inject`：控制是否自动注入打包后的资源到 HTML 中。默认为 `true`，如果指定为 `'head'`，则注入到 `<head>` 标签中。
-- `title`：设置 HTML 页面的标题。这个值会替换模板中的 `<%= htmlWebpackPlugin.options.title %>`。
-- `templateParameters`：对象类型。向模板传递自定义参数。可以在模板中使用这些参数。比如，`<title><%= appName %> v<%= version %></title>`。
-- `chunks`：指定要注入到 HTML 中的 chunk。
-- `meta`：通过键值对的形式，指定一个或多个 meta 标签。
-- `minify`：详细控制 HTML 压缩的各种选项。
-
-```javascript
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = {
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './public/index.html'
-    }), 
-  ],
-};
-```
-
-上面的代码，打包时 `html-webpack-plugin` 以 `./public/index.html` 为模板，生成一个新的 `index.html` 文件，并将打包后的资源注入到新生成的文件中。
-
-#### （2）自定义压缩行为
-
-`minify` 属性用于控制代码的压缩。生产模式下，此属性默认值为 `true`，此时，使用内置的 [html-minifier-terser](https://github.com/DanielRuf/html-minifier-terser)插件，压缩 HTML 代码。其他模式下，此属性为 `false`，表示不开启压缩。
-
-通过自定义 `minify` 属性，可以控制更精确的压缩行为。下面是这个属性的默认值。
+压缩 HTML 需要借助 [html-webpack-plugin] 插件。生产模式下，webpack 自动启用内置的 [html-minifier-terser] 插件对 HTML 代码进行压缩，也可以通过 `minify` 配置项自定义压缩行为。
 
 ```javascript
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -48,532 +15,257 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       minify: {
-        // 默认值
         collapseWhitespace: true, // 移除空白符
-        removeComments: true, // 移除HTML注释
+        removeComments: true, // 移除 HTML 注释
         keepClosingSlash: false, // 移除自闭合标签的斜杠
         removeRedundantAttributes: true, // 移除冗余属性
-        removeScriptTypeAttributes: true, // 移除script的type属性
-        removeStyleLinkTypeAttributes: true, // 移除style和link的type属性
+        removeScriptTypeAttributes: true, // 移除 script 的 type 属性
+        removeStyleLinkTypeAttributes: true, // 移除 style 和 link 的 type 属性
         useShortDoctype: true, // 使用短文档类型
+        // ...
       },
     }),
   ],
 };
 ```
 
-除了上面的默认属性，还可以考虑配置下面的几个属性。
-
-- `minifyJS: true`：压缩内联 JavaScript。
-- `minifyCSS: true`：压缩内联 CSS。
-- `minifyURLs: true`：压缩 URL。
-- `removeEmptyElements: true`：移除空元素。
-- `removeEmptyAttributes: true`：移除空属性。
-- `collapseBooleanAttributes: true`：压缩布尔属性。
-
-#### （3）变量注入
-
-`html-webpack-plugin` 提供了强大的变量注入功能，允许在 HTML 模板中使用各种 webpack 和插件提供的变量。这些变量可以帮助我们动态生成HTML内容，实现更灵活的模板配置。
-
-`htmlWebpackPlugin.options` 对象包含了传递给 `HtmlWebpackPlugin` 的所有配置选项。
-
-`htmlWebpackPlugin.files` 对象包含了 webpack 打包后的文件信息。通过这个对象，可以获取所有需要被注入的样式、脚本和 chunks 数组。
-
-```html
-<!-- 注入所有 CSS 文件 -->
-<% htmlWebpackPlugin.files.css.forEach(function(cssFile) { %>
-  <link href="<%= cssFile %>" rel="stylesheet">
-<% }); %>
-
-<!-- 注入所有 JS 文件 -->
-<% htmlWebpackPlugin.files.js.forEach(function(jsFile) { %>
-  <script src="<%= jsFile %>"></script>
-<% }); %>
-
-<!-- 遍历所有 chunks -->
-<% Object.keys(htmlWebpackPlugin.files.chunks).forEach(function(chunkName) { %>
-  <% var chunk = htmlWebpackPlugin.files.chunks[chunkName]; %>
-  <% if (chunk.css) { %>
-    <% chunk.css.forEach(function(cssFile) { %>
-      <link href="<%= cssFile %>" rel="stylesheet">
-    <% }); %>
-  <% } %>
-  <% if (chunk.js) { %>
-    <% chunk.js.forEach(function(jsFile) { %>
-      <script src="<%= jsFile %>"></script>
-    <% }); %>
-  <% } %>
-<% }); %>
-```
-
-通过 `templateParameters` 属性，可以注入自定义变量到模板中。
-
-```javascript
-// webpack.config.js
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-module.exports = {
-  plugins: [
-    new HtmlWebpackPlugin({
-      templateParameters: {
-        // 应用信息
-        appName: 'React应用',
-        version: '1.0.0',
-        environment: process.env.NODE_ENV || 'development',
-        
-        // 配置信息
-        cdnUrl: process.env.CDN_URL || 'https://cdn.example.com',
-        
-        // 功能开关
-        enableAnalytics: process.env.NODE_ENV === 'production',
-        enableDebug: process.env.NODE_ENV === 'development',
-        
-        // 自定义函数
-        formatDate: function(date) {
-          return new Date(date).toLocaleDateString();
-        },
-        
-        // 复杂对象
-        config: {
-          theme: 'light',
-          language: 'zh-CN',
-          features: ['feature1', 'feature2'],
-        },
-      },
-    }),
-  ],
-};
-```
-
-```html
-<!-- public/index.html -->
-<!DOCTYPE html>
-<html lang="<%= config.language %>">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><%= appName %> v<%= version %></title>
-  
-  <!-- 应用信息 -->
-  <meta name="app-name" content="<%= appName %>">
-  <meta name="version" content="<%= version %>">
-  <meta name="environment" content="<%= environment %>">
-  
-  <!-- 配置信息 -->
-  <meta name="cdn-url" content="<%= cdnUrl %>">
-
-  <!-- 使用条件渲染避免不必要的代码 -->
-  <% if (environment === 'production') { %>
-    <!-- 生产环境特定代码 -->
-    <meta name="robots" content="index, follow">
-    <script src="https://analytics.example.com/tracker.js"></script>
-  <% } else { %>
-    <!-- 开发环境特定代码 -->
-    <meta name="robots" content="noindex, nofollow">
-    <script>
-      console.log('开发模式已启用');
-    </script>
-  <% } %>
-    
-  <!-- 条件渲染 -->
-  <% if (enableAnalytics) { %>
-    <script>
-      // 生产环境分析代码
-      window.analytics = {
-        enabled: true,
-        track: function(event) {
-          console.log('Analytics:', event);
-        }
-      };
-    </script>
-  <% } %>
-  
-  <% if (enableDebug) { %>
-    <script>
-      // 开发环境调试代码
-      window.debug = {
-        enabled: true,
-        log: function(message) {
-          console.log('Debug:', message);
-        }
-      };
-    </script>
-  <% } %>
-  
-  <!-- 主题配置 -->
-  <script>
-    window.appConfig = {
-      theme: '<%= config.theme %>',
-      language: '<%= config.language %>',
-      features: <%- JSON.stringify(config.features) %>,
-    };
-  </script>
-</head>
-<body>
-  <div style="display: none;">
-    <p>应用名称: <%= appName %></p>
-    <p>版本: <%= version %></p>
-    <p>环境: <%= environment %></p>
-  </div>
-</body>
-</html>
-```
-
-#### （4）模板优化
-
-这部分内容，在 [模板优化](/2025/react/2025-08-04-optimization.md) 有详细介绍。
-
-[示例代码](/examples/webpack/demos/html-optimization/)
+[html-webpack-plugin]: https://github.com/jantimon/html-webpack-plugin
+[html-minifier-terser]: https://github.com/DanielRuf/html-minifier-terser
 
 ### 2.1 压缩脚本资源
 
-#### （1）介绍
+压缩脚本资源，需要借助 Tree Shaking。Tree Shaking 是一个术语，用于描述移除 JavaScript 中死代码的过程。这个术语来源于 ES6 模块的静态结构特性，通过**摇树**的动作来比喻移除无用的代码。
 
-Tree Shaking 是一个术语，用于描述移除 JavaScript 上下文中的**死代码**。这个术语来源于 ES6 模块的静态结构特性，通过**摇树**的动作来比喻移除无用的代码。
+Tree Shaking 的核心是**静态分析**，这意味着在代码编译时（而不是运行时）确定模块的依赖关系。在传统的动态模块系统中，模块的依赖关系是在运行时确定的，构建工具无法在编译时知道哪些代码会被实际使用。
 
-Tree Shaking 在执行过程中，会依次经历静态分析、依赖图构建、标记阶段、清除阶段和副作用检查五个阶段。
+注意，生产模式下 Tree Shaking 会自动开启，如果要自定义 Tree Shaking 的行为，需要进行如下的配置。
 
-Tree Shaking 依赖于 ES6 模块的三个静态结构特性。
+#### 配置 `package.json`
 
-1. 静态导入/导出：`import` 和 `export` 语句必须在模块的顶层，不能在条件语句或函数内部。
-2. 静态分析：打包工具可以在编译时确定哪些代码被使用，哪些没有被使用。
-3. 副作用分析：识别代码的副作用，确保不会误删有副作用的代码
+`package.json` 中的 `sideEffects` 属性用于指定哪些文件有副作用，这个属性有两种配置方式。
 
-```javascript
-// utils.js
-export function add(a, b) {
-  return a + b;
-}
-
-export { add };
-
-// index.js
-import { add } from './utils';
-import debounce from 'lodash/debounce';
-import { debounce } from 'lodash-es'; // 或者，使用支持 Tree Shaking 的版本
-```
-
-通过上面的方式导出和导入的模块，都支持 Tree Shaking。
-
-Tree Shaking 的实现，需要借助 `terser-webpack-plugin` 插件，webpack 内置了此插件。
-
-#### （2）原理
-
-Tree Shaking 执行的过程，分为两个阶段。
-
-第一阶段：**标记阶段**。
-
-webpack 分析模块依赖，标记哪些导出被使用，哪些未被使用。同时分析哪些模块有副作用，哪些没有副作用。这一阶段主要依赖于三个属性配置。
-
-- `optimization.usedExports`：告诉 webpack **是否启用标记**，以标记哪些导出被使用了，哪些没有被使用。在打包后的代码中，未使用的导出会被标记为 `/* unused harmony export */`。这个是布尔值，默认值为 `true`。
-- `optimization.sideEffects`：这是一个全局属性，告诉 webpack 是否假设所有模块都没有副作用。这个是布尔值，默认值为 `true`。
-- `package.json` 中的 `sideEffects`：告诉 webpack 哪些文件有副作用，哪些没有。这个属性要比 `optimization.sideEffects` 更精确，是最精确的副作用控制方式。这个属性有多种配置方式，默认值为 `true`。
-
-  下面是这个属性的取值。
-
-  - `"sideEffects": true`：整个包都有副作用，所有代码都会被保留。
-  - `"sideEffects": false`：整个包都没有副作用，未使用的代码会被删除。
-  - `"sideEffects": ["*.css", "./src/utils.js"]`：只有 css 和 `utils.js` 文件有副作用，其他文件的未使用代码会被删除。
-  - `"sideEffects": ["*.css", "!*.css"]`：所有 css 文件都有副作用，但是 `!*.css` 文件没有副作用，这个文件中的没有使用的代码会被删除。
-
-上面的三个属性，按照优先级排序是，`package.json` 中的 `sideEffects` 属性 > `optimization.sideEffects` > `optimization.usedExports`。
-
-第二阶段：**清除阶段**。
-
-webpack 会删除标记的未使用代码，这是 Tree Shaking 真正生效的关键步骤。这一阶段主要依赖于两个属性配置。
-
-- `optimization.minimize`：布尔值。控制是否启用代码压缩。生产模式下为`true`，其他模式为 `false`。
-- `optimization.minimizer`：数组。指定用于代码压缩的插件。生产模式下默认为 `[new TerserPlugin()]`（即 `terser-webpack-plugin` 这个插件）。
-
-从上面两个阶段可以看出，在生产模式下，即在 `webpack.config.js` 中开启 `mode: 'production'` 的情况下，webpack 会自动开启 Tree Shaking。
-
-```javascript
-const TerserPlugin = require('terser-webpack-plugin');
-
-module.exports = {
-  mode: "production",
-  optimization: {
-    usedExports: true, // 默认为 `true`
-    sideEffects: true, // 默认为 `true`
-    minimize: true, // 默认为 `true`
-    minimizer: [
-      new TerserPlugin(), // 默认使用 `terser-webpack-plugin` 压缩代码
-    ],
-  },
-}
-```
-
-<!-- TODO：AST -->
-
-注意，代码分析过程，与抽象语法树（AST）有关。
-
-#### （3）使用限制
-
-并不是所有的模块和第三方库都支持 Tree Shaking，在使用时有一些限制。
-
-首先，`ESM` 中的默认导入、默认导出和 `import()` 动态导入，以及`CommonJS` 模块，都不支持或者仅有限支持 Tree Shaking。所以，应该尽量避免下面的写法。
-
-```javascript
-// 完全不支持 Tree Shaking
-const utils = require('./utils');
-import * as utils from './utils';
-import('./utils').then(module => {
-  console.log(module.add(1, 2));
-});
-
-// 可能影响 Tree Shaking
-import utils from './utils';
-export default { add };
-```
-
-上面的写法中，要特别注意 `import()` 动态导入的模块，对于动态导入的模块，webpack 无法在编译时确定哪些导出会被使用，所以会保留模块中的所有导出，即使模块中有死代码，这些代码也会被保留。
-
-其次，有副作用的代码可能被误删，应该尽量避免在模块顶层，执行有副作用的代码。下面的代码，都属于有副作用的代码。
-
-```javascript
-// 全局变量修改
-window.foo = 'bar';
-
-// 控制台输出
-console.log('Side effect');
-
-// DOM操作
-document.title = 'New Title';
-
-// 网络请求
-fetch('/api/data');
-
-// 定时器
-setTimeout(() => {}, 1000);
-```
-
-目前，有两种方式，可以将代码块（注意，这里说的是代码块，而不是模块）标记为没有副作用，然后，webpack 就可以放心地删除。
-
-一是将有副作用的代码放入一个函数中。
-
-```javascript
-export function addSideEffect() {
-  window.foo = 'bar';
-  console.log('Side effect');
-  document.title = 'New Title';
-  fetch('/api/data');
-  setTimeout(() => {}, 1000);
-}
-```
-
-上面的代码，如果 `addSideEffect()` 方法没有被其他模块使用，会被 Tree Shaking 优化。
-
-二是在代码前插入 `/*#__PURE__*/` 注释。
-
-```javascript
-// 不会被优化
-/*#__PURE__*/ window.foo = 'bar';
-
-// 会被优化
-/*#__PURE__*/ console.log('Side effect');
-/*#__PURE__*/ document.title = 'New Title';
-/*#__PURE__*/ fetch('/api/data');
-/*#__PURE__*/ setTimeout(() => {}, 1000);
-```
-
-上面代码中，除了 `window.foo`，其它方式定义的副作用代码，都会被删除。所以，应该尽量避免向全局对象中，添加属性和方法。
-
-循环依赖的模块，可能影响优化效果。
-
-```javascript
-// foo.js
-import { bar } from './bar';
-export const foo = bar;
-
-// bar.js
-import { foo } from './foo';
-export const bar = foo;
-```
-
-另外，某些第三方库可能也不支持。
-
-```javascript
-import _ from 'lodash';
-```
-
-#### （4）自定义配置
-
-第一步，配置 `optimization.usedExports` 属性。
-
-```javascript
-// utils.js
-export function add(a, b) {
-  return a + b;
-}
-
-export function subtract(a, b) {
-  return a - b;
-}
-
-// index.js
-import { add } from './utils';
-```
-
-对于上面的代码，当 `usedExports: false` 时，webpack 不会进行标记，所有的导出（上文中的 `add` 和 `subtract`）都会被保留。当 `usedExports: true` 时，webpack 会标记 `add` 为已使用，`subtract` 被标记为未使用。这意味着，构建后的代码会包含标记信息，但这个阶段不会删除未使用的代码。在打包输出的文件中，会看到类似下面这样的注释。
-
-```javascript
-/* unused harmony export subtract */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "add", function() { return add; });
-```
-
-<!-- 注意，这个属性只是告诉 webpack 是否标记代码，即使 `usedExports: true`，也不会删除未使用的代码。 -->
-
-第二步，配置 `optimization.sideEffects` 属性。
-
-```javascript
-// utils.js
-console.log('Side effect code.');
-window.baz = 'Global side effect variable.';
-```
-
-对于上面的代码，当 `sideEffects: false` 时，webpack 假设所有模块都没有副作用，会尝试删除未使用的代码，包括 `console.log` 和 `window.baz`，如果这些代码确实有副作用，就会被误删。当 `sideEffects: true` 时，webpack 假设所有模块都有副作用，不会删除任何代码，即使标记为未使用。此时 Tree Shaking 不会生效。
-
-```javascript
-// webpack.config.js
-module.exports = {
-  optimization: {
-    usedExports: true,
-    sideEffects: false,
-  },
-  mode: 'production',
-};
-```
-
-上面的代码，告诉 webpack 启用标记，并且所有代码都没有副作用。此时未使用的代码会被删除，包括有副作用的代码。
-
-第三步，配置 `package.json` 中的 `sideEffects` 属性。
+一种方式是使用布尔值，`true` 表示整个包都有副作用，所有代码都会被保留，该值也是默认值；`false` 表示整个包都没有副作用，未使用的代码会被删除。
 
 ```json
-// package.json
 {
-  "name": "my-package",
-  "sideEffects": ["./src/polyfills.js"]
+  "sideEffects": true
 }
 ```
 
-```javascript
-// polyfills.js
-// 这个文件有副作用
-console.log('Polyfills loaded');
-window.Promise = require('es6-promise').Promise;
-
-// utils.js
-// 这个文件没有副作用
-export function add(a, b) {
-  return a + b;
-}
-
-export function subtract(a, b) {
-  return a - b;
-}
-
-// index.js
-import './polyfills.js';  // 有副作用，会被保留
-import { add } from './utils.js';  // 只有 add 方法会被保留
-```
-
-对于上面的代码，`polyfills.js` 有副作用，会被保留。`utils.js` 没有副作用，只有 `add` 方法会被保留，`subtract` 方法由于没有使用，会被删除。
-
-下面是对这三个属性的推荐配置。
-
-```javascript
-// webpack.config.js
-module.exports = {
-  mode: 'production',
-  optimization: {
-    usedExports: true,
-    sideEffects: false,  // 让 package.json 控制副作用
-    minimize: true,
-  },
-  // stats: {
-  //   usedExports: true,     // 显示使用的导出
-  //   providedExports: true, // 显示提供的导出
-  // },
-};
-```
+另一种方式是使用配置数组，通过在数组中指定哪些文件有副作用，哪些没有副作用。
 
 ```json
-// package.json
 {
-  // "sideEffects": false,  // 如果确定没有副作用
   "sideEffects": [
     "*.css",
-    "*.scss",
-    "*.less",
-    "./src/polyfills.js"
+    "./src/utils.js",
   ]
 }
 ```
 
-第四步，配置 `optimization` 的 `minimize` 和 `minimizer` 属性。
+上面的代码表示，只有 `*.css` 和 `./src/utils.js` 模块有副作用，其他模块都没有副作用。此时，其他模块中未使用的代码就会被删除。
 
-要使 Tree Shaking 生效，必须设置 `minimize` 为 `true`。
+```json
+{
+  "sideEffects": ["*.css", "!*.js"]
+}
+```
 
-如果要使自定义 `terser-webpack-plugin` 的压缩行为，或者使用其他插件进行压缩，需要配置 `minimizer` 属性。
+上面代码表示，`*.css` 模块有副作用，`*.js` 模块文件没有副作用。此时，所有 `*.js` 模块文件和其他未列出的文件，都被认为是没有副作用。
+
+注意，该属性要比 `optimization.sideEffects` 更精确，优先级也更高。
+
+#### 配置 `optimization`
+
+- `usedExports` 布尔值，表示是否启用导出分析，默认值为 `true`。webpack 会分析每个模块的导出语句，追踪这些导出是否被其他模块实际使用。如果某个导出没有被使用，webpack 会将其标记为可移除的代码，这个过程基于静态分析实现。注意，`usedExports` 只是标记哪些导出被使用，它本身不会移除代码。
+- `sideEffects` 布尔值，控制 webpack 是否启用副作用检测功能，默认值为 `true`。webpack 会检查每个模块是否包含副作用代码，如全局变量修改、DOM 操作、API 调用等。如果模块包含副作用，webpack 会将其标记为不可移除，即使该模块的导出没有被使用。注意，如果 `package.json` 中指定了 `sideEffects`，则优先使用 `package.json` 中的配置。
+- `minimize` 布尔值，控制是否启用代码压缩。生产模式下默认为 `true`，其他模式为 `false`。
+- `minimizer` 指定用于代码压缩的插件。生产模式下默认使用 `terser-webpack-plugin` 插件压缩代码。
+
+#### 编码风格的影响
+
+Tree Shaking 的实际效果，受模块导入和导出方式的影响。CommonJS 模块以及 ESM 的 `import()` 动态导入语法，完全不支持 Tree Shaking。另外，ESM 的默认导入和导出会影响 Tree Shaking 的效果，所以应该尽量避免这些写法。下面是一些推荐的做法。
+
+使用 ESM 模块的普通导入和导出。
 
 ```javascript
-const TerserPlugin = require("terser-webpack-plugin");
+// 支持的导出方式
+export function add(a, b) { return a + b; }
+export function subtract(a, b) { return a - b; }
+
+export { add, subtract };
+
+// 支持的导入方法
+import { add } from './utils';
+
+// 支持的第三方库导入方法
+import debounce from 'lodash/debounce';
+import { debounce } from 'lodash-es'; // 使用支持 Tree Shaking 的版本
+```
+
+下面是动态导入的替代方案。
+
+```javascript
+// 使用条件渲染而不是条件导入
+const utils = {
+  add: () => import('./utils.js').then(m => m.add),
+  subtract: () => import('./utils.js').then(m => m.subtract)
+};
+
+// 动态导入仅用于代码分割
+const LazyComponent = () => import('./components/LazyComponent.js');
+```
+
+对于循环依赖的模块，有两种处理方式。
+
+第一种方式是重构代码，将共享的代码单独处理。
+
+```javascript
+// shared.js
+export function shared () {
+  // 共享的逻辑
+};
+
+// foo.js
+import { shared } from './shared';
+export const foo = shared() + /* ... */;
+
+// bar.js
+import { shared } from './shared';
+export const bar = shared() + /* ... */;
+```
+
+第二种方式是使用依赖注入。
+
+```javascript
+// shared.js
+export const shared = {
+  foo: null,
+  bar: null
+}
+
+// foo.js
+import { shared } from './shared';
+export const foo = shared.bar;
+
+// bar.js
+import { shared } from './shared';
+export const bar = shared.foo;
+
+// 在应用启动时注入依赖
+shared.foo = foo;
+shared.bar = bar;
+```
+
+#### 副作用处理
+
+##### （1）抽离成单独模块
+
+可以将有副作用的代码放入一个单独模块的方法中。
+
+```javascript
+// sideEffects.js
+export function sideEffectBusiness() {
+  window.foo = 'bar';
+  console.log('Side effect');
+  setTimeout(() => {}, 1000);
+  fetch('/api/data');
+}
+
+// index.js
+import './sideEffects.js';
+```
+
+上面的代码，如果 `sideEffectBusiness()` 方法没有被其他模块使用，就会被 Tree Shaking 优化。
+
+##### （2）条件判断
+
+```javascript
+// webpack.config.js
+const webpack = require('webpack');
 
 module.exports = {
   mode: "production",
   optimization: {
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          mangle: true,         // 变量名混淆
-          compress: {
-            unused: true,       // 删除未使用的变量和函数
-            dead_code: true,    // 删除死代码
-            drop_console: true, // 删除 console.log
-          },
-        },
-      }),
-    ],
+    usedExports: true,
+    sideEffects: false,
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.ENABLE_LOGGING': JSON.stringify(process.env.ENABLE_LOGGING || 'false'),
+    }),
+  ],
+}
+
+// sideEffects.js
+export function sideEffectBusiness() {
+  if (process.env.NODE_ENV === 'production') {
+    fetch('/api/data');
+  }
+
+  if (process.env.ENABLE_LOGGING === 'true') {
+    window.foo = 'bar';
+  }
+}
+
+// index.js
+import { sideEffectBusiness } from './sideEffects.js';
+sideEffectBusiness();
+```
+
+上面的代码，在生产环境下使用 `ENABLE_LOGGING=true webpack build --config ./webpack.config.js` 命令打包时，两者都会被保留。如果把 `ENABLE_LOGGING=true` 参数去掉，只有 `fetch('/api/data')` 会被保留。
+
+##### （3）使用 `/*#__PURE__*/` 标记
+
+可以在函数调用前插入 `/*#__PURE__*/` 标记，它的作用是告诉构建工具这个函数调用没有副作用，如果函数调用的结果未被使用，整个调用可以被移除。
+
+```javascript
+/*#__PURE__*/ add(1, 2);
+/*#__PURE__*/ new MyClass();
+/*#__PURE__*/ console.log('Hello');
+/*#__PURE__*/ localStorage.setItem('key', 'value');
+```
+
+上面的代码在打包时都会被移除。但是，下面的代码都不会被删除。
+
+```javascript
+/*#__PURE__*/ window.foo = 'bar';
+/*#__PURE__*/ document.cookie = 'name=value';
+/*#__PURE__*/ window.location.href;
+/*#__PURE__*/ object.property;
+/*#__PURE__*/ array[0];
+```
+
+之所以上面的代码会被保留，是因为 `/*#__PURE__*/` 只标记**函数调用**，不标记语句。所以，`/*#__PURE__*/` 标记只能用在函数调用场景。
+
+```javascript
+export function calculate() {
+  // 如果这个函数调用无副作用且结果未使用，就可能被构建工具移除
+  /*#__PURE__*/ expensiveCalculation();
+  return 'result';
 }
 ```
 
-#### （5）总结
-
-综上所述，要想使 Tree Shaking 达到预期效果，需要做到这些。
-
-- 使用 ES6 模块语法（`import` / `export`），避免使用 CommonJS 模块化语法。
-- 配置 `mode: 'production'`。
-- 配置 `optimization` 的 `usedExports: true`、`sideEffects` 以及 `package.json` 中的 `sideEffects`。
-- 避免在模块顶层执行副作用操作。
-
-如果要调试 Tree Shaking 是否生效，可以使用 `webpack-bundle-analyzer` 插件，或者 webpack 的 `stats` 输出。
-
-```bash
-# 使用 webpack-bundle-analyzer 分析打包结果
-npm install -D webpack-bundle-analyzer
-```
+注意，上面这些配置方式，跟 `package.json` 的 `sideEffects` 属性并不冲突，他们属于不同层级的处理方案，是互补的关系。
 
 ```javascript
-// webpack.config.js
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+// package.json
+{
+  "sideEffects": ["!./src/sideEffects.js"]
+}
 
-module.exports = {
-  plugins: [
-    new BundleAnalyzerPlugin(),
-  ],
-};
+// sideEffects.js
+/*#__PURE__*/ console.log('Hello');
 ```
 
-[示例代码](/examples/webpack/demos/tree-shaking/)
+上面的代码，即使 `sideEffects.js` 模块被标记为有副作用，`console.log('Hello')` 依然会被移除。
 
 ### 2.2 压缩样式资源
 
 CSS 样式资源的压缩，主要借助两个插件。
 
-- `mini-css-extract-plugin`：将 CSS 从 JavaScript bundle 中提取出来，生成独立的 CSS 文件，避 免CSS 被打包到 JS 中，减少 JS 文件体积，提高 CSS 的缓存效率。
-- `css-minimizer-webpack-plugin`：这个插件使用 [cssnano](https://cssnano.github.io/cssnano/)压缩 CSS 代码。
+- `mini-css-extract-plugin` 将样式资源单独打包，有利于较少 bundle 的提体积以及浏览器缓存优化。
+- `css-minimizer-webpack-plugin` 执行样式代码的压缩。
 
 ```javascript
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -616,40 +308,6 @@ module.exports = {
   }
 };
 ```
-
-问题一、CSS 加载顺序不正确，导致样式覆盖。
-
-```javascript
-new MiniCssExtractPlugin({
-  insert: (linkTag) => {
-    // 确保 CSS 按正确顺序插入
-    const target = document.querySelector('#css-container');
-    target.appendChild(linkTag);
-  }
-})
-```
-
-问题二、使用 MiniCssExtractPlugin 后，开发环境热更新失效。
-
-```javascript
-const isDevelopment = process.env.NODE_ENV === 'development';
-
-module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader'
-        ]
-      }
-    ]
-  }
-};
-```
-
-[示例代码](/demos/src/webpack/style-compress/)
 
 ## 三、代码分割
 
@@ -2103,142 +1761,7 @@ module.exports = {
 
 [示例代码](/examples/webpack/demos/pwa/)
 
-## 性能监控优化
-
-## 其他优化措施
-
-使用 `contenthash` 实现长期缓存。
-
-```javascript
-module.exports = {
-  output: {
-    filename: '[name].[contenthash:8].js',
-    chunkFilename: '[name].[contenthash:8].chunk.js',
-  },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash:8].css',
-      chunkFilename: '[id].[contenthash:8].css',
-    }),
-  ],
-};
-```
-
 ## 参考
 
 - [MDN](https://developer.mozilla.org/)
 - [渐进式网络应用程序](https://zh.wikipedia.org/wiki/%E6%B8%90%E8%BF%9B%E5%BC%8F%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
-
-
-# Webpack打包优化清单（按优先级排序）
-
-## 一、核心性能优化（高优先级）
-
-### 1. 代码分割优化
-<!-- - 入口分割（多入口配置） -->
-<!-- - 动态导入（import()按需加载） -->
-- Vendor分离（第三方库独立打包）
-<!-- - 公共模块提取（splitChunks配置） -->
-
-### 2. 缓存优化
-<!-- - 文件名哈希策略（contenthash、chunkhash、hash） -->
-<!-- - 模块ID稳定性（moduleIds: 'deterministic'） -->
-<!-- - Chunk ID稳定性（chunkIds: 'deterministic'） -->
-<!-- - Runtime优化（runtimeChunk配置） -->
-
-### 3. 代码压缩优化
-<!-- - JavaScript代码压缩（terser-webpack-plugin） -->
-<!-- - CSS代码压缩（css-minimizer-webpack-plugin） -->
-<!-- - HTML代码压缩（html-webpack-plugin minify） -->
-<!-- - Tree Shaking（删除无用代码） -->
-
-## 二、资源优化（中高优先级）
-
-### 4. 图片和媒体资源优化
-<!-- - 图片压缩（image-minimizer-webpack-plugin） -->
-- 图片格式优化（WebP、AVIF支持）
-- 小图片内联（base64转换）
-- 字体文件优化
-
-### 5. 资源加载优化
-<!-- - 资源预加载（preload） -->
-<!-- - 资源预获取（prefetch） -->
-- 关键资源内联
-- 资源懒加载
-
-### 6. 模块解析优化
-<!-- - 路径别名配置（resolve.alias）
-- 文件扩展名配置（resolve.extensions）
-- 模块搜索路径优化（resolve.modules）
-- 外部依赖配置（externals） -->
-
-## 三、构建性能优化（中优先级）
-
-### 7. 构建速度优化
-- 多进程打包（thread-loader）
-- 缓存配置（cache配置）
-- 并行执行（parallel-webpack）
-- 增量构建优化
-
-### 8. 开发体验优化
-<!-- - 热模块替换（HMR） -->
-<!-- - 开发服务器优化（devServer配置） -->
-- Source Map配置
-<!-- - 错误提示优化 -->
-
-## 四、高级优化（中低优先级）
-
-### 9. 代码质量优化
-- ESLint代码检查
-- TypeScript类型检查
-- 代码规范配置
-- 依赖分析（webpack-bundle-analyzer）
-
-### 10. 环境特定优化
-- 环境变量配置（DefinePlugin）
-- 条件编译
-- 多环境配置
-- 环境特定插件
-
-## 五、特殊场景优化（低优先级）
-
-### 11. 微前端优化
-- 模块联邦配置
-- 独立运行时
-- 共享依赖管理
-- 应用间通信优化
-
-### 12. PWA和离线支持
-- Service Worker配置
-- 离线缓存策略
-- Web App Manifest
-- 推送通知支持
-
-### 13. 国际化优化
-- 多语言包分割
-- 按需加载语言包
-- 语言包压缩
-- 动态语言切换
-
-## 六、监控和分析（持续优化）
-
-### 14. 性能监控
-- 构建时间监控
-- 包大小监控
-- 加载性能分析
-- 用户体验指标
-
-### 15. 质量监控
-- 代码覆盖率分析
-- 依赖安全审计
-- 性能回归检测
-- 用户反馈收集
-
-## 优化优先级说明
-
-**高优先级（1-3）**: 直接影响用户体验，必须优先实施
-**中高优先级（4-6）**: 显著提升性能，建议优先实施
-**中优先级（7-8）**: 提升开发效率，在核心优化完成后实施
-**中低优先级（9-10）**: 提升代码质量，在性能优化完成后实施
-**低优先级（11-13）**: 特殊需求，根据项目具体情况决定
-**持续优化（14-15）**: 建立监控体系，持续改进
