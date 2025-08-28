@@ -1,5 +1,37 @@
 # webpack 生产环境优化
 
+## 2.4 生产环境 Source Map 策略
+
+生产构建建议：
+
+- 小型/内部项目：`devtool: 'source-map'`（完整、可上传到错误跟踪平台，谨慎暴露到公网）。
+- 公网生产：`devtool: 'hidden-source-map'` 或 `devtool: 'nosources-source-map'`，配合 Sentry/TrackX 上传映射，避免泄露源码。
+- 禁用内联 source map；确保 CI 只上传 `.map` 到错误平台，不随产物发 CDN。
+
+```javascript
+module.exports = {
+  mode: 'production',
+  devtool: 'hidden-source-map',
+};
+```
+
+## 2.5 包体分析与依赖体检
+
+```bash
+npm i -D webpack-bundle-analyzer
+```
+
+```javascript
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+module.exports = {
+  plugins: [
+    new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false })
+  ]
+};
+```
+
+建议：排查重复依赖、转为 ESM 版本（如 `lodash-es`）、启用按需导入、移除未使用 polyfill。
+
 ## 一、介绍
 
 ## 二、代码压缩
@@ -31,14 +63,14 @@ module.exports = {
 };
 ```
 
-注意，HTML 压缩的实现，本质是借助 [html-webpack-plugin] 依赖的 [html-minifier-terser] 插件，这个插件在 [html-webpack-plugin] 安装时会被自动安装。
+注意，`minify` 其实是对 [html-minifier-terser] 插件的配置，这个插件在 [html-webpack-plugin] 安装时会自动安装。
 
 [html-webpack-plugin]: https://github.com/jantimon/html-webpack-plugin
 [html-minifier-terser]: https://github.com/DanielRuf/html-minifier-terser
 
 ### 2.2 压缩样式资源
 
-样式资源的压缩，主要涉及到样式提取和代码压缩两个过程。
+样式资源的压缩，主要包括样式提取和代码压缩两个过程。
 
 ```text
 CSS 文件 → Loader 处理 → 提取插件（MiniCssExtractPlugin） → 压缩插件（CssMinimizerPlugin） → 输出文件
@@ -51,7 +83,7 @@ CSS 文件 → Loader 处理 → 提取插件（MiniCssExtractPlugin） → 压�
 ```javascript
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-function precessStyles(test, pre) {
+function processStyles(test, pre) {
   return {
     test,
     use: [
@@ -67,9 +99,8 @@ module.exports = {
   mode: 'production',
   module: {
     rules: [
-      precessStyles(/\.css$/),
-      precessStyles(/\.s[ac]ss$/i, 'sass-loader'),
-      precessStyles(/\.less$/i, 'less-loader'),
+      processStyles(/\.css$/),
+      processStyles(/\.s[ac]ss$/i, 'sass-loader'),
     ]
   },
   plugins: [
@@ -97,7 +128,6 @@ module.exports = {
         include: /node_modules/, // 只压缩 node_modules 中的 CSS
         exclude: /\.min\.css$/, // 排除已经压缩的文件
         parallel: true, // 启用并行处理
-        parallel: 4, // 指定并行进程数
         // 缓存优化：启用缓存
         cache: true,
         cacheKeys: (defaultCacheKeys, file) => {
@@ -125,7 +155,7 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 中死代码的过�
 - ES6 模块支持，基于 ES6 的 `import` 和 `export` 语法进行静态分析。
 - 副作用检测，识别和保留有副作用的代码，移除纯函数代码。
 
-下面是与 Tree Shaking 有关的配置项。
+下面是与 Tree Shaking 有关的配置项与注意点。
 
 [静态结构]: http://exploringjs.com/es6/ch_modules.html#static-module-structure
 
@@ -181,7 +211,7 @@ module.exports = {
   mode: 'production',
   optimization: {
     usedExports: true, // 启用导出分析，标记未使用的导出
-    sideEffects: false, // 启用副作用检测
+    sideEffects: true, // 启用副作用检测（依赖 package.json: sideEffects）
     minimize: true, // 启用代码压缩
   }
 };
@@ -194,18 +224,15 @@ Tree Shaking 的实际效果，受模块导入和导出方式的影响。CommonJ
 使用 ESM 模块的普通导入和导出。
 
 ```javascript
-// 支持的导出方式
+// 支持的导出方式（具名导出）
 export function add(a, b) { return a + b; }
 export function subtract(a, b) { return a - b; }
 
-export { add, subtract };
-
-// 支持的导入方法
+// 支持的导入方式（具名导入）
 import { add } from './utils';
 
-// 支持的第三方库导入方法
-import debounce from 'lodash/debounce';
-import { debounce } from 'lodash-es'; // 使用支持 Tree Shaking 的版本
+// 第三方库：优先使用支持 ESM 的包
+import { debounce } from 'lodash-es';
 ```
 
 下面是动态导入的替代方案。
@@ -408,9 +435,6 @@ sideEffectBusiness();
 
 如果项目有多个入口，可以配置多入口形式进行打包。如果这些入口，有共通引用的模块，为了避免这些模块被打包到每一个文件中，此时就需要进行代码分割。
 
-- `dependOn`：指定通过 `entry` 中的哪个属性，来配置共享的模块。
-- `shared`：指定多入口依赖的模块。
-
 ```javascript
 module.exports = {
   entry: {
@@ -442,21 +466,14 @@ asset app.js 1.24 KiB [emitted] (name: app)
 使用 ES6 提供的 `import()` 方法导入模块时，webpack 会自动将导入的模块打包为单独的 chunk。
 
 ```javascript
-// utils.js
-function sum(numbers) {
-  return numbers.reduce(
-    (acc, cur) => acc + cur,
-    0,
-  );
+// utils.js（ESM）
+export function sum(numbers) {
+  return numbers.reduce((acc, cur) => acc + cur, 0);
 }
 
-module.exports = {
-  sum,
-};
-
-// index.js
+// index.js（动态导入，按需加载）
 import('./utils.js').then(m => {
-  console.log(m.default.sum([1, 2, 3]));
+  console.log(m.sum([1, 2, 3]));
 });
 ```
 
@@ -467,7 +484,7 @@ asset main.js 3.03 KiB [emitted] [minimized] (name: main)
 asset 413.js 126 bytes [emitted] [minimized]
 ```
 
-可以 webpack 提供的魔法注释功能，对导出的模块重命名。
+另外，还可以使用 webpack 提供的魔法注释功能，对导出的模块重命名。
 
 ```javascript
 // index.js
@@ -481,31 +498,6 @@ import(/* webpackChunkName: "utils" */'./utils.js').then(m => {
 ```text
 asset main.js 3.03 KiB [emitted] [minimized] (name: main)
 asset utils.js 126 bytes [emitted] [minimized] (name: utils)
-```
-
-除了 `webpackChunkName`，webpack 还支持其他的魔法注释，都可以作为优化手段。
-
-- `webpackMode`：控制导入模块的加载策略。可选值为：`eager`、`lazy`、`lazy-once` 和 `weak`。
-- `webpackPreload`：布尔值，提示浏览器在后台预加载模块。
-- `webpackPrefetch`：布尔值，提示浏览器预取模块以供将来使用。
-
-```javascript
-// 指定加载模式
-import(/* webpackMode: "lazy" */ './utils.js');
-
-// 预加载配置
-import(/* webpackPrefetch: true */ './utils.js');
-
-// 预获取配置
-import(/* webpackPreload: true */ './utils.js');
-
-// 组合使用
-import(
-  /* webpackChunkName: "utils" */
-  /* webpackPrefetch: true */
-  /* webpackMode: "lazy" */
-  './utils.js'
-);
 ```
 
 ### 3.3 配置 `splitChunks`
@@ -530,7 +522,7 @@ webpack 配置文件中的 [splitChunks] 属性，是一个用于配置代码分
 module.exports = {
   optimization: {
     splitChunks: {
-      chunks: 'async', // 对所有类型的 chunk 进行分割
+      chunks: 'all', // 对所有类型的 chunk 进行分割
     },
   },
 };
@@ -549,18 +541,6 @@ module.exports = {
       maxAsyncRequests: 30, // 异步加载的最大并行请求数
       maxInitialRequests: 30, // 初始加载的最大并行请求数
       enforceSizeThreshold: 50000, // 强制分割阈值（50KB）
-      cacheGroups: {
-        defaultVendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10,
-          reuseExistingChunk: true,
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
-        },
-      },
     },
   },
 };
@@ -613,14 +593,6 @@ module.exports = {
           reuseExistingChunk: true, // 重用已存在的 chunk
         },
         
-        // 样式文件分组
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true,
-        },
-        
         // 特定库分组
         lodash: {
           test: /[\\/]node_modules[\\/]lodash[\\/]/,
@@ -640,24 +612,24 @@ module.exports = {
 module.exports = {
   optimization: {
     splitChunks: {
-      defaultVendors: {
-        test: /[\\/]node_modules[\\/]/,
-        priority: -10,
-        reuseExistingChunk: true
-      },
-      default: {
-        minChunks: 2, 
-        priority: -20,
-        reuseExistingChunk: true
-      } 
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+          reuseExistingChunk: true
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true
+        }
+      }
     },
   },
 };
 ```
 
-注意，`splitChunks` 选项基于 `SplitChunksPlugin` 插件实现，webpack 内置了这个插件，在使用时不必单独下载。
-
-[示例代码](/examples/webpack/demos/code-splitting/)
+注意，`splitChunks` 是对 `SplitChunksPlugin` 插件的配置，webpack 内置了这个插件，在使用时不必单独下载。
 
 [splitChunks]: https://webpack.docschina.org/plugins/split-chunks-plugin#optimizationsplitchunks
 
@@ -826,7 +798,14 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'public', to: '.', noErrorOnMissing: true, globOptions: { ignore: ['**/index.html'] } }
+        {
+          from: 'public',
+          to: '.',
+          noErrorOnMissing: true, 
+          globOptions: {
+            ignore: ['**/index.html'],
+          }
+        }
       ]
     })
   ],
@@ -866,19 +845,7 @@ module.exports = {
 
 注意：需确保服务器正确回送 `Content-Encoding` 与缓存头；对不可压缩媒体（如 jpg/png/mp4）无需预压缩。
 
-### 4.7 SSR/Node 目标下的资源发射控制
-
-在 SSR/Node 目标下某些资源不希望实际发射到输出目录。
-
-```js
-{
-  test: /\.(png|jpe?g|gif|svg)$/i,
-  type: 'asset/resource',
-  generator: { emit: false } // 仅导出 URL/路径，不真正发射文件
-}
-```
-
-### 4.8 性能阈值与构建提示
+### 4.7 性能阈值与构建提示
 
 ```js
 module.exports = {
@@ -1027,22 +994,16 @@ module.exports = {
 
 模块标识符有三个可选配置项，分别是：`deterministic`、`named` 和 `natural`，下面分别对他们进行介绍。
 
-##### （1）`deterministic` 模式（推荐）
-
-`deterministic` 模式基于模块的路径和内容生成稳定的 ID，相同的模块在每次构建中都会获得相同的 ID，即使模块顺序发生变化，ID 也能保持稳定。这是webpack 的默认配置，推荐在生产环境中使用。
+`deterministic` 模式（推荐）基于模块的路径和内容生成稳定的 ID，相同的模块在每次构建中都会获得相同的 ID，即使模块顺序发生变化，ID 也能保持稳定。这是webpack 的默认配置，推荐在生产环境中使用。
 
 ```javascript
 module.exports = {
   optimization: {
-    moduleIds: 'deterministic', // // 基于模块路径生成稳定的模块 ID
+    moduleIds: 'deterministic', // 基于模块路径/内容生成稳定的模块 ID
     chunkIds: 'deterministic', // 基于 chunk 内容生成稳定的 chunk ID
-    moduleIds: 'deterministic', // 确保模块顺序稳定
-    chunkIds: 'deterministic' // 确保 chunk 顺序稳定
   }
 };
 ```
-
-##### （2）`named` 模式
 
 `named` 模式使用模块名称作为 ID，适合开发环境，便于调试和问题定位。
 
@@ -1054,8 +1015,6 @@ module.exports = {
   }
 };
 ```
-
-##### （3）`natural` 模式
 
 `natural` 模式按模块加载顺序分配 ID，模块顺序变化会导致 ID 变化。由于可能导致缓存失效，所以不推荐在生产环境中使用。
 
@@ -1689,5 +1648,6 @@ module.exports = {
 
 ## 参考
 
+- [webpack 文档](https://webpack.docschina.org/)
 - [MDN](https://developer.mozilla.org/)
 - [渐进式网络应用程序](https://zh.wikipedia.org/wiki/%E6%B8%90%E8%BF%9B%E5%BC%8F%E7%BD%91%E7%BB%9C%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F)
