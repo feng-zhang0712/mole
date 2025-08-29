@@ -8,6 +8,8 @@
 
 ### 基础实现
 
+下面是基础版本防抖函数的实现。
+
 ```javascript
 function debounce(func, ms) {
   let timer;
@@ -17,7 +19,7 @@ function debounce(func, ms) {
     }
     
     const _this = this;
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       func.apply(_this, Array.prototype.slice.call(arguments));
       timer = null;
     }, ms);
@@ -25,67 +27,77 @@ function debounce(func, ms) {
 }
 ```
 
+下面是 React 中使用 Hooks 实现的防抖函数，这个函数能够防止对一个值的频繁更新。
+
 ```javascript
 export function useDebounce(value, ms = 0) {
   const timerRef = useRef();
+
   const [state, setState] = useState(value);
 
   const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+    if (!timerRef.current) {
+      return;
     }
+
+    clearTimer(timerRef.current);
+    timerRef.current = null;
   }, []);
 
   useEffect(() => {
     clearTimer();
+
     timerRef.current = setTimeout(() => {
       setState(value);
       timerRef.current = null;
     }, ms);
+
     return () => clearTimer();
   }, [value, ms, clearTimer]);
 
-  return [state, clearTimer];
+  return state;
 }
 ```
 
+下面是 React Hooks 版本的防抖函数实现。
+
 ```javascript
-export function useDebounceFn(fn, ms = 0, deps = []) {
+export function useDebounceFn(func, ms = 0) {
   const timerRef = useRef();
+
   const [state, setState] = useState();
 
   const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+    if (!timerRef.current) {
+      return;
     }
+
+    clearTimer(timerRef.current);
+    timerRef.current = null;
   }, []);
 
-  const debounce = useCallback((...args) => {
+  const debounceFunction = useCallback((...args) => {
     clearTimer();
     
     timerRef.current = setTimeout(() => {
-      setState(fn(...args));
+      setState(func(...args));
       timerRef.current = null;
     }, ms);
-  }, [fn, ms, clearTimer]);
+  }, [func, ms, clearTimer]);
 
-  useEffect(() => () => clearTimer(), deps);
+  useEffect(() => () => clearTimer(), []);
 
-  return [state, debounce, clearTimer];
+  return [state, debounceFunction];
 }
 ```
 
 下面是两个使用的例子。
 
 ```jsx
-// 基础用法
 const debouncedSearch = debounce(query => {
   // 搜索内容
 }, 300);
 
-// React Hook 用法
 function SearchComponent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm] = useDebounce(searchTerm, 500);
@@ -145,16 +157,21 @@ function throttle(func, ms) {
 }
 ```
 
+下面是 React 中使用 Hooks 实现的 debounce 函数，这个方法用来优化对一个数值的频繁更新。
+
 ```javascript
 export function useThrottle(value, ms = 0) {
   const timerRef = useRef();
+
   const [state, setState] = useState(value);
 
   const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+    if (!timerRef.current) {
+      return;
     }
+
+    clearTimer(timerRef.current);
+    timerRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -172,32 +189,35 @@ export function useThrottle(value, ms = 0) {
 }
 ```
 
+下面是使用 React 中的 Hooks 对一个函数实现节流的例子。
+
 ```javascript
-export function useThrottleFn(fn, ms = 0, deps = []) {
+export function useThrottleFn(func, ms = 0) {
   const timerRef = useRef();
+
   const [state, setState] = useState();
 
   const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-      timerRef.current = null;
+    if (!timerRef.current) {
+      return;
     }
+
+    clearTimer(timerRef.current);
+    timerRef.current = null;
   }, []);
 
-  const throttle = useCallback((...args) => {
+  const throttleFunction = useCallback((...args) => {
     if (!timerRef.current) {
       timerRef.current = setTimeout(() => {
-        setState(fn(...args));
+        setState(func(...args));
         timerRef.current = null;
       }, ms);
     }
-  }, [fn, ms]);
+  }, [func, ms]);
 
-  useEffect(() => {
-    return () => clearTimer();
-  }, deps);
+  useEffect(() => () => clearTimer(), []);
 
-  return [state, throttle, clearTimer];
+  return [state, throttleFunction];
 }
 ```
 
