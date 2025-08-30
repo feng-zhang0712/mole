@@ -25,7 +25,7 @@
 
 ### 2.2 Intersection Observer API
 
-另一种实现图像懒加载的方式，是使用交叉观察器（Intersection Observer）API。关于 Intersection Observer 的详细内容，可以参考 [这篇文章](#22-intersection-observer-api)。
+另一种实现图像懒加载的方式，是使用交叉观察器（Intersection Observer）API。关于 Intersection Observer 的详细内容，可以参考 [这篇文章]。
 
 下面的代码，是一个使用 Intersection Observer API 实现图像懒加载的例子。
 
@@ -41,7 +41,6 @@
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               const img = entry.target;
-              // 检查是否已经加载
               if (!img.src && img.dataset.src) {
                 img.src = img.dataset.src;
                 observer.unobserve(img);
@@ -59,6 +58,8 @@
 </html>
 ```
 
+[这篇文章]: /2025/web/2025-08-19-intersection-observer.md
+
 ### 2.3 `scroll` 事件监听
 
 ```jsx
@@ -68,7 +69,7 @@ function checkLazyImages() {
   const lazyImages = container.querySelectorAll('img[data-src]');
   
   lazyImages.forEach(img => {
-    if (img.dataset.src && !img.src) {
+    if (!img.src && img.dataset.src) {
       const rect = img.getBoundingClientRect();
       const isVisible = (
         rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
@@ -90,26 +91,50 @@ window.addEventListener('resize', throttle(checkLazyImages, 200));
 checkLazyImages(); // 初始检查
 ```
 
-### 2.4 `scroll` + `content-visibility`
+### 2.4 `scroll` + ResizeObserver API
+
+```jsx
+const container = document.querySelector('.container');
+
+// 当 container 尺寸发生变化时，重新检查图片是否需要加载
+// 可以检测到窗口 resize 和其他方式改变的容器尺寸的变化
+const observer = new ResizeObserver(() => checkLazyImages());
+observer.observe(container);
+
+function checkLazyImages() {
+  const lazyImages = container.querySelectorAll('img[data-src]');
+  
+  lazyImages.forEach(img => {
+    if (img.dataset.src && !img.src) { // 还未加载的图片
+      const rect = img.getBoundingClientRect();
+      const isVisible = (
+        rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
+        rect.bottom > -100
+      );
+      
+      if (isVisible) {
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+      }
+    }
+  });
+}
+
+window.addEventListener('scroll', throttle(checkLazyImages, 100));
+
+// 页面加载时立即检查一次
+checkLazyImages();
+```
+
+这种方式性能较好，但要考虑浏览器的兼容性。
+
+### 2.5 `scroll` + `content-visibility`
 
 CSS 的 `content-visibility` 属性控制元素是否渲染其内容，让浏览器能够跳过不在视口中的渲染工作（包括布局和绘制）。该属性有三个可选值。
-
-<!-- 当设置了 `content-visibility: auto` 的元素的渲染工作，开始或停止被跳过时，`contentvisibilityautostatechange` 事件会在该元素上触发。这样就可以在不需要时启动或停止渲染过程（例如，在 `<canvas>` 上绘制），从而节省处理能力。 -->
 
 - `visible` 默认值，元素内容正常渲染。
 - `hidden` 隐藏元素的内容，不进行任何渲染，但元素仍然占据空间（类似于 `visibility: hidden`）。
 - `auto` 浏览器根据元素是否在视口中来决定是否渲染其内容。如果元素不在视口中，浏览器不会执行渲染操作，从而优化性能。
-
-当使用 `content-visibility: auto` 时，如果元素没有明确的尺寸，可能会导致内容加载时发生布局偏移。因此，`content-visibility` 属性一般跟 `contain-intrinsic-size` 属性一起使用。
-
-```css
-.section {
-  content-visibility: auto;
-  contain-intrinsic-size: 300px; /* 提供元素的预期尺寸 */
-}
-```
-
-上面代码中，`contain-intrinsic-size` 提供了一个估计的尺寸，防止页面在未渲染内容时出现布局偏移（layout shift）。
 
 下面是一个 `scroll` 监听配合 CSS 的 `content-visibility` 属性，实现图片懒加载的例子。
 
@@ -158,48 +183,20 @@ const LazyImage = ({ src, placeholder }) => {
 };
 ```
 
-上面的例子，通过监听 `scroll` 事件，确认图片的下载时机，并由浏览器通过 `content-visibility` 属性控制内容区域的渲染时间。
+上面的例子，通过监听 `scroll` 事件，确定图片的加载时机，并由浏览器通过 `content-visibility` 属性控制内容区域的渲染时间。
 
-注意，`content-visibility` 在现代浏览器中支持较好，但在某些旧版本浏览器中，可能存在兼容性问题。
+在设置 `content-visibility: auto` 时，如果元素没有明确的尺寸，可能会导致内容加载时发生布局偏移。因此，`content-visibility` 属性一般跟 `contain-intrinsic-size` 属性一起使用。
 
-### 2.5 `scroll` + ResizeObserver API
-
-```jsx
-const container = document.querySelector('.container');
-
-// 当 container 尺寸发生变化时，重新检查图片是否需要加载
-// 可以检测到窗口 resize 和其他方式改变的容器尺寸的变化
-const observer = new ResizeObserver(() => checkLazyImages());
-observer.observe(container);
-
-function checkLazyImages() {
-  const lazyImages = container.querySelectorAll('img[data-src]');
-  
-  lazyImages.forEach(img => {
-    if (img.dataset.src && !img.src) { // 还未加载的图片
-      const rect = img.getBoundingClientRect();
-      const isVisible = (
-        rect.top < (window.innerHeight || document.documentElement.clientHeight) + 100 &&
-        rect.bottom > -100
-      );
-      
-      if (isVisible) {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-      }
-
-      observer.unobserve(img);
-    }
-  });
+```css
+.section {
+  content-visibility: auto;
+  contain-intrinsic-size: 300px; /* 提供元素的预期尺寸 */
 }
-
-window.addEventListener('scroll', throttle(checkLazyImages, 100));
-
-// 页面加载时立即检查一次
-checkLazyImages();
 ```
 
-这种方式性能较好，但要考虑浏览器的兼容性。
+上面代码中，`contain-intrinsic-size` 提供了一个估计的尺寸，防止页面在未渲染内容时出现布局偏移（layout shift）。
+
+注意，`content-visibility` 在现代浏览器中支持较好，但在某些旧版本浏览器中，可能存在兼容性问题。
 
 ### 2.6 MutationObserver API
 
@@ -246,8 +243,18 @@ class ScrollWorkerLazyLoader {
 
   initWorker() {
     this.worker.onmessage = event => {
-      if (event.data.type !== 'VISIBILITY_RESULT') return;
-      this.loadVisibleImages(event.data.visibleElements);
+      const { type, visibleElements } = event.data;
+      if (type !== 'VISIBILITY_RESULT') {
+        return;
+      };
+
+      visibleElements.forEach(index => {
+        const item = this.observedImages.get(index);
+        if (item && !item.loaded) {
+          item.img.src = item.src;
+          item.loaded = true;
+        }
+      });
     };
   }
 
@@ -275,16 +282,6 @@ class ScrollWorkerLazyLoader {
         elements,
         scrollTop: window.pageYOffset,
         viewportHeight: window.innerHeight,
-      }
-    });
-  }
-
-  loadVisibleImages(visibleElements) {
-    visibleElements.forEach(index => {
-      const item = this.observedImages.get(index);
-      if (item && !item.loaded) {
-        item.img.src = item.src;
-        item.loaded = true;
       }
     });
   }
