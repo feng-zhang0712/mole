@@ -6,12 +6,10 @@
 
 防抖的典型用例是响应用户输入。比如，列表页面中有个输入框，用于对输入的内容进行过滤，只要用户在指定的时间间隔内持续输入，就不会执行接口调用，执行查询操作，只有当停止输入的时间大于我们设定的时间，才会触发对接口的请求。
 
-### 基础实现
-
 下面是基础版本防抖函数的实现。
 
 ```javascript
-function debounce(func, ms) {
+function debounce(fn, wait = 300) {
   let timer;
   return function() {
     if (timer) { // 关键代码
@@ -19,10 +17,10 @@ function debounce(func, ms) {
     }
     
     const _this = this;
-    timer = setTimeout(function () {
-      func.apply(_this, Array.prototype.slice.call(arguments));
+    timer = setTimeout(() => {
+      fn.apply(_this, [].slice.call(arguments));
       timer = null;
-    }, ms);
+    }, wait);
   }
 }
 ```
@@ -30,18 +28,16 @@ function debounce(func, ms) {
 下面是 React 中使用 Hooks 实现的防抖函数，这个函数能够防止对一个值的频繁更新。
 
 ```javascript
-export function useDebounce(value, ms = 0) {
+export function useDebounce(value, wait = 300) {
   const timerRef = useRef();
 
   const [state, setState] = useState(value);
 
   const clearTimer = useCallback(() => {
-    if (!timerRef.current) {
-      return;
+    if (timerRef.current) {
+      clearTimer(timerRef.current);
+      timerRef.current = null;
     }
-
-    clearTimer(timerRef.current);
-    timerRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -50,10 +46,10 @@ export function useDebounce(value, ms = 0) {
     timerRef.current = setTimeout(() => {
       setState(value);
       timerRef.current = null;
-    }, ms);
+    }, wait);
 
-    return () => clearTimer();
-  }, [value, ms, clearTimer]);
+    return clearTimer;
+  }, [value, wait, clearTimer]);
 
   return state;
 }
@@ -62,30 +58,28 @@ export function useDebounce(value, ms = 0) {
 下面是 React Hooks 版本的防抖函数实现。
 
 ```javascript
-export function useDebounceFn(func, ms = 0) {
+export function useDebounceFn(fn, wait = 300) {
   const timerRef = useRef();
 
   const [state, setState] = useState();
 
   const clearTimer = useCallback(() => {
-    if (!timerRef.current) {
-      return;
+    if (timerRef.current) {
+      clearTimer(timerRef.current);
+      timerRef.current = null;
     }
-
-    clearTimer(timerRef.current);
-    timerRef.current = null;
   }, []);
 
   const debounceFunction = useCallback((...args) => {
     clearTimer();
     
     timerRef.current = setTimeout(() => {
-      setState(func(...args));
+      setState(fn(...args));
       timerRef.current = null;
-    }, ms);
-  }, [func, ms, clearTimer]);
+    }, wait);
+  }, [fn, wait, clearTimer]);
 
-  useEffect(() => () => clearTimer(), []);
+  useEffect(() => clearTimer, [clearTimer]);
 
   return [state, debounceFunction];
 }
@@ -129,15 +123,15 @@ function SearchComponent() {
 下面是定时器版本。
 
 ```javascript
-function throttle(func, ms) {
+function throttle(fn, wait) {
   let timer;
   return function() {
     if (!timer) { // 关键代码
       const _this = this;
-      timer = setTimeout(function() {
-        func.apply(_this, Array.prototype.slice.call(arguments));
+      timer = setTimeout(() => {
+        fn.apply(_this, [].slice.call(arguments));
         timer = null; // 关键代码
-      }, ms); 
+      }, wait); 
     }
   }
 }
@@ -146,11 +140,11 @@ function throttle(func, ms) {
 下面是非定时器版本。
 
 ```javascript
-function throttle(func, ms) {
+function throttle(fn, wait) {
   let lastRan;
   return function() {
-    if (!lastRan || Date.now() - lastRan >= ms) {
-      func.apply(this, Array.prototype.slice.call(arguments));
+    if (!lastRan || Date.now() - lastRan >= wait) {
+      fn.apply(this, Array.prototype.slice.call(arguments));
       lastRan = Date.now();
     }
   }
@@ -160,18 +154,16 @@ function throttle(func, ms) {
 下面是 React 中使用 Hooks 实现的 debounce 函数，这个方法用来优化对一个数值的频繁更新。
 
 ```javascript
-export function useThrottle(value, ms = 0) {
+export function useThrottle(value, wait = 300) {
   const timerRef = useRef();
 
   const [state, setState] = useState(value);
 
   const clearTimer = useCallback(() => {
-    if (!timerRef.current) {
-      return;
+    if (timerRef.current) {
+      clearTimer(timerRef.current);
+      timerRef.current = null;
     }
-
-    clearTimer(timerRef.current);
-    timerRef.current = null;
   }, []);
 
   useEffect(() => {
@@ -179,11 +171,11 @@ export function useThrottle(value, ms = 0) {
       timerRef.current = setTimeout(() => {
         setState(value);
         timerRef.current = null;
-      }, ms);
+      }, wait);
     }
     
-    return () => clearTimer();
-  }, [value, ms, clearTimer]);
+    return clearTimer;
+  }, [value, wait, clearTimer]);
 
   return [state, clearTimer];
 }
@@ -192,30 +184,28 @@ export function useThrottle(value, ms = 0) {
 下面是使用 React 中的 Hooks 对一个函数实现节流的例子。
 
 ```javascript
-export function useThrottleFn(func, ms = 0) {
+export function useThrottleFn(fn, wait = 300) {
   const timerRef = useRef();
 
   const [state, setState] = useState();
 
   const clearTimer = useCallback(() => {
-    if (!timerRef.current) {
-      return;
+    if (timerRef.current) {
+      clearTimer(timerRef.current);
+      timerRef.current = null;
     }
-
-    clearTimer(timerRef.current);
-    timerRef.current = null;
   }, []);
 
   const throttleFunction = useCallback((...args) => {
     if (!timerRef.current) {
       timerRef.current = setTimeout(() => {
-        setState(func(...args));
+        setState(fn(...args));
         timerRef.current = null;
-      }, ms);
+      }, wait);
     }
-  }, [func, ms]);
+  }, [fn, wait]);
 
-  useEffect(() => () => clearTimer(), []);
+  useEffect(() => clearTimer, [clearTimer]);
 
   return [state, throttleFunction];
 }
@@ -254,5 +244,5 @@ function ScrollComponent() {
 
 ## 三、参考
 
-- [防抖，MDN](https://developer.mozilla.org/zh-CN/docs/Glossary/Debounce)
-- [节流，MDN](https://developer.mozilla.org/zh-CN/docs/Glossary/Throttle)
+- [Debounce](https://developer.mozilla.org/en-US/docs/Glossary/Debounce)，MDN
+- [Throttle](https://developer.mozilla.org/en-US/docs/Glossary/Throttle)，MDN
