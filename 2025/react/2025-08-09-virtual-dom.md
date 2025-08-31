@@ -784,7 +784,7 @@ function deleteRemainingChildren(
 }
 ```
 
-```
+```text
 reconcileChildren()
     ↓
 reconcileChildFibers()
