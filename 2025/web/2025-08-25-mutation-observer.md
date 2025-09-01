@@ -6,7 +6,7 @@
 
 ### 构造函数
 
-`MutationObserver()` 构造函数创建一个新的观察者对象，它可以接受一个 `callback` 回调函数作为参数，当被观察的节点或者子树发生变化时，回调函数被执行。
+`MutationObserver(callback)` 构造函数创建一个新的观察者对象，它可以接受一个 `callback` 回调函数作为参数，当被观察的节点或者子树发生变化时，回调函数被执行。
 
 ```javascript
 const observer = new MutationObserver(callback);
@@ -14,33 +14,33 @@ const observer = new MutationObserver(callback);
 
 `callback` 回调函数接受两个参数。
 
-- `MutationRecord` 对象类型的数组，描述了每次发生的变化。
-- `MutationObserver` 观察者对象本身。
+- 第一个参数是 `MutationRecord` 对象类型的数组，描述了每次发生的变化。
+- 第二个参数是 `MutationObserver` 观察者对象本身。
 
-注意，回调函数在微任务（microtask）阶段批量触发，浏览器会将同一轮事件循环中的多个 DOM 变更合并成一组 `MutationRecord`，因此天然具备“批处理/节流”效果。如果需要进一步降频，可在回调里自行 `requestAnimationFrame` 或 `setTimeout` 聚合处理。
+注意，回调函数在微任务（microtask）阶段批量触发，浏览器会将同一轮事件循环中的多个 DOM 变更合并成一组 `MutationRecord`，因此天然具备“批处理/节流”效果。
 
 ### 实例方法
 
 #### `observe()`
 
-`observe()` 方法用于指定观察的对象。观察者可以观察某个 node 节点，或者该节点的所有子节点，也可以对同一个节点多次调用该方法，执行观察不同类型的变更，某个节点也可以被多个观察者对象观察。
+`observe(target, options)` 方法用于指定观察的对象。观察者可以观察某个 node 节点，或者该节点的所有子节点，也可以对同一个节点多次调用该方法，执行观察不同类型的变更，某个节点也可以被多个观察者对象观察。
 
 ```javascript
 observe(target, options)
 ```
 
 - `target` 指定要观察的节点。
-- `options` 一个配置对象，指定观察哪些类型的 DOM 变更。必须制定为 `childList`、`attributes` 或者 `characterData` 三者之一，否则报错。
+- `options` 一个配置对象，指定观察哪些类型的 DOM 变更。必须指定为 `attributes`、`childList` 或者 `characterData` 三者之一，否则报错。
 
 `options` 配置对象可以接受多个配置属性。
 
-- `subtree` 将监控范围扩展到以 `target` 为根的整个子树。其余属性也会应用到子树中所有节点。默认 `false`。注意，若 `target` 的某个后代被移除，在关于该“移除”通知送达之前，仍会继续观察该被移除节点子树中的变化。
-- `childList` 监控子节点的新增与移除（对 `target`，以及当 `subtree: true` 时对其所有后代）。默认 `false`。
-- `attributes` 监控属性值变化。若指定了 `attributeFilter` 或 `attributeOldValue`，其默认值为 `true`；否则默认 `false`。
+- `subtree` 将监控范围扩展到以 `target` 为根的整个子树。其余属性也会应用到子树中所有节点，默认为 `false`。注意，如果 `target` 的某个后代被移除，在关于该“移除”通知送达之前，仍会继续观察被移除节点子树中的变化。
+- `childList` 监控子节点的新增与移除操作（对 `target`，以及当 `subtree: true` 时对其所有后代），默认为 `false`。
+- `attributes` 监控属性值的变化。如果指定了 `attributeFilter` 或 `attributeOldValue`，其默认值为 `true`；否则默认 `false`。
 - `attributeFilter` 仅监控给定属性名数组中的属性变化；未提供时，所有属性变化都会触发通知。
-- `attributeOldValue` 记录属性变化前的旧值。默认 `false`。
-- `characterData` 监控文本节点（字符数据）内容变化（对 `target`，以及当 `subtree: true` 时对其所有后代）。若指定了 `characterDataOldValue`，其默认值为 `true`；否则默认 `false`。
-- `characterDataOldValue` 记录文本变化前的旧值。默认 `false`。
+- `attributeOldValue` 记录属性变化前的旧值，默认为 `false`。
+- `characterData` 监控文本节点（字符数据）内容的变化（对 `target`，以及当 `subtree: true` 时对其所有后代）。若指定了 `characterDataOldValue`，其默认值为 `true`；否则默认为 `false`。
+- `characterDataOldValue` 记录文本变化前的旧值，默认为 `false`。
 
 如果在观察某个节点时，配置对象中设置了 `subtree`，即使该子树的一部分被移除，回调函数仍会继续收到该节点后代发生变化的通知。然而，一旦关于该移除的通知被投递，随后对被移除的子树的进一步修改将不再触发观察者。
 
@@ -57,8 +57,6 @@ const child = document.getElementById('child');
 
 const observer = new MutationObserver(mutations => {
   mutations.forEach(mutation => {
-    console.log(mutation.type, mutation.target.id, mutation.attributeName);
-
     if (mutation.type === 'childList' && mutation.target.id === 'target') {
       // 在收到“该子节点已被移除”的通知后，对已分离子树所做的后续修改将不再触发观察者。
       child.setAttribute('data-bar', '');
@@ -91,12 +89,12 @@ const userListElement = document.querySelector("#user-list");
 const observer = new MutationObserver(mutationList => {
   mutationList.forEach(mutation => {
     switch (mutation.type) {
-      case "attributes":
+      case 'attributes':
         switch (mutation.attributeName) {
-          case "status":
+          case 'status':
             userStatusChanged(mutation.target.username, mutation.target.status);
             break;
-          case "username":
+          case 'username':
             usernameChanged(mutation.oldValue, mutation.target.username);
             break;
         }
@@ -106,7 +104,7 @@ const observer = new MutationObserver(mutationList => {
 });
 
 observer.observe(userListElement, {
-  attributeFilter: ["status", "username"],
+  attributeFilter: ['status', 'username'],
   attributeOldValue: true,
   subtree: true,
 });
@@ -136,19 +134,19 @@ pre {
 <pre id="output"></pre>
 
 <script>
-const toggle = document.querySelector("#toggle");
-const rhubarb = document.querySelector("#rhubarb");
-const observerTarget = document.querySelector("#container");
-const output = document.querySelector("#output");
+const toggle = document.querySelector('#toggle');
+const rhubarb = document.querySelector('#rhubarb');
+const observerTarget = document.querySelector('#container');
+const output = document.querySelector('#output');
 
-toggle.addEventListener("click", () => {
-  rhubarb.dir = rhubarb.dir === "ltr" ? "rtl" : "ltr";
+toggle.addEventListener('click', () => {
+  rhubarb.dir = rhubarb.dir === 'ltr' ? 'rtl' : 'ltr';
 });
 
 const observer = new MutationObserver(mutationList => {
   for (const mutation of mutationList) {
-    if (mutation.type === "attributes") {
-      output.textContent = `The ${mutation.attributeName} attribute was modified from "${mutation.oldValue}".`;
+    if (mutation.type === 'attributes') {
+      output.textContent = `The ${mutation.attributeName} attribute was modified from '${mutation.oldValue}'.`;
     }
   }
 });
@@ -197,23 +195,30 @@ if (mutations.length > 0) {
 ### 等待元素出现（动态插入）
 
 ```js
-function waitForElement(selector, { root = document, timeout = 10000 } = {}) {
+function waitForElement(
+  selector, 
+  {
+    root = document,
+    timeout = 10000,
+  } = {},
+) {
   return new Promise((resolve, reject) => {
     const existing = root.querySelector(selector);
     if (existing) return resolve(existing);
 
-    const obs = new MutationObserver(() => {
+    const observer = new MutationObserver(() => {
       const el = root.querySelector(selector);
       if (el) {
-        obs.disconnect();
+        observer.disconnect();
         resolve(el);
       }
     });
-    obs.observe(root, { childList: true, subtree: true });
 
-    if (timeout != null) {
+    observer.observe(root, { childList: true, subtree: true });
+
+    if (timeout) {
       setTimeout(() => {
-        obs.disconnect();
+        observer.disconnect();
         reject(new Error(`Timeout waiting for ${selector}`));
       }, timeout);
     }
@@ -227,14 +232,16 @@ function waitForElement(selector, { root = document, timeout = 10000 } = {}) {
 ### 监听 class 变化（只关心某属性）
 
 ```js
-const obs = new MutationObserver((records) => {
-  for (const r of records) {
-    if (r.type === 'attributes' && r.attributeName === 'class') {
-      // r.target.className 已是新值；r.oldValue 为旧 class
+const observer = new MutationObserver((records) => {
+  for (const record of records) {
+    if (record.type === 'attributes' && record.attributeName === 'class') {
+      // r.target.className 已是新值
+      // r.oldValue 为旧 class
     }
   }
 });
-obs.observe(node, {
+
+observer.observe(node, {
   attributes: true,
   attributeFilter: ['class'],
   attributeOldValue: true,
@@ -244,7 +251,7 @@ obs.observe(node, {
 ### 监听文本变化（contenteditable/富文本）
 
 ```js
-obs.observe(editableEl, {
+observer.observe(editableEl, {
   characterData: true,
   subtree: true,
   characterDataOldValue: true,
@@ -254,14 +261,14 @@ obs.observe(editableEl, {
 ### 监听整个树的节点增删
 
 ```js
-obs.observe(container, { childList: true, subtree: true });
+observer.observe(container, { childList: true, subtree: true });
 ```
 
 ### 结合 requestAnimationFrame 进行批处理
 
 ```js
 let dirty = false;
-const obs = new MutationObserver(() => {
+const observer = new MutationObserver(() => {
   if (!dirty) {
     dirty = true;
     requestAnimationFrame(() => {
@@ -270,7 +277,8 @@ const obs = new MutationObserver(() => {
     });
   }
 });
-obs.observe(root, {
+
+observer.observe(root, {
   childList: true,
   attributes: true,
   subtree: true,

@@ -20,13 +20,13 @@ Scheduler 有两个核心概念：**优先级系统**和**任务队列**。
 
 ```javascript
 type Task = {
-  id: number,                    // 任务唯一标识
-  callback: Callback | null,     // 任务回调函数
-  priorityLevel: PriorityLevel,  // 优先级级别
-  startTime: number,             // 开始时间
-  expirationTime: number,        // 过期时间
-  sortIndex: number,             // 排序索引
-  isQueued?: boolean,           // 是否已入队
+  id: number, // 任务唯一标识
+  callback: Callback | null, // 任务回调函数
+  priorityLevel: PriorityLevel, // 优先级级别
+  startTime: number, // 开始时间
+  expirationTime: number, // 过期时间
+  sortIndex: number, // 排序索引
+  isQueued?: boolean, // 是否已入队
 };
 ```
 

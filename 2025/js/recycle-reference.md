@@ -11,7 +11,7 @@
 `JSON.stringify()` 方法用于对参数进行序列化，如果被序列化的对象中有循环引用的属性，就会报错。可以利用这个特性，检测对象中是否有循环应用的对象。
 
 ```javascript
-function detectCycle(obj) {
+function hasCycleReference(obj) {
   if (typeof obj == null || typeof obj !== 'object') {
     return false;
   }
@@ -20,7 +20,7 @@ function detectCycle(obj) {
     JSON.stringify(obj)
   } catch (error) {
     if (error.name === TypeError && error.message.includes('circular')) {
-      return false;
+      return true;
     }
 
     throw error;
@@ -35,7 +35,7 @@ function detectCycle(obj) {
 WeakSet 是 ES6 中新增的一种数据结构，相比于 Set，WeakSet 中存储的对象，不会影响系统的垃圾回收。
 
 ```javascript
-function detectCycle(obj, visited = new WeakSet()) {
+function hasCycleReference(obj, visited = new WeakSet()) {
   if (typeof obj == null || typeof obj !== 'object') {
     return false;
   }
@@ -48,14 +48,14 @@ function detectCycle(obj, visited = new WeakSet()) {
 
   if (Array.isArray(obj)) {
     for (const item of obj) {
-      if (detectCycle(item, visited)) {
+      if (hasCycleReference(item, visited)) {
         return true;
       }
     }
   }
 
   for (const key of Reflect.ownKeys(obj)) {
-    if (detectCycle(obj[key], visited)) {
+    if (hasCycleReference(obj[key], visited)) {
       return true;
     }
   }
@@ -82,7 +82,7 @@ function detectCycleCached(obj) {
     return visited.has(obj);
   }
 
-  const isCycle = detectCycle(obj);
+  const isCycle = hasCycleReference(obj);
   visited.set(obj, isCycle);
   
   return isCycle;
@@ -96,7 +96,7 @@ function detectCycleCached(obj) {
 ```javascript
 function detectCycleAsync(obj) {
   return new Promise(resolve => {
-    setTimeout(() => resolve(detectCycle(obj)), 0);
+    setTimeout(() => resolve(hasCycleReference(obj)), 0);
   });
 }
 ```
@@ -108,7 +108,7 @@ function detectCycleAsync(obj) {
   return new Promise(resolve => {
     const channel = new MessageChannel();
     channel.port1.onmessage = function () {
-      resolve(detectCycle(obj));
+      resolve(hasCycleReference(obj));
       channel.port1.close();
     }
     channel.port2.postMessage(undefined);

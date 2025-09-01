@@ -1,37 +1,5 @@
 # webpack 生产环境优化
 
-## 2.4 生产环境 Source Map 策略
-
-生产构建建议：
-
-- 小型/内部项目：`devtool: 'source-map'`（完整、可上传到错误跟踪平台，谨慎暴露到公网）。
-- 公网生产：`devtool: 'hidden-source-map'` 或 `devtool: 'nosources-source-map'`，配合 Sentry/TrackX 上传映射，避免泄露源码。
-- 禁用内联 source map；确保 CI 只上传 `.map` 到错误平台，不随产物发 CDN。
-
-```javascript
-module.exports = {
-  mode: 'production',
-  devtool: 'hidden-source-map',
-};
-```
-
-## 2.5 包体分析与依赖体检
-
-```bash
-npm i -D webpack-bundle-analyzer
-```
-
-```javascript
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-module.exports = {
-  plugins: [
-    new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false })
-  ]
-};
-```
-
-建议：排查重复依赖、转为 ESM 版本（如 `lodash-es`）、启用按需导入、移除未使用 polyfill。
-
 ## 一、介绍
 
 ## 二、代码压缩

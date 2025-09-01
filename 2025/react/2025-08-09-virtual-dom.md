@@ -329,6 +329,875 @@ export function createFiberFromElement(
 }
 ```
 
+React虚拟DOM转换为真实DOM的完整执行过程分析
+
+基于React最新源代码的深入分析，本文档详细阐述了React中虚拟DOM转换为真实DOM的完整执行过程。这个过程涉及多个关键阶段，从组件的渲染触发到最终DOM节点的创建和更新。
+
+## 1. 整体架构概览
+
+React的渲染过程主要分为两个阶段：
+
+- Render 阶段（协调阶段）：构建 Fiber 树，确定需要执行的副作用。
+- Commit 阶段（提交阶段）：将副作用应用到真实 DOM。
+
+整个流程由 React Reconciler（协调器）和 React DOM Renderer（渲染器）协同完成。
+
+## 2. 渲染流程的入口
+
+```javascript
+// 渲染入口
+// react/packages/react-dom/src/client/ReactDOMRoot.js
+ReactDOMRoot.prototype.render = function (children: ReactNodeList): void {
+  const root = this._internalRoot;
+  if (root === null) {
+    throw new Error('Cannot update an unmounted root.');
+  }
+  // 调用 updateContainer 开始更新流程
+  updateContainer(children, root, null, null);
+};
+```
+
+当调用 `root.render()` 时，会触发 `updateContainer` 函数，这是整个渲染流程的起点。
+
+## 3. Render 阶段（协调阶段）
+
+### 3.1 工作循环调度
+
+```javascript
+// 工作循环
+// react/packages/react-reconciler/src/ReactFiberWorkLoop.js
+function performWorkOnRoot(
+  root: FiberRoot,
+  lanes: Lanes,
+  forceSync: boolean,
+): void {
+  // 根据优先级决定是否进行时间切片
+  const shouldTimeSlice =
+    (!forceSync &&
+      !includesBlockingLane(lanes) &&
+      !includesExpiredLane(root, lanes)) ||
+    (enableSiblingPrerendering && checkIfRootIsPrerendering(root, lanes));
+
+  let exitStatus = shouldTimeSlice
+    ? renderRootConcurrent(root, lanes)  // 并发渲染
+    : renderRootSync(root, lanes, true); // 同步渲染
+}
+```
+
+`performWorkOnRoot` 是工作循环的核心，它根据更新优先级决定使用并发渲染还是同步渲染。
+
+### 3.2 同步渲染流程
+
+```javascript
+// 同步渲染
+// react/packages/react-reconciler/src/ReactFiberWorkLoop.js
+function renderRootSync(
+  root: FiberRoot,
+  lanes: Lanes,
+  shouldYieldForPrerendering: boolean,
+): RootExitStatus {
+  const prevExecutionContext = executionContext;
+  executionContext |= RenderContext;
+  
+  // 准备新的工作栈
+  if (workInProgressRoot !== root || workInProgressRootRenderLanes !== lanes) {
+    prepareFreshStack(root, lanes);
+  }
+  
+  // 执行工作循环
+  do {
+    try {
+      workLoopSync();
+    } catch (value) {
+      // 错误处理
+    }
+  } while (true);
+}
+```
+
+同步渲染会直接执行 `workLoopSync`，不会让出控制权。
+
+### 3.3 工作单元处理
+
+```javascript
+// 工作单元处理
+// react/packages/react-reconciler/src/ReactFiberWorkLoop.js
+function workLoopSync() {
+  // 持续处理工作单元，直到没有更多工作
+  while (workInProgress !== null) {
+    performUnitOfWork(workInProgress);
+  }
+}
+
+function performUnitOfWork(unitOfWork: Fiber): void {
+  const current = unitOfWork.alternate;
+  
+  // 开始工作：处理当前 Fiber 节点
+  let next = beginWork(current, unitOfWork, entangledRenderLanes);
+  
+  unitOfWork.memoizedProps = unitOfWork.pendingProps;
+  
+  if (next === null) {
+    // 如果没有子节点，完成当前工作单元
+    completeUnitOfWork(unitOfWork);
+  } else {
+    // 继续处理下一个子节点
+    workInProgress = next;
+  }
+}
+```
+
+每个工作单元的处理分为两个阶段：
+
+- `beginWork`：处理 Fiber 节点，生成子节点
+- `completeWork`：完成 Fiber 节点的处理
+
+### 3.4 beginWork 阶段
+
+```javascript
+// 开始工作
+// react/packages/react-reconciler/src/ReactFiberBeginWork.js
+function beginWork(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  renderLanes: Lanes,
+): Fiber | null {
+  // 检查是否需要更新
+  if (current !== null) {
+    const oldProps = current.memoizedProps;
+    const newProps = workInProgress.pendingProps;
+    
+    if (oldProps !== newProps || hasLegacyContextChanged()) {
+      didReceiveUpdate = true;
+    } else {
+      // 尝试提前退出
+      const hasScheduledUpdateOrContext = checkScheduledUpdateOrContext(
+        current,
+        renderLanes,
+      );
+      if (!hasScheduledUpdateOrContext) {
+        return attemptEarlyBailoutIfNoScheduledUpdate(
+          current,
+          workInProgress,
+          renderLanes,
+        );
+      }
+    }
+  }
+  
+  // 根据 Fiber 类型执行相应的更新逻辑
+  switch (workInProgress.tag) {
+    case FunctionComponent:
+      return updateFunctionComponent(current, workInProgress, Component, resolvedProps, renderLanes);
+    case ClassComponent:
+      return updateClassComponent(current, workInProgress, Component, resolvedProps, renderLanes);
+    case HostComponent:
+      return updateHostComponent(current, workInProgress, renderLanes);
+    case HostText:
+      return updateHostText(current, workInProgress);
+    // ... 其他类型
+  }
+}
+```
+
+`beginWork` 会根据 Fiber 节点的类型执行相应的更新逻辑，对于 HostComponent（原生 DOM 元素），会调用 `updateHostComponent`。
+
+### 3.5 各类型组件的更新流程
+
+#### 3.5.1 updateFunctionComponent 流程
+
+```javascript
+// 函数组件更新
+// react/packages/react-reconciler/src/ReactFiberBeginWork.js
+function updateFunctionComponent(
+  current: null | Fiber,
+  workInProgress: Fiber,
+  Component: any,
+  nextProps: any,
+  renderLanes: Lanes,
+) {
+  // 处理 Context
+  let context;
+  if (!disableLegacyContext && !disableLegacyContextForFunctionComponents) {
+    const unmaskedContext = getUnmaskedContext(workInProgress, Component, true);
+    context = getMaskedContext(workInProgress, unmaskedContext);
+  }
+
+  // 执行函数组件，获取子节点
+  let nextChildren;
+  prepareToReadContext(workInProgress, renderLanes);
+  nextChildren = renderWithHooks(
+    current,
+    workInProgress,
+    Component,
+    nextProps,
+    context,
+    renderLanes,
+  );
+
+  // 如果组件没有更新，尝试提前退出
+  if (current !== null && !didReceiveUpdate) {
+    bailoutHooks(current, workInProgress, renderLanes);
+    return bailoutOnAlreadyFinishedWork(current, workInProgress, renderLanes);
+  }
+
+  // 标记工作已完成
+  workInProgress.flags |= PerformedWork;
+  
+  // 协调子节点
+  reconcileChildren(current, workInProgress, nextChildren, renderLanes);
+  return workInProgress.child;
+}
+```
+
+`updateFunctionComponent` 的核心步骤：
+
+1. **处理 Context**：获取组件需要的上下文
+2. **执行组件**：调用 `renderWithHooks` 执行函数组件，获取返回的 JSX
+3. **提前退出检查**：如果组件没有更新，尝试跳过后续处理
+4. **协调子节点**：调用 `reconcileChildren` 处理子节点
+
+#### 3.5.2 updateClassComponent 流程
+
+```javascript
+// 类组件更新
+// react/packages/react-reconciler/src/ReactFiberBeginWork.js
+function updateClassComponent(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  Component: any,
+  nextProps: any,
+  renderLanes: Lanes,
+) {
+  const instance = workInProgress.stateNode;
+  let shouldUpdate;
+  
+  if (instance === null) {
+    // 首次渲染：构造实例并挂载
+    constructClassInstance(workInProgress, Component, nextProps);
+    mountClassInstance(workInProgress, Component, nextProps, renderLanes);
+    shouldUpdate = true;
+  } else if (current === null) {
+    // 恢复挂载：复用现有实例
+    shouldUpdate = resumeMountClassInstance(
+      workInProgress,
+      Component,
+      nextProps,
+      renderLanes,
+    );
+  } else {
+    // 更新：处理 props、state、生命周期
+    shouldUpdate = updateClassInstance(
+      current,
+      workInProgress,
+      Component,
+      nextProps,
+      renderLanes,
+    );
+  }
+  
+  // 完成类组件处理
+  const nextUnitOfWork = finishClassComponent(
+    current,
+    workInProgress,
+    Component,
+    shouldUpdate,
+    hasContext,
+    renderLanes,
+  );
+  
+  return nextUnitOfWork;
+}
+```
+
+`updateClassComponent` 的核心步骤：
+
+1. **实例管理**：根据是否存在实例决定是构造、恢复还是更新
+2. **生命周期处理**：调用相应的生命周期方法
+3. **状态更新**：处理 props 和 state 的变化
+4. **渲染决策**：通过 `shouldComponentUpdate` 等方法决定是否需要重新渲染
+
+#### 3.5.3 updateHostComponent 流程
+
+```javascript
+// 原生 DOM 组件更新
+// react/packages/react-reconciler/src/ReactFiberBeginWork.js
+function updateHostComponent(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  renderLanes: Lanes,
+) {
+  // 处理水合
+  if (current === null) {
+    tryToClaimNextHydratableInstance(workInProgress);
+  }
+
+  // 推送主机上下文
+  pushHostContext(workInProgress);
+
+  const type = workInProgress.type;
+  const nextProps = workInProgress.pendingProps;
+  const prevProps = current !== null ? current.memoizedProps : null;
+
+  let nextChildren = nextProps.children;
+  const isDirectTextChild = shouldSetTextContent(type, nextProps);
+
+  if (isDirectTextChild) {
+    // 直接文本子节点：特殊处理，避免创建额外的 Fiber
+    nextChildren = null;
+  } else if (prevProps !== null && shouldSetTextContent(type, prevProps)) {
+    // 从直接文本切换到普通子节点：标记内容重置
+    workInProgress.flags |= ContentReset;
+  }
+
+  // 协调子节点
+  reconcileChildren(current, workInProgress, nextChildren, renderLanes);
+  return workInProgress.child;
+}
+```
+
+`updateHostComponent` 的核心步骤：
+
+1. **水合处理**：在服务端渲染时尝试复用现有 DOM 节点
+2. **上下文管理**：推送主机上下文（如 SVG 命名空间）
+3. **文本优化**：对于直接文本子节点进行特殊处理
+4. **子节点协调**：处理子节点的变化
+
+### 3.6 reconcileChildren 协调算法
+
+```javascript
+// 协调子节点
+// react/packages/react-reconciler/src/ReactFiberBeginWork.js
+export function reconcileChildren(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  nextChildren: any,
+  renderLanes: Lanes,
+) {
+  if (current === null) {
+    // 首次渲染：挂载子节点
+    workInProgress.child = mountChildFibers(
+      workInProgress,
+      null,
+      nextChildren,
+      renderLanes,
+    );
+  } else {
+    // 更新：协调子节点
+    workInProgress.child = reconcileChildFibers(
+      workInProgress,
+      current.child,
+      nextChildren,
+      renderLanes,
+    );
+  }
+}
+```
+
+`reconcileChildren` 是 React 协调算法的核心，它：
+
+1. **区分挂载和更新**：首次渲染使用 `mountChildFibers`，更新使用 `reconcileChildFibers`
+2. **执行 Diff 算法**：比较新旧子节点，确定需要执行的 DOM 操作
+3. **生成副作用标记**：标记需要创建、更新、删除的节点
+
+#### 3.6.1 协调算法的核心逻辑
+
+```javascript
+// 协调子节点实现
+// react/packages/react-reconciler/src/ReactChildFiber.js
+function reconcileChildFibersImpl(
+  returnFiber: Fiber,
+  currentFirstChild: Fiber | null,
+  newChild: any,
+  lanes: Lanes,
+): Fiber | null {
+  // 处理不同类型的子节点
+  if (typeof newChild === 'object' && newChild !== null) {
+    switch (newChild.$$typeof) {
+      case REACT_ELEMENT_TYPE:
+        return reconcileSingleElement(returnFiber, currentFirstChild, newChild, lanes);
+      case REACT_PORTAL_TYPE:
+        return reconcileSinglePortal(returnFiber, currentFirstChild, newChild, lanes);
+    }
+
+    if (isArray(newChild)) {
+      return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, lanes);
+    }
+  }
+
+  if (typeof newChild === 'string' || typeof newChild === 'number') {
+    return reconcileSingleTextNode(returnFiber, currentFirstChild, '' + newChild, lanes);
+  }
+
+  // 删除剩余的子节点
+  return deleteRemainingChildren(returnFiber, currentFirstChild);
+}
+```
+
+协调算法会根据子节点的类型执行不同的处理：
+
+- **单个元素**：`reconcileSingleElement`
+- **数组**：`reconcileChildrenArray`（最复杂的 Diff 算法）
+- **文本**：`reconcileSingleTextNode`
+- **Portal**：`reconcileSinglePortal`
+
+### 3.7 工作单元完成处理
+
+当 `beginWork` 返回 `null` 时，表示当前节点没有子节点，需要调用 `completeWork` 完成当前工作单元：
+
+```javascript
+// 完成工作单元
+// react/packages/react-reconciler/src/ReactFiberWorkLoop.js
+function completeUnitOfWork(unitOfWork: Fiber): void {
+  let completedWork = unitOfWork;
+  do {
+    const current = completedWork.alternate;
+    const returnFiber = completedWork.return;
+
+    // 完成当前工作单元
+    completeWork(current, completedWork, entangledRenderLanes);
+
+    const siblingFiber = completedWork.sibling;
+    if (siblingFiber !== null) {
+      // 如果有兄弟节点，处理兄弟节点
+      workInProgress = siblingFiber;
+      return;
+    }
+    
+    // 继续处理父节点
+    completedWork = returnFiber;
+    workInProgress = completedWork;
+  } while (completedWork !== null);
+}
+```
+
+`completeUnitOfWork` 会：
+
+1. **完成当前节点**：调用 `completeWork` 处理当前 Fiber 节点
+2. **处理兄弟节点**：如果有兄弟节点，切换到兄弟节点
+3. **向上回溯**：如果没有兄弟节点，向上处理父节点
+
+### 3.8 completeWork 阶段
+
+```javascript
+// 完成工作
+// react/packages/react-reconciler/src/ReactFiberCompleteWork.js
+function completeWork(
+  current: Fiber | null,
+  workInProgress: Fiber,
+  renderLanes: Lanes,
+): Fiber | null {
+  const newProps = workInProgress.pendingProps;
+  
+  switch (workInProgress.tag) {
+    case HostComponent: {
+      const type = workInProgress.type;
+      
+      if (current !== null && workInProgress.stateNode != null) {
+        // 更新现有实例
+        updateHostComponent(current, workInProgress, renderLanes);
+      } else {
+        // 创建新实例
+        const currentHostContext = getHostContext();
+        const wasHydrated = popHydrationState(workInProgress);
+        
+        if (wasHydrated) {
+          // 水合模式：准备现有实例
+          prepareToHydrateHostInstance(workInProgress, currentHostContext);
+        } else {
+          // 客户端渲染：创建新实例
+          const rootContainerInstance = getRootHostContainer();
+          const instance = createInstance(
+            type,
+            newProps,
+            rootContainerInstance,
+            currentHostContext,
+            workInProgress,
+          );
+          
+          // 将子节点添加到实例
+          appendAllChildren(instance, workInProgress, false, false);
+          workInProgress.stateNode = instance;
+          
+          // 设置初始属性
+          if (finalizeInitialChildren(instance, type, newProps, currentHostContext)) {
+            markUpdate(workInProgress);
+          }
+        }
+      }
+      break;
+    }
+    case HostText: {
+      const newText = newProps;
+      if (current && workInProgress.stateNode != null) {
+        // 更新现有文本节点
+        updateHostText(current, workInProgress, oldText, newText);
+      } else {
+        // 创建新文本节点
+        const rootContainerInstance = getRootHostContainer();
+        const currentHostContext = getHostContext();
+        const wasHydrated = popHydrationState(workInProgress);
+        
+        if (wasHydrated) {
+          prepareToHydrateHostTextInstance(workInProgress);
+        } else {
+          workInProgress.stateNode = createTextInstance(
+            newText,
+            rootContainerInstance,
+            currentHostContext,
+            workInProgress,
+          );
+        }
+      }
+      break;
+    }
+  }
+  
+  // 冒泡属性到父节点
+  bubbleProperties(workInProgress);
+  return null;
+}
+```
+
+`completeWork` 阶段负责：
+
+1. 创建或更新 DOM 实例
+2. 设置 DOM 属性
+3. 将子节点添加到父节点
+4. 冒泡副作用标志
+
+## 4. DOM 实例的创建
+
+### 4.1 创建 DOM 元素
+
+```javascript
+// 创建 DOM 实例
+// react/packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js
+export function createInstance(
+  type: string,
+  props: Props,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
+  internalInstanceHandle: Object,
+): Instance {
+  const ownerDocument = getOwnerDocumentFromRootContainer(rootContainerInstance);
+  
+  let domElement: Instance;
+  
+  // 根据类型和命名空间创建相应的 DOM 元素
+  switch (hostContextProd) {
+    case HostContextNamespaceSvg:
+      domElement = ownerDocument.createElementNS(SVG_NAMESPACE, type);
+      break;
+    case HostContextNamespaceMath:
+      domElement = ownerDocument.createElementNS(MATH_NAMESPACE, type);
+      break;
+    default:
+      switch (type) {
+        case 'svg':
+          domElement = ownerDocument.createElementNS(SVG_NAMESPACE, type);
+          break;
+        case 'script':
+          // 特殊处理 script 标签
+          const div = ownerDocument.createElement('div');
+          div.innerHTML = '<script><' + '/script>';
+          const firstChild = div.firstChild;
+          domElement = div.removeChild(firstChild);
+          break;
+        default:
+          if (typeof props.is === 'string') {
+            domElement = ownerDocument.createElement(type, {is: props.is});
+          } else {
+            domElement = ownerDocument.createElement(type);
+          }
+      }
+  }
+  
+  // 缓存 Fiber 节点引用和属性
+  precacheFiberNode(internalInstanceHandle, domElement);
+  updateFiberProps(domElement, props);
+  
+  return domElement;
+}
+```
+
+`createInstance` 会根据元素类型和命名空间创建相应的 DOM 元素，并建立 Fiber 节点与 DOM 元素的关联。
+
+### 4.2 创建文本节点
+
+```javascript
+// 创建文本实例
+// react/packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js
+export function createTextInstance(
+  text: string,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
+  internalInstanceHandle: Object,
+): TextInstance {
+  const ownerDocument = getOwnerDocumentFromRootContainer(rootContainerInstance);
+  const textNode = ownerDocument.createTextNode(text);
+  
+  // 缓存 Fiber 节点引用
+  precacheFiberNode(internalInstanceHandle, textNode);
+  
+  return textNode;
+}
+```
+
+文本节点的创建相对简单，直接调用 `createTextNode` 方法。
+
+### 4.3 设置初始属性
+
+```javascript
+// 设置初始属性
+// react/packages/react-dom-bindings/src/client/ReactFiberConfigDOM.js
+export function finalizeInitialChildren(
+  domElement: Instance,
+  type: string,
+  props: Props,
+  hostContext: HostContext,
+): boolean {
+  // 设置 DOM 属性
+  setInitialProperties(domElement, type, props);
+  
+  // 根据类型决定是否需要特殊处理
+  switch (type) {
+    case 'button':
+    case 'input':
+    case 'select':
+    case 'textarea':
+      return !!props.autoFocus; // 返回是否需要自动聚焦
+    case 'img':
+      return true; // 图片总是需要特殊处理
+    default:
+      return false;
+  }
+}
+```
+
+`finalizeInitialChildren` 负责设置 DOM 元素的初始属性，并返回是否需要额外的处理（如自动聚焦）。
+
+## 5. Commit 阶段（提交阶段）
+
+### 5.1 提交根节点
+
+```javascript
+// 提交根节点
+// react/packages/react-reconciler/src/ReactFiberWorkLoop.js
+function commitRoot(
+  root: FiberRoot,
+  finishedWork: null | Fiber,
+  lanes: Lanes,
+  // ... 其他参数
+): void {
+  // 处理被动效果
+  do {
+    flushPendingEffects();
+  } while (pendingEffectsStatus !== NO_PENDING_EFFECTS);
+  
+  // 标记提交开始
+  if (enableSchedulingProfiler) {
+    markCommitStarted(lanes);
+  }
+  
+  if (finishedWork === null) {
+    return;
+  }
+  
+  // 标记根节点完成
+  markRootFinished(root, lanes, remainingLanes, spawnedLane, updatedLanes, suspendedRetryLanes);
+  
+  // 重置工作进度
+  if (root === workInProgressRoot) {
+    workInProgressRoot = null;
+    workInProgress = null;
+    workInProgressRootRenderLanes = NoLanes;
+  }
+  
+  // 提交副作用
+  commitRootImpl(finishedWork, root, lanes);
+}
+```
+
+`commitRoot` 是提交阶段的入口，负责协调整个提交过程。
+
+### 5.2 提交副作用
+
+```javascript
+// 提交副作用
+// react/packages/react-reconciler/src/ReactFiberCommitWork.js
+export function commitMutationEffects(
+  root: FiberRoot,
+  finishedWork: Fiber,
+  committedLanes: Lanes,
+) {
+  inProgressLanes = committedLanes;
+  inProgressRoot = root;
+  
+  resetComponentEffectTimers();
+  
+  // 递归处理所有 Fiber 节点的副作用
+  commitMutationEffectsOnFiber(finishedWork, root, committedLanes);
+  
+  inProgressLanes = null;
+  inProgressRoot = null;
+}
+```
+
+`commitMutationEffects` 负责处理所有需要 DOM 变更的副作用。
+
+### 5.3 处理 HostComponent 的副作用
+
+```javascript
+// ReactFiberCommitWork.js - 处理HostComponent副作用
+case HostComponent: {
+  recursivelyTraverseMutationEffects(root, finishedWork, lanes);
+  commitReconciliationEffects(finishedWork, lanes);
+  
+  if (flags & Ref) {
+    // 处理ref
+    if (!offscreenSubtreeWasHidden && current !== null) {
+      safelyDetachRef(current, current.return);
+    }
+  }
+  
+  if (supportsMutation) {
+    // 处理内容重置
+    if (finishedWork.flags & ContentReset) {
+      commitHostResetTextContent(finishedWork);
+    }
+    
+    // 处理更新
+    if (flags & Update) {
+      const instance: Instance = finishedWork.stateNode;
+      if (instance != null) {
+        const newProps = finishedWork.memoizedProps;
+        const oldProps = current !== null ? current.memoizedProps : newProps;
+        commitHostUpdate(finishedWork, newProps, oldProps);
+      }
+    }
+  }
+  break;
+}
+```
+
+对于 HostComponent，主要处理：
+
+1. **Ref副作用**：安全地分离旧的 ref 引用
+2. **内容重置**：重置文本内容
+3. **属性更新**：应用新的属性到 DOM 元素
+
+### 5.4 处理 HostText 的副作用
+
+```javascript
+// ReactFiberCommitWork.js - 处理HostText副作用
+case HostText: {
+  recursivelyTraverseMutationEffects(root, finishedWork, lanes);
+  commitReconciliationEffects(finishedWork, lanes);
+  
+  if (flags & Update) {
+    if (supportsMutation) {
+      if (finishedWork.stateNode === null) {
+        throw new Error('This should have a text node initialized.');
+      }
+      
+      const newText: string = finishedWork.memoizedProps;
+      const oldText: string = current !== null ? current.memoizedProps : newText;
+      
+      // 提交文本更新
+      commitHostTextUpdate(finishedWork, newText, oldText);
+    }
+  }
+  break;
+}
+```
+
+文本节点的更新相对简单，直接调用`commitHostTextUpdate`更新文本内容。
+
+## 6. DOM操作的具体实现
+
+### 6.1 属性更新
+
+```javascript
+// ReactDOMComponent.js - 更新属性
+export function updateProperties(
+  domElement: Element,
+  updatePayload: Array<mixed>,
+  tag: string,
+  lastRawProps: Object,
+  nextRawProps: Object,
+): void {
+  // 应用更新载荷
+  if (updatePayload.length) {
+    updateDOMProperties(domElement, updatePayload, tag, lastRawProps, nextRawProps);
+  }
+  
+  // 处理特殊属性
+  updateDOMProperties(domElement, updatePayload, tag, lastRawProps, nextRawProps);
+}
+```
+
+属性更新通过`updateProperties`函数实现，它会：
+
+1. 应用更新载荷（updatePayload）
+2. 处理特殊属性（如事件监听器、样式等）
+
+### 6.2 文本内容更新
+
+```javascript
+// ReactFiberConfigDOM.js - 更新文本内容
+export function commitHostTextUpdate(
+  finishedWork: Fiber,
+  newText: string,
+  oldText: string,
+): void {
+  const textInstance: TextInstance = finishedWork.stateNode;
+  
+  if (newText !== oldText) {
+    // 直接更新文本节点的内容
+    textInstance.nodeValue = newText;
+  }
+}
+```
+
+文本更新通过直接修改`nodeValue`属性实现，这是最高效的文本更新方式。
+
+### 6.3 子节点操作
+
+```javascript
+// ReactFiberConfigDOM.js - 添加子节点
+export function appendInitialChild(
+  parentInstance: Instance,
+  child: Instance | TextInstance,
+): void {
+  // 注意：这里不使用 moveBefore，因为初始子节点是在断开连接时添加的
+  parentInstance.appendChild(child);
+}
+
+// ReactFiberConfigDOM.js - 插入子节点
+export function insertInContainerBefore(
+  container: Container,
+  child: Instance | TextInstance,
+  beforeChild: Instance | TextInstance,
+): void {
+  container.insertBefore(child, beforeChild);
+}
+
+// ReactFiberConfigDOM.js - 移除子节点
+export function removeChild(
+  parentInstance: Instance,
+  child: Instance | TextInstance,
+): void {
+  parentInstance.removeChild(child);
+}
+```
+
+子节点的操作包括：
+
+- **appendChild**：添加子节点到末尾
+- **insertBefore**：在指定节点前插入
+- **removeChild**：移除子节点
+
 ## 三、diff 算法
 
 虚拟 DOM 的 diff 算法通过比较新旧虚拟 DOM 树的差异，最小化对真实 DOM 的操作，diff 算法基于两个假设。
@@ -521,18 +1390,19 @@ function createWorkInProgress(current: Fiber, pendingProps: Props): Fiber {
 }
 
 // 数组元素的 Diff 算法
+// 详细的可视化流程图和说明请参考: [array-diff-visualization.md](./array-diff-visualization.md)
 function reconcileChildrenArray(
-  returnFiber: Fiber,
-  currentFirstChild: Fiber | null,
-  newChildren: Array<*>,
-  lanes: Lanes,
+  returnFiber: Fiber, // 父级 Fiber 节点，当前处理的子节点的父节点
+  currentFirstChild: Fiber | null, // 当前已存在的第一个子 Fiber 节点（workInProgress 树中的）
+  newChildren: Array<*>, // 新的子节点数组（来自 JSX 的 children）
+  lanes: Lanes, // 优先级车道，用于调度
 ): Fiber | null {
-  let resultingFirstChild: Fiber | null = null;
-  let previousNewFiber: Fiber | null = null;
-  let oldFiber = currentFirstChild;
-  let lastPlacedIndex = 0;
-  let newIdx = 0;
-  let nextOldFiber = null;
+  let resultingFirstChild: Fiber | null = null; // 最终返回的新子节点链表的头节点
+  let previousNewFiber: Fiber | null = null; // 上一个新创建的 Fiber 节点，用于构建链表
+  let oldFiber = currentFirstChild; // 当前正在处理的旧 Fiber 节点
+  let lastPlacedIndex = 0; // 最后一个被放置的节点的索引，用于确定节点是否需要移动
+  let newIdx = 0; // 新子节点数组的当前索引
+  let nextOldFiber = null; // 下一个要处理的旧 Fiber 节点
 
   // 1. 第一轮：处理 key 相同的节点
   for (; oldFiber !== null && newIdx < newChildren.length; newIdx++) {
@@ -543,6 +1413,7 @@ function reconcileChildrenArray(
       nextOldFiber = oldFiber.sibling;
     }
     
+    // 尝试复用或创建新的 Fiber 节点
     const newFiber = updateSlot(returnFiber, oldFiber, newChildren[newIdx], lanes);
     
     if (newFiber === null) {
@@ -559,7 +1430,8 @@ function reconcileChildrenArray(
         deleteChild(returnFiber, oldFiber);
       }
     }
-    
+
+    // 确定节点是否需要移动
     lastPlacedIndex = placeChild(newFiber, lastPlacedIndex, newIdx);
     
     if (previousNewFiber === null) {
@@ -598,21 +1470,22 @@ function reconcileChildrenArray(
   }
 
   // 4. 第二轮：处理剩余的节点，使用 Map 优化查找
+  // 将剩余的旧节点映射到 Map 中，key 为节点的 key 或索引
   const existingChildren = mapRemainingChildren(oldFiber);
   
   for (; newIdx < newChildren.length; newIdx++) {
     const newFiber = updateFromMap(
-      existingChildren,
-      returnFiber,
-      newIdx,
-      newChildren[newIdx],
+      existingChildren, // 剩余旧节点的 Map
+      returnFiber, // 父节点
+      newIdx, // 新节点在数组中的索引
+      newChildren[newIdx], // 新的子节点
       lanes,
     );
     
     if (newFiber !== null) {
       if (shouldTrackSideEffects) {
         if (newFiber.alternate !== null) {
-          // 复用的节点，从 Map 中移除
+          // 复用的节点，从 Map 中移除（避免重复处理）
           existingChildren.delete(
             newFiber.key === null ? newIdx : newFiber.key,
           );
@@ -634,6 +1507,141 @@ function reconcileChildrenArray(
   }
 
   return resultingFirstChild;
+}
+```
+
+示例场景
+
+旧节点: A → B → C → D  
+新节点: [A, B, E, C]
+
+执行过程可视化
+
+第一轮遍历
+
+按顺序处理，最大化复用相同位置的节点。
+
+lastPlacedIndex 用于记录最后一个被放置的节点的索引，如果当前节点的索引 < lastPlacedIndex，说明需要移动，避免了不必要的 DOM 移动操作。下面是一个演示。
+
+```text
+新节点顺序: [A, B, C, D]
+lastPlacedIndex = 2 (C 的位置)
+如果下一个节点 D 的索引是 3 > 2，不需要移动
+如果下一个节点 B 的索引是 1 < 2，需要移动
+```
+
+```text
+步骤 1: newIdx = 0
+┌─────────────────────────────────────┐
+│ 旧节点: A → B → C → D               │
+│ 新节点: [A, B, E, C]                │
+│ 当前: oldFiber=A, newChildren[0]=A  │
+└─────────────────────────────────────┘
+         ↓ key 相同，复用
+┌─────────────────────────────────────┐
+│ 结果: A (复用)                      │
+│ lastPlacedIndex = 0                 │
+│ 剩余旧节点: B → C → D               │
+└─────────────────────────────────────┘
+
+步骤 2: newIdx = 1
+┌─────────────────────────────────────┐
+│ 旧节点: B → C → D                   │
+│ 新节点: [A, B, E, C]                │
+│ 当前: oldFiber=B, newChildren[1]=B  │
+└─────────────────────────────────────┘
+         ↓ key 相同，复用
+┌─────────────────────────────────────┐
+│ 结果: A → B (复用)                  │
+│ lastPlacedIndex = 1                 │
+│ 剩余旧节点: C → D                   │
+└─────────────────────────────────────┘
+
+步骤 3: newIdx = 2
+┌─────────────────────────────────────┐
+│ 旧节点: C → D                       │
+│ 新节点: [A, B, E, C]                │
+│ 当前: oldFiber=C, newChildren[2]=E  │
+└─────────────────────────────────────┘
+         ↓ key 不同，无法复用，跳出循环
+```
+
+第二轮遍历
+
+使用 Map 查找，处理位置变化的节点
+
+```text
+构建 Map:
+┌─────────────────────────────────────┐
+│ existingChildren = {                │
+│   'C': oldFiber(C),                 │
+│   'D': oldFiber(D)                  │
+│ }                                   │
+└─────────────────────────────────────┘
+
+处理剩余新节点:
+
+步骤 1: newIdx = 2, newChildren[2] = E
+┌─────────────────────────────────────┐
+│ 在 Map 中查找 key='E'               │
+│ 结果: 未找到                        │
+│ 操作: 创建新节点 E                  │
+└─────────────────────────────────────┘
+
+步骤 2: newIdx = 3, newChildren[3] = C
+┌─────────────────────────────────────┐
+│ 在 Map 中查找 key='C'               │
+│ 结果: 找到 oldFiber(C)              │
+│ 操作: 复用节点 C，从 Map 中删除     │
+└─────────────────────────────────────┘
+
+清理阶段:
+┌─────────────────────────────────────┐
+│ 删除 Map 中剩余节点: D              │
+│ 最终结果: A → B → E → C            │
+└─────────────────────────────────────┘
+```
+
+```javascript
+function createChild(
+  returnFiber: Fiber,
+  newChild: any,
+  lanes: Lanes,
+): Fiber | null {
+  if (
+    (typeof newChild === 'string' && newChild !== '') ||
+    typeof newChild === 'number' ||
+    typeof newChild === 'bigint'
+  ) {
+    const created = createFiberFromText(
+      '' + newChild,
+      returnFiber.mode,
+      lanes,
+    );
+    created.return = returnFiber;
+    return created;
+  }
+
+  if (typeof newChild === 'object' && newChild !== null) {
+    switch (newChild.$$typeof) {
+      case REACT_ELEMENT_TYPE: {
+        const created = createFiberFromElement(
+          newChild,
+          returnFiber.mode,
+          lanes,
+        );
+        coerceRef(created, newChild);
+        created.return = returnFiber;
+        return created;
+      }
+      case REACT_PORTAL_TYPE: { }
+      case REACT_LAZY_TYPE: { }
+    }
+
+    // ...
+  }
+
+  return null;
 }
 
 function updateSlot(

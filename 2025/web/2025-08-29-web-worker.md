@@ -500,9 +500,21 @@ portB.onmessage = function (event) {
 };
 ```
 
+## WorkerGlobalScope
+
+## DedicatedWorkerGlobalScope
+
+## WorkerLocation
+
+## SharedWorkerGlobalScope
+
 ## 参考
 
 - [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API)，MDN
 - [Web Worker](https://wangdoc.com/javascript/bom/webworker)，阮一峰
 - [The structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm)，MDN
 - [Transferable objects](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects)，MDN
+- [WorkerGlobalScope](https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope)，MDN
+- [DedicatedWorkerGlobalScope](https://developer.mozilla.org/en-US/docs/Web/API/DedicatedWorkerGlobalScope)，MDN
+- [WorkerLocation](https://developer.mozilla.org/en-US/docs/Web/API/WorkerLocation)，MDN
+- [SharedWorkerGlobalScope](https://developer.mozilla.org/en-US/docs/Web/API/SharedWorkerGlobalScope)，MDN
