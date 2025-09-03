@@ -1,0 +1,174 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.App-header h1 {
+  margin: 0 0 10px 0;
+  font-size: 2rem;
+}
+
+.App-header p {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.tab-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  background-color: white;
+  border-bottom: 1px solid #eee;
+}
+
+.tab-button {
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  background-color: white;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-button:hover {
+  background-color: #f8f9fa;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.main-content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 虚拟列表样式 - BEM规范 */
+.virtual-list__item {
+  position: absolute;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.virtual-list__item:hover {
+  background-color: #f0f8ff !important;
+}
+
+/* 虚拟列表容器样式 */
+.virtual-list {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.virtual-list__title {
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+.virtual-list__controls {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.virtual-list__search-input {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  flex: 1;
+  min-width: 200px;
+}
+
+.virtual-list__refresh-button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 1;
+}
+
+.virtual-list__refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.virtual-list__status {
+  margin-bottom: 15px;
+  font-size: 12px;
+  color: #666;
+}
+
+.virtual-list__status--error {
+  color: #dc3545;
+}
+
+.virtual-list__scroll-container {
+  overflow: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  position: relative;
+}
+
+.virtual-list__content {
+  position: relative;
+}
+
+.virtual-list__item-content {
+  display: flex;
+  align-items: center;
+}
+
+.virtual-list__item-text {
+  flex: 1;
+}
+
+.virtual-list__item-title {
+  font-weight: bold;
+}
+
+.virtual-list__item-description {
+  font-size: 12px;
+  color: #666;
+}
+
+.virtual-list__loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  color: #999;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .tab-container {
+    flex-wrap: wrap;
+  }
+  
+  .tab-button {
+    flex: 1;
+    min-width: 120px;
+  }
+  
+  .main-content {
+    padding: 10px;
+  }
+}
