@@ -17,7 +17,7 @@ const observer = new MutationObserver(callback);
 - 第一个参数是 `MutationRecord` 对象类型的数组，描述了每次发生的变化。
 - 第二个参数是 `MutationObserver` 观察者对象本身。
 
-注意，回调函数在微任务（microtask）阶段批量触发，浏览器会将同一轮事件循环中的多个 DOM 变更合并成一组 `MutationRecord`，因此天然具备“批处理/节流”效果。
+注意，回调函数在**微任务**（microtask）阶段批量触发，浏览器会将同一轮事件循环中的多个 DOM 变更合并成一组 `MutationRecord`，因此天然具备“批处理/节流”效果。
 
 ### 实例方法
 
@@ -86,8 +86,8 @@ child.setAttribute('data-foo', '');
 ```javascript
 const userListElement = document.querySelector("#user-list");
 
-const observer = new MutationObserver(mutationList => {
-  mutationList.forEach(mutation => {
+const observer = new MutationObserver(mutations => {
+  mutations.forEach(mutation => {
     switch (mutation.type) {
       case 'attributes':
         switch (mutation.attributeName) {
@@ -116,15 +116,15 @@ observer.observe(userListElement, {
 
 ```html
 <style>
-body {
-  background-color: paleturquoise;
-}
+  body {
+    background-color: paleturquoise;
+  }
 
-button,
-input,
-pre {
-  margin: 0.5rem;
-}
+  button,
+  input,
+  pre {
+    margin: 0.5rem;
+  }
 </style>
 
 <button id="toggle">Toggle direction</button><br />
@@ -134,27 +134,27 @@ pre {
 <pre id="output"></pre>
 
 <script>
-const toggle = document.querySelector('#toggle');
-const rhubarb = document.querySelector('#rhubarb');
-const observerTarget = document.querySelector('#container');
-const output = document.querySelector('#output');
+  const toggle = document.querySelector('#toggle');
+  const rhubarb = document.querySelector('#rhubarb');
+  const observerTarget = document.querySelector('#container');
+  const output = document.querySelector('#output');
 
-toggle.addEventListener('click', () => {
-  rhubarb.dir = rhubarb.dir === 'ltr' ? 'rtl' : 'ltr';
-});
+  toggle.addEventListener('click', () => {
+    rhubarb.dir = rhubarb.dir === 'ltr' ? 'rtl' : 'ltr';
+  });
 
-const observer = new MutationObserver(mutationList => {
-  for (const mutation of mutationList) {
-    if (mutation.type === 'attributes') {
-      output.textContent = `The ${mutation.attributeName} attribute was modified from '${mutation.oldValue}'.`;
+  const observer = new MutationObserver(mutations => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'attributes') {
+        output.textContent = `The ${mutation.attributeName} attribute was modified from '${mutation.oldValue}'.`;
+      }
     }
-  }
-});
+  });
 
-observer.observe(observerTarget, {
-  subtree: true,
-  attributeOldValue: true,
-});
+  observer.observe(observerTarget, {
+    subtree: true,
+    attributeOldValue: true,
+  });
 </script>
 ```
 
@@ -232,7 +232,7 @@ function waitForElement(
 ### 监听 class 变化（只关心某属性）
 
 ```js
-const observer = new MutationObserver((records) => {
+const observer = new MutationObserver(records => {
   for (const record of records) {
     if (record.type === 'attributes' && record.attributeName === 'class') {
       // r.target.className 已是新值

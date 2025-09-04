@@ -245,48 +245,6 @@ const AdComponent = () => {
 };
 ```
 
-### 视频自动播放
-
-下面是一个视频自动播放控制的例子。
-
-```jsx
-const AutoPlayVideo = () => {
-  const videoRef = useRef();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            videoElement.play().catch(e => console.log('自动播放失败:', e));
-          } else {
-            videoElement.pause();
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <video
-      ref={videoRef}
-      className="auto-play-video"
-    >
-      <source src="/path/to/video.mp4" type="video/mp4" />
-    </video>
-  );
-};
-```
-
-上面代码中，当 `<view>` 元素有一半进入视口时，视频就会尝试自动播放。
-
 ### 内容预加载
 
 ```javascript
@@ -318,58 +276,6 @@ const preloadContent = () => {
   document.querySelectorAll('[data-preload-url]').forEach(el => {
     observer.observe(el);
   });
-};
-```
-
-### React Hooks 封装
-
-下面是一个在 React 中封装的 Hook。
-
-```javascript
-const useIntersectionObserver = (options = {}, callback) => {
-  const [entries, setEntries] = useState([]);
-  const elementRefs = useRef(new Map());
-  const observerRef = useRef(null);
-
-  const observe = useCallback((element, key) => {
-    if (element && !elementRefs.current.has(key)) {
-      elementRefs.current.set(key, element);
-      if (observerRef.current) {
-        observerRef.current.observe(element);
-      }
-    }
-  }, []);
-
-  const unobserve = useCallback(key => {
-    const element = elementRefs.current.get(key);
-    if (element && observerRef.current) {
-      observerRef.current.unobserve(element);
-      elementRefs.current.delete(key);
-    }
-  }, []);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(entries => {
-      setEntries(entries);
-      if (callback) {
-        callback(entries);
-      }},
-      options
-    );
-
-    // 观察所有已注册的元素
-    elementRefs.current.forEach(element => {
-      observerRef.current.observe(element);
-    });
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [options, callback]);
-
-  return { observe, unobserve, entries };
 };
 ```
 

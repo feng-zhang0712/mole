@@ -14,17 +14,17 @@ Web Worker 有以下几个使用注意点。
 - 文件限制：Worker 线程无法读取本地文件，即不能打开本机的文件系统（`file://`），它所加载的脚本，必须来自网络。
 - DOM 限制：Worker 线程所在的全局对象，无法读取主线程所在网页的 DOM 对象，也无法使用 `window`、`document` 这些对象。但是，Worker 线程可以使用 `navigator` 对象和 `location` 对象。
 - 全局对象限制：Worker 的全局对象 WorkerGlobalScope，不同于网页的全局对象 Window，很多接口拿不到。比如，理论上 Worker 线程不能使用 `console.log`，因为标准里面没有提到 Worker 的全局对象存在 `console` 接口，只定义了 Navigator 接口和 Location 接口。不过，浏览器实际上支持 Worker 线程使用 `console.log`，保险的做法还是不使用这个方法。
-- 脚本限制：Worker 线程不能执行 `alert()` 方法和 `confirm()` 方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求，[这个页面]列出了 Web Workers 可以使用的 Web API。
+- 脚本限制：Worker 线程不能执行 `alert()` 方法和 `confirm()` 方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求，[这个页面][functions-and-classes-available-to-web-workers]列出了 Web Workers 可以使用的 Web API。
 - 通信联系：Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。
 
-[这个页面]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers
+[functions-and-classes-available-to-web-workers]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Functions_and_classes_available_to_workers
 
 ## 结构化克隆算法
 
 结构化克隆算法用于复制复杂的 JavaScript 对象。它在以下场景中被内部使用：
 
-- 调用 [structuredClone()] 时。
-- 通过 [postMessage()] 在 Worker 之间传输数据时。
+- 调用 [structuredClone] 时。
+- 通过 [postMessage] 在 Worker 之间传输数据时。
 - 使用 IndexedDB 存储对象时。
 - 为其他 API 复制对象时。
 
@@ -34,16 +34,16 @@ Web Worker 有以下几个使用注意点。
 - 克隆 **DOM 节点**会抛出 DataCloneError 异常。
 - 某些对象属性无法保留，比如：
   - RegExp 对象的 `lastIndex` 属性。
-  - 属性描述符、`setter`、`getter` 以及类似的元数据特性不会被复制。比如，如果一个对象通过属性描述符被标记为只读，在复制后的对象中它将变为可读/可写，因为这是默认状态。
+  - 属性描述符、`setter`、`getter` 以及类似的元数据特性不会被复制。比如，如果一个对象通过属性描述符被标记为只读，在复制后的对象中它将变为可读/可写，因为这是默认的状态。
   - 原型链不会被遍历或复制。
-  - 类的私有属性不会被复制。（不过内置类型的内部字段可能会被复制。）
+  - 类的私有属性不会被复制（内置类型的内部字段可能会被复制）。
 
-[structuredClone()]: https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/structuredClone
-[postMessage()]: https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage
+[structuredClone]: https://developer.mozilla.org/en-US/docs/Web/API/WorkerGlobalScope/structuredClone
+[postMessage]: https://developer.mozilla.org/en-US/docs/Web/API/Worker/postMessage
 
 ## 可转移对象
 
-可转移对象（Transferable objects）是拥有该资源的对象，这些资源可以从一个上下文转移到另一个上下文，确保资源在任意时刻只在一个上下文中可用。转移完成后，原始对象将不再可用；它不再指向已转移的资源，任何尝试读取或写入该对象的操作都会抛出异常。
+可转移对象（Transferable objects）是指那些可以从一个上下文转移到另一个上下文的对象，这种机制能够确保资源在任意时刻只在一个上下文中可用。转移完成后，原始对象将不再可用；它不再指向已转移的资源，任何尝试读取或写入该对象的操作都会抛出异常。
 
 可转移对象通常用于共享那些一次只能安全地暴露给单个 JavaScript 线程的资源。例如，ArrayBuffer 是一个拥有内存块的可转移对象。当这样的缓冲区在线程之间转移时，关联的内存资源会从原始缓冲区分离，并附加到新线程中创建的缓冲区对象上。原始线程中的缓冲区对象不再可用，因为它不再拥有内存资源。
 
@@ -52,9 +52,9 @@ Web Worker 有以下几个使用注意点。
 
 用于转移对象资源的机制取决于对象类型。例如，当 ArrayBuffer 在线程之间转移时，它指向的内存资源会在上下文之间进行字面意义上的移动，这是一个快速高效的零拷贝操作。其他对象可能通过复制关联资源，然后从旧上下文中删除它来进行转移。
 
-并非所有对象都是可转移的。[这里]提供了一个可转移对象的列表。
+并非所有对象都是可转移的。[这个页面][transferable-objects]提供了一个可转移对象的列表。
 
-下面的代码演示了从主线程向 Worker 线程发送消息时转移是如何工作的。Uint8Array 在 Worker 中被复制（重复），而其缓冲区被转移。转移后，任何尝试从主线程读取或写入 `uInt8Array` 的操作都会抛出异常，但你仍然可以检查 `byteLength` 来确认它现在为零。
+下面的代码演示了从主线程向 Worker 线程发送消息时转移是如何工作的。Uint8Array 在 Worker 中被复制（重复），而其缓冲区被转移。转移后，任何尝试从主线程读取或写入 `uInt8Array` 的操作都会抛出异常，但仍然可以检查 `byteLength` 来确认它是否为零。
 
 ```javascript
 const uInt8Array = new Uint8Array(1024 * 1024 * 8).map((v, i) => i);
@@ -64,7 +64,7 @@ worker.postMessage(uInt8Array, [uInt8Array.buffer]);
 uInt8Array.byteLength // 0
 ```
 
-注意，类型化数组（如 Int32Array 和 Uint8Array）是可序列化的，但不可转移。然而，它们底层的缓冲区是一个 ArrayBuffer，而 ArrayBuffer 是一个可转移对象。我们可以在 data 参数中发送 `uInt8Array.buffer`，但不能在转移数组中发送 `uInt8Array`。
+注意，类型化数组（如 Int32Array 和 Uint8Array）是可序列化的，但不可转移。然而，它们底层的缓冲区是一个 ArrayBuffer，而 ArrayBuffer 是一个可转移对象。我们可以在 `data` 参数中发送 `uInt8Array.buffer`，但不能在转移数组中发送 `uInt8Array`。
 
 下面的代码展示了一个 `structuredClone()` 操作，其中底层缓冲区从原始对象复制到克隆对象。
 
@@ -89,7 +89,7 @@ transferred[0] // 1
 original.byteLength // 0
 ```
 
-[这里]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects#supported_objects
+[transferable-objects]: https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects#supported_objects
 
 ## Worker
 
@@ -119,9 +119,9 @@ new Worker(url, option)
 主线程和 Worker 线程之间的通信，通过 `postMessage()` 进行。
 
 ```javascript
-postMessage(message)
-postMessage(message, transfer)
-postMessage(message, options)
+worker.postMessage(message)
+worker.postMessage(message, transfer)
+worker.postMessage(message, options)
 ```
 
 - `message` 向对方发送的数据，可以是任意类型（受[结构化克隆算法]的限制），如果是对象，会被[结构化克隆算法]处理。在接收端，通过回调函数的 `event.data` 来获取。该参数必须指定，如果没有数据要发送，可指定为 `null` 或者 `undefined`。
@@ -135,7 +135,7 @@ postMessage(message, options)
 `terminate()` 方法终止 Worker 的执行，该方法会立即执行，如果此时有数据传输，传输会被终止。
 
 ```javascript
-terminate()
+worker.terminate()
 ```
 
 注意，该方法是 Worker 实例方法，只能通过 `worker.terminate()` 执行，在 Worker 脚本内部，可以通过执行 `self.close()` 关闭 Worker。
@@ -389,7 +389,7 @@ SharedWorker 是一种特殊的 Web Worker，允许多个页面、标签页或 i
 
 #### 构造函数
 
-`SharedWorker()` 构造函数用于创建一个指定了特定 Worker URL 地址的实例对象。
+`SharedWorker()` 构造函数用于创建一个指定了特定 Worker URL 地址的实例对象。当多个页面使用相同的 URL 创建 SharedWorker 时，浏览器会复用同一个 SharedWorker 实例，所有连接到这个 SharedWorker 的页面共享同一个 worker 线程和内存空间。
 
 ```javascript
 new SharedWorker(url)
@@ -441,7 +441,7 @@ self.addEventListener('error', (event) => { })
 self.onerror = (event) => { }
 ```
 
-SharedWorker 脚本中，使用 `onconnect` 回调函数连接到 Worker 的端口（port）。
+SharedWorker 脚本中，使用 `onconnect` 回调函数连接到 Worker 的端口（port）。当在其他页面使用相同 URL 时创建 Worker 实例时，浏览器复用现有实例，并触发 `connect` 事件。
 
 ```javascript
 // shared-worker.js
