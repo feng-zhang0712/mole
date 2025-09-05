@@ -13,25 +13,24 @@
 #### `window` 操作
 
 - `resize()`
-- `scrollTo()`
-- `scrollBy()`
+- `scrollTo()`、`scrollBy()`
 
 #### `Element` 属性和方法
 
 - `position`、`display`、`overflow`、`visibility`、`float`、`zIndex`
-- `margin`、`padding`、`border`、`borderRadius`
-- `top/right/bottom/left`、`clientLeft/clientTop`、`scrollLeft/scrollTop`、`offsetLeft/offsetTop`
+- `padding`、`border`、`margin`
+- `top/right/bottom/left`
+- `clientLeft/clientTop`、`scrollLeft/scrollTop`、`offsetLeft/offsetTop`
 - `width/height`、`clientWidth/clientHeight`、`scrollWidth/scrollHeight`、`offsetWidth/offsetHeight`
 
 - `innerHTML`、`innerText`、`textContent`
 - `fontFamily`、`fontSize`、`fontWeight`、`fontStyle`
 
 - `computedStyle()`
-- `getClientRects()`
-- `getBoundingClientRect()`
+- `getClientRects()`、`getBoundingClientRect()`
+- `focus()`、`blur()`
 
-- `appendChild()`、`removeChild()`、``
-- `insertBefore()`、`replaceChild()`、`remove()`
+- `appendChild()`、`removeChild()`、`replaceChild()`、`insertBefore()`、`remove()`
 
 - `className = 'new-class'`、
 - `classList.add()`、`classList.remove()`、`classList.toggle()`、
@@ -45,8 +44,7 @@
 #### CSS 伪类激活
 
 - `:hover`、`:focus`、`:active`、`:visited`
-- `:first-child`、`:last-child`、`:nth-child()`
-- `:first-of-type`、`:last-of-type`、`:nth-of-type()`
+- `:first-child`、`:first-of-type`、`:last-child`、`:last-of-type`、`:nth-child()`、`:nth-of-type()`
 
 #### 其他
 
@@ -54,7 +52,6 @@
 - 图片、视频、音频尺寸变化
 - 滚动容器内容变化、滚动条显示/隐藏、滚动位置改变
 - CSS 动画开始/结束、CSS 过渡开始/结束
-- `element.focus()` / `element.blur()`
 
 ## 重绘
 
