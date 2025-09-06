@@ -37,7 +37,7 @@
 }
 ```
 
-### 绝对定位 + `margin: auto`
+### 绝对定位 + `margin: 0 auto`
 
 ```css
 .box {
