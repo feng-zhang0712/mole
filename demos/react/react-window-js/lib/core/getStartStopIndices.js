@@ -1,0 +1,67 @@
+/**
+ * @param {Object} params
+ * @param {import('../types.js').CachedBounds} params.cachedBounds
+ * @param {number} params.containerScrollOffset
+ * @param {number} params.containerSize
+ * @param {number} params.itemCount
+ * @param {number} params.overscanCount
+ * @returns {{ startIndexVisible: number; stopIndexVisible: number; startIndexOverscan: number; stopIndexOverscan: number }}
+ */
+export function getStartStopIndices({
+  cachedBounds,
+  containerScrollOffset,
+  containerSize,
+  itemCount,
+  overscanCount
+}) {
+  const maxIndex = itemCount - 1;
+
+  let startIndexVisible = 0;
+  let stopIndexVisible = -1;
+  let startIndexOverscan = 0;
+  let stopIndexOverscan = -1;
+  let currentIndex = 0;
+
+  while (currentIndex < maxIndex) {
+    const bounds = cachedBounds.get(currentIndex);
+
+    if (bounds.scrollOffset + bounds.size > containerScrollOffset) {
+      break;
+    }
+
+    currentIndex++;
+  }
+
+  startIndexVisible = currentIndex;
+  startIndexOverscan = Math.max(0, startIndexVisible - overscanCount);
+
+  while (currentIndex < maxIndex) {
+    const bounds = cachedBounds.get(currentIndex);
+
+    if (
+      bounds.scrollOffset + bounds.size >=
+      containerScrollOffset + containerSize
+    ) {
+      break;
+    }
+
+    currentIndex++;
+  }
+
+  stopIndexVisible = Math.min(maxIndex, currentIndex);
+  stopIndexOverscan = Math.min(itemCount - 1, stopIndexVisible + overscanCount);
+
+  if (startIndexVisible < 0) {
+    startIndexVisible = 0;
+    stopIndexVisible = -1;
+    startIndexOverscan = 0;
+    stopIndexOverscan = -1;
+  }
+
+  return {
+    startIndexVisible,
+    stopIndexVisible,
+    startIndexOverscan,
+    stopIndexOverscan
+  };
+}
