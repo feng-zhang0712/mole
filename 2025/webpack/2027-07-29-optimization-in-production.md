@@ -6,7 +6,7 @@
 
 ### 2.1 压缩 HTML
 
-生产模式下，如果配置了 [html-webpack-plugin] 插件，webpack 自动使用该插件压缩 HTML 代码，也可以通过配置 `minify` 字段自定义压缩行为。
+生产模式下，webpack 使用 [html-webpack-plugin] 插件自动压缩 HTML 代码，也可以通过配置 `minify` 字段自定义压缩行为。
 
 ```javascript
 // webpack.config.js
@@ -31,22 +31,22 @@ module.exports = {
 };
 ```
 
-注意，`minify` 其实是对 [html-minifier-terser] 插件的配置，这个插件在 [html-webpack-plugin] 安装时会自动安装。
+注意，`minify` 其实是对 [html-minifier-terser] 插件的配置，[html-webpack-plugin] 内置了该插件。
 
 [html-webpack-plugin]: https://github.com/jantimon/html-webpack-plugin
 [html-minifier-terser]: https://github.com/DanielRuf/html-minifier-terser
 
 ### 2.2 压缩样式资源
 
-样式资源的压缩，主要包括样式提取和代码压缩两个过程。
+样式资源的压缩，主要包括**样式提取**和**代码压缩**两个过程。
 
 ```text
-CSS 文件 → Loader 处理 → 提取插件（MiniCssExtractPlugin） → 压缩插件（CssMinimizerPlugin） → 输出文件
+CSS 文件 -> Loader 处理 -> 提取插件（MiniCssExtractPlugin）-> 压缩插件（CssMinimizerPlugin）-> 输出文件
 ```
 
 这两个过程需要借助 [mini-css-extract-plugin] 和 [css-minimizer-webpack-plugin] 两个插件来完成。
 
-首先，`mini-css-extract-plugin` 用于将样式资源提取到单独的文件中，从而减少 JavaScript bundle 体积并优化浏览器缓存。
+[mini-css-extract-plugin] 用于将样式资源提取到单独的文件中，从而减少 JavaScript bundle 体积并优化浏览器缓存。
 
 ```javascript
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -81,7 +81,7 @@ module.exports = {
 };
 ```
 
-`css-minimizer-webpack-plugin` 执行 CSS 代码的压缩。
+[css-minimizer-webpack-plugin] 执行 CSS 代码的压缩。
 
 ```javascript
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
@@ -113,19 +113,19 @@ module.exports = {
 
 ### 2.3 压缩脚本资源
 
-脚本资源的处理分为三部分：利用 Tree Shaking 移除死代码、使用 [terser-webpack-plugin] 对脚本代码进行压缩、项目中的副作用处理。
+脚本资源的处理包含三个维度。
+
+- 利用 Tree Shaking 移除死代码。
+- 使用 [terser-webpack-plugin] 对脚本代码进行压缩。
+- 项目中的模块化和副作用处理。
 
 #### 2.3.1 移除死代码（Tree Shaking）
 
-Tree Shaking 是一个术语，用于描述移除 JavaScript 中死代码的过程。这个术语来源于 ES6 模块的[静态结构]特性，通过**摇树**的动作来比喻移除无用的代码。Tree Shaking 的核心机制包含三部分内容：**静态分析**、**ES6 模块支持**和**副作用检测**。
+Tree Shaking 是一个术语，用于描述移除 JavaScript 中死代码的过程。这个术语来源于 ES6 模块的[静态结构]特性，通过**摇树**的动作来比喻移除无用的代码。Tree Shaking 的核心机制包含**静态分析**、**ES6 模块支持**和**副作用检测**三部分内容。
 
 - 静态分析，即在代码编译时（而不是运行时）确定模块的依赖关系。在传统的动态模块系统中，模块的依赖关系是在运行时确定的，构建工具无法在编译时知道哪些代码会被实际使用。
 - ES6 模块支持，基于 ES6 的 `import` 和 `export` 语法进行静态分析。
 - 副作用检测，识别和保留有副作用的代码，移除纯函数代码。
-
-下面是与 Tree Shaking 有关的配置项与注意点。
-
-[静态结构]: http://exploringjs.com/es6/ch_modules.html#static-module-structure
 
 ##### （1）配置 `package.json`
 
@@ -155,14 +155,6 @@ Tree Shaking 是一个术语，用于描述移除 JavaScript 中死代码的过�
 
 上面的代码表示，只有 `*.css` 和 `./src/utils.js` 模块有副作用，其他模块都没有副作用。此时，其他模块中未使用的代码就会被删除。
 
-```json
-{
-  "sideEffects": ["*.css", "!*.js"]
-}
-```
-
-上面代码表示，`*.css` 和 `./src/utils.js` 模块有副作用，除 `utils.js` 模块之外的所有脚本资源模块都没有副作用。
-
 注意，该属性比 `optimization.sideEffects` 字段更精确，优先级也更高。
 
 ##### （2）配置 `webpack.config.js`
@@ -179,7 +171,7 @@ module.exports = {
   mode: 'production',
   optimization: {
     usedExports: true, // 启用导出分析，标记未使用的导出
-    sideEffects: true, // 启用副作用检测（依赖 package.json: sideEffects）
+    sideEffects: true, // 启用副作用检测
     minimize: true, // 启用代码压缩
   }
 };
@@ -187,14 +179,15 @@ module.exports = {
 
 ##### （3）编码风格的影响
 
-Tree Shaking 的实际效果，受模块导入和导出方式的影响。CommonJS 模块以及 ESM 的 `import()` 动态导入语法，完全不支持 Tree Shaking。另外，ESM 的默认导入和导出会影响 Tree Shaking 的效果，所以应该尽量避免这些写法。下面是一些推荐的写法。
+Tree Shaking 的实际效果，受模块导入和导出方式的影响。
+
+CommonJS 模块以及 ESM 的 `import()` 动态导入语法，完全不支持 Tree Shaking。另外，ESM 的默认导入和导出会影响 Tree Shaking 的效果，所以应该尽量避免这些写法。下面是一些推荐的写法。
 
 使用 ESM 模块的普通导入和导出。
 
 ```javascript
 // 支持的导出方式（具名导出）
 export function add(a, b) { return a + b; }
-export function subtract(a, b) { return a - b; }
 
 // 支持的导入方式（具名导入）
 import { add } from './utils';
@@ -216,46 +209,7 @@ const utils = {
 const LazyComponent = () => import('./components/LazyComponent.js');
 ```
 
-对于循环依赖的模块，有两种处理方式。
-
-第一种方式是重构代码，将共享的代码单独处理。
-
-```javascript
-// shared.js
-export function shared () {
-  // 共享的逻辑
-};
-
-// foo.js
-import { shared } from './shared';
-export const foo = shared() + /* ... */;
-
-// bar.js
-import { shared } from './shared';
-export const bar = shared() + /* ... */;
-```
-
-第二种方式是使用依赖注入。
-
-```javascript
-// shared.js
-export const shared = {
-  foo: null,
-  bar: null
-}
-
-// foo.js
-import { shared } from './shared';
-export const foo = shared.bar;
-
-// bar.js
-import { shared } from './shared';
-export const bar = shared.foo;
-
-// 在应用启动时注入依赖
-shared.foo = foo;
-shared.bar = bar;
-```
+[静态结构]: http://exploringjs.com/es6/ch_modules.html#static-module-structure
 
 #### 2.3.2 压缩代码
 
@@ -281,7 +235,6 @@ module.exports = {
             comments: false, // 移除注释
           }
         },
-        extractComments: false, // 不提取注释到单独文件
         // ...
       }),
     ],
@@ -1574,6 +1527,155 @@ import Button from 'Button'; // 可能找不到，因为不在 node_modules 中
 // 优化后：webpack 会在多个目录中查找
 import Button from 'Button'; // 会在 src/components 中找到
 import { formatDate } from 'dateUtils'; // 会在 src/utils 中找到
+```
+
+## 第三方库按需加载
+
+### 使用动态导入 (Dynamic Import)
+
+```javascript
+module.exports = {
+  // 启用代码分割
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        }
+      }
+    }
+  }
+};
+
+// 动态导入整个库
+const loadLibrary = async () => {
+  const library = await import('some-library');
+  return library;
+};
+
+// 动态导入特定模块
+const loadSpecificModule = async () => {
+  const { specificFunction } = await import('some-library');
+  return specificFunction;
+};
+```
+
+### 使用 webpack 的 DllPlugin
+
+```javascript
+// webpack.dll.config.js
+const webpack = require('webpack');
+const path = require('path');
+
+module.exports = {
+  entry: {
+    vendor: ['react', 'react-dom', 'lodash', 'axios']
+  },
+  output: {
+    path: path.join(__dirname, 'dist'),
+    filename: '[name].dll.js',
+    library: '[name]_library'
+  },
+  plugins: [
+    new webpack.DllPlugin({
+      path: path.join(__dirname, 'dist', '[name]-manifest.json'),
+      name: '[name]_library'
+    })
+  ]
+};
+
+// webpack.config.js
+const webpack = require('webpack');
+
+module.exports = {
+  plugins: [
+    new webpack.DllReferencePlugin({
+      manifest: require('./dist/vendor-manifest.json')
+    })
+  ]
+};
+```
+
+### 使用 webpack 的 Module Federation
+
+```javascript
+// webpack.config.js
+const { ModuleFederationPlugin } = require('webpack').container;
+
+module.exports = {
+  plugins: [
+    new ModuleFederationPlugin({
+      name: 'app',
+      remotes: {
+        'remoteApp': 'remoteApp@http://localhost:3001/remoteEntry.js'
+      },
+      shared: {
+        react: { singleton: true },
+        'react-dom': { singleton: true }
+      }
+    })
+  ]
+};
+
+const RemoteComponent = React.lazy(() => import('remoteApp/Component'));
+```
+
+### 使用 webpack 的 import() 函数
+
+```javascript
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            plugins: ['@babel/plugin-syntax-dynamic-import']
+          }
+        }
+      }
+    ]
+  }
+};
+
+// 条件加载
+if (condition) {
+  import('./heavy-module').then(module => {
+    // 使用模块
+  });
+}
+
+// 路由级别的代码分割
+const HomePage = React.lazy(() => import('./pages/HomePage'));
+const AboutPage = React.lazy(() => import('./pages/AboutPage'));
+```
+
+### 使用 webpack 的 externals 配置
+
+```javascript
+// webpack.config.js
+module.exports = {
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM',
+    'lodash': '_'
+  },
+  // 或者使用函数形式
+  externals: function(context, request, callback) {
+    if (/^your-library/.test(request)) {
+      return callback(null, 'commonjs ' + request);
+    }
+    callback();
+  }
+};
+
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 ```
 
 ## 八、渐进式 Web 应用

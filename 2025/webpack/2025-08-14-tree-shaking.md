@@ -56,13 +56,7 @@ import { add } from mathPath;
 
 ### 2.2 副作用
 
-副作用指那些会对外部环境产生影响的代码。副作用会影响最终的代码优化效果，构建工具必须准确识别这些副作用，确保不会误删正常的代码。
-
-副作用可分为显示副作用和隐式副作用，之所以这样划分，并不是说任何副作用都可归类为二者之一，而是说有些副作用很容易看出来，有些则不那么明显。
-
-#### （1）显式副作用
-
-下面这些副作用很容易被识别，因为它们有明显的对外部环境的修改。
+副作用指那些会对外部环境产生影响的代码。副作用会影响最终的代码优化效果，构建工具必须准确识别这些副作用，确保不会误删正常的代码。下面这些代码都有副作用。
 
 ```javascript
 // 全局变量（函数）定义
@@ -90,14 +84,6 @@ XMLHttpRequest.open('GET', '/api/data');
 // Cookie 操作
 document.cookie = 'name=value';
 
-/* ... */
-```
-
-#### （2）隐式副作用
-
-隐式副作用比较隐蔽，需要深入分析才能发现。
-
-```javascript
 // 模块级变量
 const moduleState = 'initialized';
 
@@ -245,7 +231,6 @@ import('./utils').then(module => {
   // 完全不支持
 });
 
-// 条件导入也是不支持的
 if (condition) {
   const { add } = await import('./utils.js');
 }
@@ -458,3 +443,5 @@ export function calculate() {
 上面的代码，即使 `sideEffects.js` 模块被标记为有副作用，`console.log('Hello')` 依然会被移除。
 
 ## 六、参考
+
+- [webpack 官方文档](https://webpack.docschina.org/)
