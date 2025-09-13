@@ -1,0 +1,147 @@
+{
+  "app": {
+    "title": "Enterprise React i18n Application",
+    "description": "A complete enterprise-level React internationalization solution",
+    "version": "1.0.0"
+  },
+  "welcome": {
+    "title": "Welcome to",
+    "subtitle": "Enterprise React i18n Application",
+    "description": "This is a sample application demonstrating enterprise-level internationalization best practices",
+    "getStarted": "Get Started"
+  },
+  "navigation": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "language": "Language",
+    "logout": "Logout"
+  },
+  "buttons": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "reset": "Reset",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "confirm": "Confirm",
+    "close": "Close"
+  },
+  "forms": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "password": "Password must be at least 8 characters",
+    "confirmPassword": "Passwords do not match",
+    "phone": "Please enter a valid phone number",
+    "username": "Username must be between 3-20 characters",
+    "loading": "Submitting...",
+    "success": "Operation successful",
+    "error": "Operation failed"
+  },
+  "messages": {
+    "loading": "Loading...",
+    "noData": "No data available",
+    "noResults": "No results found",
+    "success": "Operation successful",
+    "error": "Operation failed",
+    "warning": "Warning",
+    "info": "Information",
+    "confirm": "Confirm operation",
+    "cancel": "Cancel operation"
+  },
+  "errors": {
+    "network": "Network connection failed",
+    "server": "Server error",
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "forbidden": "Access forbidden",
+    "timeout": "Request timeout",
+    "unknown": "Unknown error"
+  },
+  "time": {
+    "now": "just now",
+    "minuteAgo": "1 minute ago",
+    "minutesAgo": "{{count}} minutes ago",
+    "hourAgo": "1 hour ago",
+    "hoursAgo": "{{count}} hours ago",
+    "dayAgo": "1 day ago",
+    "daysAgo": "{{count}} days ago",
+    "weekAgo": "1 week ago",
+    "weeksAgo": "{{count}} weeks ago",
+    "monthAgo": "1 month ago",
+    "monthsAgo": "{{count}} months ago",
+    "yearAgo": "1 year ago",
+    "yearsAgo": "{{count}} years ago"
+  },
+  "currency": {
+    "symbol": "$",
+    "name": "US Dollar",
+    "code": "USD"
+  },
+  "date": {
+    "format": "MMMM DD, YYYY",
+    "timeFormat": "HH:mm:ss",
+    "datetimeFormat": "MMMM DD, YYYY HH:mm:ss",
+    "shortFormat": "MM/DD",
+    "longFormat": "dddd, MMMM DD, YYYY"
+  },
+  "features": {
+    "title": "Core Features",
+    "i18n": {
+      "title": "Multi-language Support",
+      "description": "Support for Chinese, English, Japanese and other languages with automatic language detection"
+    },
+    "performance": {
+      "title": "High Performance",
+      "description": "Optimized with Webpack code splitting, lazy loading and other techniques for fast loading"
+    },
+    "tools": {
+      "title": "Development Tools",
+      "description": "Integrated ESLint, Prettier and other tools to ensure code quality and consistency"
+    },
+    "responsive": {
+      "title": "Responsive Design",
+      "description": "Adapts to various device sizes for the best user experience"
+    }
+  },
+  "stats": {
+    "users": "Total Users",
+    "revenue": "Total Revenue",
+    "lastUpdate": "Last Update"
+  },
+  "demo": {
+    "title": "Internationalization Demo",
+    "currentLanguage": "Current Language",
+    "currentLanguageDesc": "The application displays the appropriate language based on your browser settings or manual selection",
+    "supportedLanguages": "Supported Languages",
+    "supportedLanguagesDesc": "Currently supports Chinese, English and Japanese",
+    "features": "Features",
+    "featuresDesc": "Includes language switching, number formatting, date formatting and other complete features"
+  },
+  "dashboard": {
+    "subtitle": "View your data statistics and business metrics",
+    "metrics": {
+      "totalUsers": "Total Users",
+      "totalRevenue": "Total Revenue",
+      "totalOrders": "Total Orders",
+      "conversionRate": "Conversion Rate"
+    },
+    "charts": {
+      "revenue": "Revenue Trend",
+      "placeholder": "Chart component placeholder (integrate Chart.js or other chart libraries in actual projects)"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "userRegistration": "{{user}} registered a new account",
+      "orderPlaced": "{{user}} placed an order {{amount}}",
+      "paymentReceived": "Payment received from {{user}} {{amount}}",
+      "unknown": "Unknown activity"
+    }
+  }
+}

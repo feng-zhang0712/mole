@@ -1,0 +1,147 @@
+{
+  "app": {
+    "title": "企业级React国际化应用",
+    "description": "一个功能完整的企业级React国际化解决方案",
+    "version": "1.0.0"
+  },
+  "welcome": {
+    "title": "欢迎使用",
+    "subtitle": "企业级React国际化应用",
+    "description": "这是一个展示企业级国际化最佳实践的示例应用",
+    "getStarted": "开始使用"
+  },
+  "navigation": {
+    "home": "首页",
+    "dashboard": "仪表板",
+    "profile": "个人资料",
+    "settings": "设置",
+    "language": "语言",
+    "logout": "退出登录"
+  },
+  "buttons": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "search": "搜索",
+    "reset": "重置",
+    "submit": "提交",
+    "back": "返回",
+    "next": "下一步",
+    "previous": "上一步",
+    "confirm": "确认",
+    "close": "关闭"
+  },
+  "forms": {
+    "required": "此字段为必填项",
+    "email": "请输入有效的邮箱地址",
+    "password": "密码长度至少为8位",
+    "confirmPassword": "两次输入的密码不一致",
+    "phone": "请输入有效的手机号码",
+    "username": "用户名长度应在3-20位之间",
+    "loading": "提交中...",
+    "success": "操作成功",
+    "error": "操作失败"
+  },
+  "messages": {
+    "loading": "加载中...",
+    "noData": "暂无数据",
+    "noResults": "没有找到相关结果",
+    "success": "操作成功",
+    "error": "操作失败",
+    "warning": "警告",
+    "info": "提示",
+    "confirm": "确认操作",
+    "cancel": "取消操作"
+  },
+  "errors": {
+    "network": "网络连接失败",
+    "server": "服务器错误",
+    "notFound": "页面不存在",
+    "unauthorized": "未授权访问",
+    "forbidden": "禁止访问",
+    "timeout": "请求超时",
+    "unknown": "未知错误"
+  },
+  "time": {
+    "now": "刚刚",
+    "minuteAgo": "1分钟前",
+    "minutesAgo": "{{count}}分钟前",
+    "hourAgo": "1小时前",
+    "hoursAgo": "{{count}}小时前",
+    "dayAgo": "1天前",
+    "daysAgo": "{{count}}天前",
+    "weekAgo": "1周前",
+    "weeksAgo": "{{count}}周前",
+    "monthAgo": "1个月前",
+    "monthsAgo": "{{count}}个月前",
+    "yearAgo": "1年前",
+    "yearsAgo": "{{count}}年前"
+  },
+  "currency": {
+    "symbol": "¥",
+    "name": "人民币",
+    "code": "CNY"
+  },
+  "date": {
+    "format": "YYYY年MM月DD日",
+    "timeFormat": "HH:mm:ss",
+    "datetimeFormat": "YYYY年MM月DD日 HH:mm:ss",
+    "shortFormat": "MM/DD",
+    "longFormat": "YYYY年MM月DD日 dddd"
+  },
+  "features": {
+    "title": "核心功能特性",
+    "i18n": {
+      "title": "多语言支持",
+      "description": "支持中文、英文、日文等多种语言，自动检测用户语言偏好"
+    },
+    "performance": {
+      "title": "高性能优化",
+      "description": "采用Webpack代码分割、懒加载等技术，确保应用快速加载"
+    },
+    "tools": {
+      "title": "开发工具",
+      "description": "集成ESLint、Prettier等工具，确保代码质量和一致性"
+    },
+    "responsive": {
+      "title": "响应式设计",
+      "description": "适配各种设备尺寸，提供最佳的用户体验"
+    }
+  },
+  "stats": {
+    "users": "总用户数",
+    "revenue": "总收入",
+    "lastUpdate": "最后更新"
+  },
+  "demo": {
+    "title": "国际化演示",
+    "currentLanguage": "当前语言",
+    "currentLanguageDesc": "应用会根据您的浏览器设置或手动选择显示相应的语言",
+    "supportedLanguages": "支持的语言",
+    "supportedLanguagesDesc": "目前支持简体中文、英文和日文三种语言",
+    "features": "功能特性",
+    "featuresDesc": "包含语言切换、数字格式化、日期格式化等完整功能"
+  },
+  "dashboard": {
+    "subtitle": "查看您的数据统计和业务指标",
+    "metrics": {
+      "totalUsers": "总用户数",
+      "totalRevenue": "总收入",
+      "totalOrders": "总订单数",
+      "conversionRate": "转化率"
+    },
+    "charts": {
+      "revenue": "收入趋势",
+      "placeholder": "图表组件占位符（实际项目中可集成Chart.js等图表库）"
+    },
+    "activity": {
+      "title": "最近活动",
+      "userRegistration": "{{user}} 注册了新账户",
+      "orderPlaced": "{{user}} 下了一个订单 {{amount}}",
+      "paymentReceived": "收到来自 {{user}} 的付款 {{amount}}",
+      "unknown": "未知活动"
+    }
+  }
+}

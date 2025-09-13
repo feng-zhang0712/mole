@@ -1,0 +1,340 @@
+/* 首页组件样式 */
+.home {
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 语言切换器 */
+.home__language-switcher {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+/* 英雄区域 */
+.home__hero {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.home__hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.home__title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
+}
+
+.home__title-highlight {
+  display: block;
+  font-size: 2rem;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: 0.5rem;
+}
+
+.home__description {
+  font-size: 1.25rem;
+  margin: 0 0 2rem 0;
+  opacity: 0.9;
+  line-height: 1.6;
+}
+
+.home__actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home__button {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.home__button--primary {
+  background: #ffffff;
+  color: #667eea;
+}
+
+.home__button--primary:hover {
+  background: #f8fafc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.home__button--secondary {
+  background: transparent;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+.home__button--secondary:hover {
+  background: #ffffff;
+  color: #667eea;
+  transform: translateY(-2px);
+}
+
+/* 统计信息 */
+.home__stats {
+  background: #f8fafc;
+  padding: 60px 0;
+}
+
+.home__stats-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+}
+
+.home__stat {
+  text-align: center;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.home__stat:hover {
+  transform: translateY(-4px);
+}
+
+.home__stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.home__stat-label {
+  font-size: 1rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 功能特性 */
+.home__features {
+  padding: 80px 0;
+  background: #ffffff;
+}
+
+.home__features-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.home__features-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 3rem 0;
+  color: #1f2937;
+}
+
+.home__features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.home__feature {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.home__feature:hover {
+  background: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.home__feature-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.home__feature-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+}
+
+.home__feature-description {
+  font-size: 1rem;
+  color: #6b7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 演示区域 */
+.home__demo {
+  background: #1f2937;
+  color: #ffffff;
+  padding: 80px 0;
+}
+
+.home__demo-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.home__demo-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 3rem 0;
+}
+
+.home__demo-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.home__demo-item {
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home__demo-item h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: #60a5fa;
+}
+
+.home__demo-item p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .home__hero {
+    padding: 60px 0;
+  }
+  
+  .home__title {
+    font-size: 2rem;
+  }
+  
+  .home__title-highlight {
+    font-size: 1.5rem;
+  }
+  
+  .home__description {
+    font-size: 1.125rem;
+  }
+  
+  .home__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .home__button {
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .home__stats {
+    padding: 40px 0;
+  }
+  
+  .home__stats-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .home__stat {
+    padding: 1.5rem;
+  }
+  
+  .home__stat-number {
+    font-size: 2rem;
+  }
+  
+  .home__features {
+    padding: 60px 0;
+  }
+  
+  .home__features-title {
+    font-size: 2rem;
+  }
+  
+  .home__features-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .home__feature {
+    padding: 1.5rem;
+  }
+  
+  .home__demo {
+    padding: 60px 0;
+  }
+  
+  .home__demo-title {
+    font-size: 2rem;
+  }
+  
+  .home__demo-content {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .home__demo-item {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home__hero-content {
+    padding: 0 0.75rem;
+  }
+  
+  .home__title {
+    font-size: 1.75rem;
+  }
+  
+  .home__title-highlight {
+    font-size: 1.25rem;
+  }
+  
+  .home__description {
+    font-size: 1rem;
+  }
+  
+  .home__features-container,
+  .home__demo-container {
+    padding: 0 0.75rem;
+  }
+}

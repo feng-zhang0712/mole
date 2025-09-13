@@ -1,0 +1,147 @@
+{
+  "app": {
+    "title": "エンタープライズReact国際化アプリケーション",
+    "description": "完全なエンタープライズレベルのReact国際化ソリューション",
+    "version": "1.0.0"
+  },
+  "welcome": {
+    "title": "ようこそ",
+    "subtitle": "エンタープライズReact国際化アプリケーション",
+    "description": "これはエンタープライズレベルの国際化のベストプラクティスを示すサンプルアプリケーションです",
+    "getStarted": "始める"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "dashboard": "ダッシュボード",
+    "profile": "プロフィール",
+    "settings": "設定",
+    "language": "言語",
+    "logout": "ログアウト"
+  },
+  "buttons": {
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "search": "検索",
+    "reset": "リセット",
+    "submit": "送信",
+    "back": "戻る",
+    "next": "次へ",
+    "previous": "前へ",
+    "confirm": "確認",
+    "close": "閉じる"
+  },
+  "forms": {
+    "required": "この項目は必須です",
+    "email": "有効なメールアドレスを入力してください",
+    "password": "パスワードは8文字以上である必要があります",
+    "confirmPassword": "パスワードが一致しません",
+    "phone": "有効な電話番号を入力してください",
+    "username": "ユーザー名は3-20文字である必要があります",
+    "loading": "送信中...",
+    "success": "操作が成功しました",
+    "error": "操作が失敗しました"
+  },
+  "messages": {
+    "loading": "読み込み中...",
+    "noData": "データがありません",
+    "noResults": "関連する結果が見つかりません",
+    "success": "操作が成功しました",
+    "error": "操作が失敗しました",
+    "warning": "警告",
+    "info": "情報",
+    "confirm": "操作を確認",
+    "cancel": "操作をキャンセル"
+  },
+  "errors": {
+    "network": "ネットワーク接続に失敗しました",
+    "server": "サーバーエラー",
+    "notFound": "ページが見つかりません",
+    "unauthorized": "認証されていません",
+    "forbidden": "アクセスが禁止されています",
+    "timeout": "リクエストがタイムアウトしました",
+    "unknown": "不明なエラー"
+  },
+  "time": {
+    "now": "たった今",
+    "minuteAgo": "1分前",
+    "minutesAgo": "{{count}}分前",
+    "hourAgo": "1時間前",
+    "hoursAgo": "{{count}}時間前",
+    "dayAgo": "1日前",
+    "daysAgo": "{{count}}日前",
+    "weekAgo": "1週間前",
+    "weeksAgo": "{{count}}週間前",
+    "monthAgo": "1ヶ月前",
+    "monthsAgo": "{{count}}ヶ月前",
+    "yearAgo": "1年前",
+    "yearsAgo": "{{count}}年前"
+  },
+  "currency": {
+    "symbol": "¥",
+    "name": "日本円",
+    "code": "JPY"
+  },
+  "date": {
+    "format": "YYYY年MM月DD日",
+    "timeFormat": "HH:mm:ss",
+    "datetimeFormat": "YYYY年MM月DD日 HH:mm:ss",
+    "shortFormat": "MM/DD",
+    "longFormat": "YYYY年MM月DD日 dddd"
+  },
+  "features": {
+    "title": "コア機能",
+    "i18n": {
+      "title": "多言語サポート",
+      "description": "中国語、英語、日本語などの言語をサポートし、自動言語検出機能を提供"
+    },
+    "performance": {
+      "title": "高性能最適化",
+      "description": "Webpackコード分割、遅延読み込みなどの技術で高速ロードを実現"
+    },
+    "tools": {
+      "title": "開発ツール",
+      "description": "ESLint、Prettierなどのツールを統合し、コード品質と一貫性を確保"
+    },
+    "responsive": {
+      "title": "レスポンシブデザイン",
+      "description": "様々なデバイスサイズに適応し、最適なユーザー体験を提供"
+    }
+  },
+  "stats": {
+    "users": "総ユーザー数",
+    "revenue": "総収益",
+    "lastUpdate": "最終更新"
+  },
+  "demo": {
+    "title": "国際化デモ",
+    "currentLanguage": "現在の言語",
+    "currentLanguageDesc": "アプリケーションはブラウザ設定または手動選択に基づいて適切な言語を表示します",
+    "supportedLanguages": "サポート言語",
+    "supportedLanguagesDesc": "現在中国語、英語、日本語をサポートしています",
+    "features": "機能",
+    "featuresDesc": "言語切り替え、数値フォーマット、日付フォーマットなどの完全な機能を含みます"
+  },
+  "dashboard": {
+    "subtitle": "データ統計とビジネス指標を表示",
+    "metrics": {
+      "totalUsers": "総ユーザー数",
+      "totalRevenue": "総収益",
+      "totalOrders": "総注文数",
+      "conversionRate": "コンバージョン率"
+    },
+    "charts": {
+      "revenue": "収益トレンド",
+      "placeholder": "チャートコンポーネントプレースホルダー（実際のプロジェクトではChart.jsなどのチャートライブラリを統合）"
+    },
+    "activity": {
+      "title": "最近のアクティビティ",
+      "userRegistration": "{{user}} が新しいアカウントを登録しました",
+      "orderPlaced": "{{user}} が注文しました {{amount}}",
+      "paymentReceived": "{{user}} からの支払いを受け取りました {{amount}}",
+      "unknown": "不明なアクティビティ"
+    }
+  }
+}

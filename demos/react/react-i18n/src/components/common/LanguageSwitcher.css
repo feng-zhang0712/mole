@@ -1,0 +1,208 @@
+/* 语言切换组件样式 */
+.language-switcher {
+  position: relative;
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* 触发器按钮 */
+.language-switcher__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  justify-content: space-between;
+}
+
+.language-switcher__trigger:hover {
+  border-color: #9ca3af;
+  background: #f9fafb;
+}
+
+.language-switcher__trigger:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.language-switcher__trigger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 国旗图标 */
+.language-switcher__flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* 语言名称 */
+.language-switcher__name {
+  flex: 1;
+  text-align: left;
+}
+
+/* 下拉箭头 */
+.language-switcher__arrow {
+  font-size: 10px;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.language-switcher__arrow.open {
+  transform: rotate(180deg);
+}
+
+/* 加载状态 */
+.language-switcher__loading {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #e5e7eb;
+  border-top: 2px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 下拉菜单 */
+.language-switcher__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 4px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* 语言列表 */
+.language-switcher__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.language-switcher__item {
+  margin: 0;
+}
+
+/* 语言选项 */
+.language-switcher__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: #374151;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.language-switcher__option:hover {
+  background: #f3f4f6;
+}
+
+.language-switcher__option:focus {
+  outline: none;
+  background: #e5e7eb;
+}
+
+.language-switcher__option.active {
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+
+/* 选中标记 */
+.language-switcher__check {
+  margin-left: auto;
+  color: #10b981;
+  font-weight: bold;
+}
+
+/* 尺寸变体 */
+.language-switcher.small .language-switcher__trigger {
+  padding: 6px 10px;
+  font-size: 12px;
+  min-width: 100px;
+}
+
+.language-switcher.large .language-switcher__trigger {
+  padding: 12px 16px;
+  font-size: 16px;
+  min-width: 140px;
+}
+
+/* 响应式设计 */
+@media (max-width: 640px) {
+  .language-switcher__trigger {
+    min-width: 100px;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  
+  .language-switcher__flag {
+    font-size: 14px;
+  }
+}
+
+/* 暗色主题支持 */
+@media (prefers-color-scheme: dark) {
+  .language-switcher__trigger {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+  
+  .language-switcher__trigger:hover {
+    background: #111827;
+    border-color: #4b5563;
+  }
+  
+  .language-switcher__dropdown {
+    background: #1f2937;
+    border-color: #374151;
+  }
+  
+  .language-switcher__option {
+    color: #f9fafb;
+  }
+  
+  .language-switcher__option:hover {
+    background: #111827;
+  }
+  
+  .language-switcher__option.active {
+    background: #1e3a8a;
+    color: #dbeafe;
+  }
+}
