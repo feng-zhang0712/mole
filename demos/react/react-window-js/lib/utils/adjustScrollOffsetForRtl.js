@@ -1,13 +1,5 @@
 import { getRTLOffsetType } from "./getRTLOffsetType.js";
 
-/**
- * @param {Object} params
- * @param {HTMLElement | null} params.containerElement
- * @param {"horizontal" | "vertical"} params.direction
- * @param {boolean} params.isRtl
- * @param {number} params.scrollOffset
- * @returns {number}
- */
 export function adjustScrollOffsetForRtl({
   containerElement,
   direction,

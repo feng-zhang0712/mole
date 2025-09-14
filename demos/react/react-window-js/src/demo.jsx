@@ -3,31 +3,24 @@ import { createRoot } from 'react-dom/client';
 import { List } from '/lib/index.js';
 import './styles.css';
 
-// Fixed Size List Demo
 function FixedSizeListDemo() {
   const Row = ({ index, style }) => {
-    // Generate different image URLs for variety
-    const imageId = (index % 1000) + 1; // Cycle through 1000 different images
-    const imageUrl = `https://picsum.photos/40/40?random=${imageId}`;
     
-    const handleImageLoad = (e) => {
-      // Remove loading state
-      e.target.style.background = 'transparent';
+    const handleImageLoad = (event) => {
+      event.target.style.background = 'transparent';
     };
     
-    const handleImageError = (e) => {
-      // Show error state
-      e.target.classList.add('list__image--error');
+    const handleImageError = (event) => {
+      event.target.classList.add('list__image--error');
     };
     
     return (
       <div className="list__row" style={style}>
         <div className="list__content">
-          {/* Profile Image */}
           <img
-            src={imageUrl}
-            alt={`Profile ${index}`}
             className="list__image"
+            src={`https://picsum.photos/40/40?random=${(index % 1000) + 1}`}
+            alt={`Profile ${index}`}
             onLoad={handleImageLoad}
             onError={handleImageError}
           />
@@ -46,16 +39,15 @@ function FixedSizeListDemo() {
 
   return (
     <List
-      height={400}
+      height={800}
       rowCount={50000}
-      rowHeight={80}
+      rowSize={80}
       rowComponent={Row}
       rowProps={{}}
     />
   );
 }
 
-// Variable Size List Demo
 function VariableSizeListDemo() {
   const Row = ({ index, style }) => {
     // Calculate dynamic height based on content complexity
@@ -63,18 +55,12 @@ function VariableSizeListDemo() {
     const extraHeight = (index % 10) * 20; // Add 0-180px extra height
     const height = baseHeight + extraHeight;
     
-    // Generate different image URLs for variety
-    const imageId = (index % 1000) + 1; // Cycle through 1000 different images
-    const imageUrl = `https://picsum.photos/60/60?random=${imageId}`;
-    
-    const handleImageLoad = (e) => {
-      // Remove loading state
-      e.target.style.background = 'transparent';
+    const handleImageLoad = (event) => {
+      event.target.style.background = 'transparent';
     };
     
-    const handleImageError = (e) => {
-      // Show error state
-      e.target.classList.add('list__image--error');
+    const handleImageError = (event) => {
+      event.target.classList.add('list__image--error');
     };
     
     return (
@@ -82,14 +68,13 @@ function VariableSizeListDemo() {
         className="list__row list__row--variable" 
         style={{
           ...style,
-          height: height,
-          minHeight: height // Ensure minimum height
+          height,
+          minHeight: height, // Ensure minimum height
         }}
       >
         <div className="list__content">
-          {/* Profile Image */}
           <img
-            src={imageUrl}
+            src={`https://picsum.photos/40/40?random=${(index % 1000) + 1}`}
             alt={`Profile ${index}`}
             className="list__image list__image--large"
             onLoad={handleImageLoad}
@@ -135,16 +120,15 @@ function VariableSizeListDemo() {
 
   return (
     <List
-      height={400}
+      height={800}
       rowCount={1000}
-      rowHeight={getItemSize}
+      rowSize={getItemSize}
       rowComponent={Row}
       rowProps={{}}
     />
   );
 }
 
-// Render demos
 const fixedListContainer = document.getElementById('fixed-list');
 if (fixedListContainer) {
   const fixedListRoot = createRoot(fixedListContainer);

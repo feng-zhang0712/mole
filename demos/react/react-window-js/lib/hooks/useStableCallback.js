@@ -1,9 +1,9 @@
-import { useCallback, useRef } from "react";
-import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect.js";
+import { useCallback, useRef } from 'react';
+import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect.js';
 
 export function useStableCallback(fn) {
   const ref = useRef(() => {
-    throw new Error("Cannot call an event handler while rendering.");
+    throw new Error('Cannot call an event handler while rendering.');
   });
 
   useIsomorphicLayoutEffect(() => {

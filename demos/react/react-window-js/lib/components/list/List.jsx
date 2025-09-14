@@ -4,32 +4,32 @@ import {
   useEffect,
   useImperativeHandle,
   useMemo,
-  useState
-} from "react";
-import { useVirtualizer } from "../../core/useVirtualizer.js";
-import { useMemoizedObject } from "../../hooks/useMemoizedObject.js";
-import { arePropsEqual } from "../../utils/arePropsEqual.js";
+  useState,
+} from 'react';
+import { useVirtualizer } from '../../core/useVirtualizer.js';
+import { useMemoizedObject } from '../../hooks/useMemoizedObject.js';
+import { arePropsEqual } from '../../utils/arePropsEqual.js';
 
 export function List({
-  children,
+  tagName = 'div',
   className,
-  defaultHeight = 0,
+  style,
   listRef,
+  defaultHeight = 0,
+  rowComponent,
+  rowCount,
+  rowSize,
+  rowProps: rowPropsUnstable,
+  overscanCount = 3,
   onResize,
   onRowsRendered,
-  overscanCount = 3,
-  rowComponent: RowComponentProp,
-  rowCount,
-  rowHeight,
-  rowProps: rowPropsUnstable,
-  tagName = "div",
-  style,
+  children,
   ...rest
 }) {
   const rowProps = useMemoizedObject(rowPropsUnstable);
   const RowComponent = useMemo(
-    () => memo(RowComponentProp, arePropsEqual),
-    [RowComponentProp]
+    () => memo(rowComponent, arePropsEqual),
+    [rowComponent],
   );
 
   const [element, setElement] = useState(null);
@@ -41,16 +41,16 @@ export function List({
     startIndexOverscan,
     startIndexVisible,
     stopIndexOverscan,
-    stopIndexVisible
+    stopIndexVisible,
   } = useVirtualizer({
     containerElement: element,
     defaultContainerSize: defaultHeight,
-    direction: "vertical",
+    direction: 'vertical',
     itemCount: rowCount,
     itemProps: rowProps,
-    itemSize: rowHeight,
+    itemSize: rowSize,
     onResize,
-    overscanCount
+    overscanCount,
   });
 
   useImperativeHandle(
@@ -61,25 +61,25 @@ export function List({
       },
 
       scrollToRow({
-        align = "auto",
-        behavior = "auto",
-        index
+        align = 'auto',
+        behavior = 'auto',
+        index,
       }) {
         const top = scrollToIndex({
           align,
           containerScrollOffset: element?.scrollTop ?? 0,
-          index
+          index,
         });
 
-        if (typeof element?.scrollTo === "function") {
+        if (typeof element?.scrollTo === 'function') {
           element.scrollTo({
             behavior,
-            top
+            top,
           });
         }
-      }
+      },
     }),
-    [element, scrollToIndex]
+    [element, scrollToIndex],
   );
 
   useEffect(() => {
@@ -87,12 +87,12 @@ export function List({
       onRowsRendered(
         {
           startIndex: startIndexVisible,
-          stopIndex: stopIndexVisible
+          stopIndex: stopIndexVisible,
         },
         {
           startIndex: startIndexOverscan,
-          stopIndex: stopIndexOverscan
-        }
+          stopIndex: stopIndexOverscan,
+        },
       );
     }
   }, [
@@ -100,48 +100,48 @@ export function List({
     startIndexOverscan,
     startIndexVisible,
     stopIndexOverscan,
-    stopIndexVisible
+    stopIndexVisible,
   ]);
 
   const rows = useMemo(() => {
-    const children = [];
-    if (rowCount > 0) {
-      for (
-        let index = startIndexOverscan;
-        index <= stopIndexOverscan;
-        index++
-      ) {
+    if (rowCount <= 0) {
+      return [];
+    }
+
+    return Array.from(
+      { length: stopIndexOverscan - startIndexOverscan + 1 },
+      (_, i) => {
+        const index = startIndexOverscan + i;
         const bounds = getCellBounds(index);
 
-        children.push(
+        return (
           <RowComponent
-            {...(rowProps)}
+            {...rowProps}
             ariaAttributes={{
-              "aria-posinset": index + 1,
-              "aria-setsize": rowCount,
-              role: "listitem"
+              'aria-posinset': index + 1,
+              'aria-setsize': rowCount,
+              role: 'listitem',
             }}
             key={index}
             index={index}
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: 0,
               transform: `translateY(${bounds.scrollOffset}px)`,
               height: bounds.size,
-              width: "100%"
+              width: '100%',
             }}
           />
         );
-      }
-    }
-    return children;
+      },
+    );
   }, [
     RowComponent,
     getCellBounds,
     rowCount,
     rowProps,
     startIndexOverscan,
-    stopIndexOverscan
+    stopIndexOverscan,
   ]);
 
   const sizingElement = (
@@ -149,29 +149,29 @@ export function List({
       aria-hidden
       style={{
         height: getEstimatedSize(),
-        width: "100%",
-        zIndex: -1
+        width: '100%',
+        zIndex: -1,
       }}
-    ></div>
+    />
   );
 
   return createElement(
     tagName,
     {
-      role: "list",
+      role: 'list',
       ...rest,
       className,
       ref: setElement,
       style: {
-        position: "relative",
-        maxHeight: "100%",
+        position: 'relative',
+        maxHeight: '100%',
         flexGrow: 1,
-        overflowY: "auto",
-        ...style
-      }
+        overflowY: 'auto',
+        ...style,
+      },
     },
     rows,
     children,
-    sizingElement
+    sizingElement,
   );
 }

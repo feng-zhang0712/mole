@@ -1,7 +1,3 @@
-/**
- * @typedef {"negative" | "positive-descending" | "positive-ascending"} RTLOffsetType
- */
-
 let cachedRTLResult = null;
 
 // TRICKY According to the spec, scrollLeft should be negative for RTL aligned elements.
@@ -10,10 +6,7 @@ let cachedRTLResult = null;
 // The safest way to check this is to intentionally set a negative offset,
 // and then verify that the subsequent "scroll" event matches the negative offset.
 // If it does not match, then we can assume a non-standard RTL scroll implementation.
-/**
- * @param {boolean} [recalculate=false]
- * @returns {RTLOffsetType}
- */
+
 export function getRTLOffsetType(recalculate = false) {
   if (cachedRTLResult === null || recalculate) {
     const outerDiv = document.createElement("div");

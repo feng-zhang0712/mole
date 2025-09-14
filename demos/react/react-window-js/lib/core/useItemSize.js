@@ -1,12 +1,5 @@
 import { assert } from "../utils/assert.js";
 
-/**
- * @template {Object} Props
- * @param {Object} params
- * @param {number} params.containerSize
- * @param {number | string | ((index: number, props: Props) => number)} params.itemSize
- * @returns {number | ((index: number, props: Props) => number)}
- */
 export function useItemSize({ containerSize, itemSize: itemSizeProp }) {
   let itemSize;
   switch (typeof itemSizeProp) {

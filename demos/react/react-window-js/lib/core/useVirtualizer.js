@@ -2,18 +2,18 @@ import {
   useCallback,
   useLayoutEffect,
   useRef,
-  useState
-} from "react";
-import { useIsomorphicLayoutEffect } from "../hooks/useIsomorphicLayoutEffect.js";
-import { useResizeObserver } from "../hooks/useResizeObserver.js";
-import { useStableCallback } from "../hooks/useStableCallback.js";
-import { adjustScrollOffsetForRtl } from "../utils/adjustScrollOffsetForRtl.js";
-import { shallowCompare } from "../utils/shallowCompare.js";
-import { getEstimatedSize as getEstimatedSizeUtil } from "./getEstimatedSize.js";
-import { getOffsetForIndex } from "./getOffsetForIndex.js";
-import { getStartStopIndices as getStartStopIndicesUtil } from "./getStartStopIndices.js";
-import { useCachedBounds } from "./useCachedBounds.js";
-import { useItemSize } from "./useItemSize.js";
+  useState,
+} from 'react';
+import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect.js';
+import { useResizeObserver } from '../hooks/useResizeObserver.js';
+import { useStableCallback } from '../hooks/useStableCallback.js';
+import { adjustScrollOffsetForRtl } from '../utils/adjustScrollOffsetForRtl.js';
+import { shallowCompare } from '../utils/shallowCompare.js';
+import { getEstimatedSize as getEstimatedSizeUtil } from './getEstimatedSize.js';
+import { getOffsetForIndex } from './getOffsetForIndex.js';
+import { getStartStopIndices as getStartStopIndicesUtil } from './getStartStopIndices.js';
+import { useCachedBounds } from './useCachedBounds.js';
+import { useItemSize } from './useItemSize.js';
 
 export function useVirtualizer({
   containerElement,
@@ -25,13 +25,13 @@ export function useVirtualizer({
   itemProps,
   itemSize: itemSizeProp,
   onResize,
-  overscanCount
+  overscanCount,
 }) {
   const [indices, setIndices] = useState({
     startIndexVisible: 0,
     stopIndexVisible: -1,
     startIndexOverscan: 0,
-    stopIndexOverscan: -1
+    stopIndexOverscan: -1,
   });
 
   // Guard against temporarily invalid indices that may occur when item count decreases
@@ -40,36 +40,36 @@ export function useVirtualizer({
     startIndexVisible,
     startIndexOverscan,
     stopIndexVisible,
-    stopIndexOverscan
+    stopIndexOverscan,
   } = {
     startIndexVisible: Math.min(itemCount - 1, indices.startIndexVisible),
     startIndexOverscan: Math.min(itemCount - 1, indices.startIndexOverscan),
     stopIndexVisible: Math.min(itemCount - 1, indices.stopIndexVisible),
-    stopIndexOverscan: Math.min(itemCount - 1, indices.stopIndexOverscan)
+    stopIndexOverscan: Math.min(itemCount - 1, indices.stopIndexOverscan),
   };
 
   const { height = defaultContainerSize, width = defaultContainerSize } =
     useResizeObserver({
       defaultHeight:
-        direction === "vertical" ? defaultContainerSize : undefined,
+        direction === 'vertical' ? defaultContainerSize : undefined,
       defaultWidth:
-        direction === "horizontal" ? defaultContainerSize : undefined,
+        direction === 'horizontal' ? defaultContainerSize : undefined,
       element: containerElement,
-      mode: direction === "vertical" ? "only-height" : "only-width",
-      style: containerStyle
+      mode: direction === 'vertical' ? 'only-height' : 'only-width',
+      style: containerStyle,
     });
 
   const prevSizeRef = useRef({
     height: 0,
-    width: 0
+    width: 0,
   });
 
-  const containerSize = direction === "vertical" ? height : width;
+  const containerSize = direction === 'vertical' ? height : width;
 
   const itemSize = useItemSize({ containerSize, itemSize: itemSizeProp });
 
   useLayoutEffect(() => {
-    if (typeof onResize === "function") {
+    if (typeof onResize === 'function') {
       const prevSize = prevSizeRef.current;
 
       if (prevSize.height !== height || prevSize.width !== width) {
@@ -84,12 +84,12 @@ export function useVirtualizer({
   const cachedBounds = useCachedBounds({
     itemCount,
     itemProps,
-    itemSize
+    itemSize,
   });
 
   const getCellBounds = useCallback(
     (index) => cachedBounds.get(index),
-    [cachedBounds]
+    [cachedBounds],
   );
 
   const getEstimatedSize = useCallback(
@@ -97,9 +97,9 @@ export function useVirtualizer({
       getEstimatedSizeUtil({
         cachedBounds,
         itemCount,
-        itemSize
+        itemSize,
       }),
-    [cachedBounds, itemCount, itemSize]
+    [cachedBounds, itemCount, itemSize],
   );
 
   const getStartStopIndices = useCallback(
@@ -108,7 +108,7 @@ export function useVirtualizer({
         containerElement,
         direction,
         isRtl,
-        scrollOffset
+        scrollOffset,
       });
 
       return getStartStopIndicesUtil({
@@ -116,7 +116,7 @@ export function useVirtualizer({
         containerScrollOffset,
         containerSize,
         itemCount,
-        overscanCount
+        overscanCount,
       });
     },
     [
@@ -126,13 +126,13 @@ export function useVirtualizer({
       direction,
       isRtl,
       itemCount,
-      overscanCount
-    ]
+      overscanCount,
+    ],
   );
 
   useIsomorphicLayoutEffect(() => {
     const scrollOffset =
-      (direction === "vertical"
+      (direction === 'vertical'
         ? containerElement?.scrollTop
         : containerElement?.scrollLeft) ?? 0;
 
@@ -152,7 +152,7 @@ export function useVirtualizer({
           containerElement,
           direction,
           isRtl,
-          scrollOffset: direction === "vertical" ? scrollTop : scrollLeft
+          scrollOffset: direction === 'vertical' ? scrollTop : scrollLeft,
         });
 
         const next = getStartStopIndicesUtil({
@@ -160,7 +160,7 @@ export function useVirtualizer({
           containerScrollOffset: scrollOffset,
           containerSize,
           itemCount,
-          overscanCount
+          overscanCount,
         });
 
         if (shallowCompare(next, prev)) {
@@ -171,10 +171,10 @@ export function useVirtualizer({
       });
     };
 
-    containerElement.addEventListener("scroll", onScroll);
+    containerElement.addEventListener('scroll', onScroll);
 
     return () => {
-      containerElement.removeEventListener("scroll", onScroll);
+      containerElement.removeEventListener('scroll', onScroll);
     };
   }, [
     cachedBounds,
@@ -182,14 +182,14 @@ export function useVirtualizer({
     containerSize,
     direction,
     itemCount,
-    overscanCount
+    overscanCount,
   ]);
 
   const scrollToIndex = useStableCallback(
     ({
-      align = "auto",
+      align = 'auto',
       containerScrollOffset,
-      index
+      index,
     }) => {
       let scrollOffset = getOffsetForIndex({
         align,
@@ -198,7 +198,7 @@ export function useVirtualizer({
         containerSize,
         index,
         itemCount,
-        itemSize
+        itemSize,
       });
 
       if (containerElement) {
@@ -206,10 +206,10 @@ export function useVirtualizer({
           containerElement,
           direction,
           isRtl,
-          scrollOffset
+          scrollOffset,
         });
 
-        if (typeof containerElement.scrollTo !== "function") {
+        if (typeof containerElement.scrollTo !== 'function') {
           // Special case for environments like jsdom that don't implement scrollTo
           const next = getStartStopIndices(scrollOffset);
           if (!shallowCompare(indices, next)) {
@@ -219,7 +219,7 @@ export function useVirtualizer({
 
         return scrollOffset;
       }
-    }
+    },
   );
 
   return {
@@ -229,6 +229,6 @@ export function useVirtualizer({
     startIndexOverscan,
     startIndexVisible,
     stopIndexOverscan,
-    stopIndexVisible
+    stopIndexVisible,
   };
 }

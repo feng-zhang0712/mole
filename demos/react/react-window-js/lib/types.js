@@ -16,13 +16,6 @@
  */
 
 /**
- * @typedef {Object} CachedBounds
- * @property {function(number): Bounds} get
- * @property {function(number, Bounds): void} set
- * @property {number} size
- */
-
-/**
  * @typedef {"horizontal" | "vertical"} Direction
  */
 

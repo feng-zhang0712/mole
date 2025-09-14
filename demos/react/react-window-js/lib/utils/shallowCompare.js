@@ -1,4 +1,4 @@
-import { assert } from "./assert.js";
+import { assert } from './assert.js';
 
 export function shallowCompare(a, b) {
   if (a === b) {
@@ -12,15 +12,12 @@ export function shallowCompare(a, b) {
   assert(a !== undefined);
   assert(b !== undefined);
 
-  if (Object.keys(a).length !== Object.keys(b).length) {
+  const keysA = Object.keys(a);
+  const keysB = Object.keys(b);
+
+  if (keysA.length !== keysB.length) {
     return false;
   }
 
-  for (const key in a) {
-    if (!Object.is(b[key], a[key])) {
-      return false;
-    }
-  }
-
-  return true;
+  return keysA.every((key) => Object.is(b[key], a[key]));
 }

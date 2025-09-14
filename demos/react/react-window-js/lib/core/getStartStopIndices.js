@@ -1,12 +1,3 @@
-/**
- * @param {Object} params
- * @param {import('../types.js').CachedBounds} params.cachedBounds
- * @param {number} params.containerScrollOffset
- * @param {number} params.containerSize
- * @param {number} params.itemCount
- * @param {number} params.overscanCount
- * @returns {{ startIndexVisible: number; stopIndexVisible: number; startIndexOverscan: number; stopIndexOverscan: number }}
- */
 export function getStartStopIndices({
   cachedBounds,
   containerScrollOffset,
