@@ -36,12 +36,10 @@ observer.observe(element);
 
 ResizeObserver 监听的是元素的尺寸变化，这些变化包括：
 
-- 元素的宽度和高度变化。
-- 内容区域（content）的变化。
-- 内边距区域（padding）的变化。
-- 边框区域（border）的变化。
-
-
+- 内容变化，即元素内容增减导致的尺寸变化，比如，内容加载、元素插入、文本内容变化、图片加载完成等。
+- 响应式布局变化，包括媒体查询、弹性布局变化等。
+- 字体变化，包括字体加载、切换等。
+- CSS 动画变化。
 
 ```javascript
 new ResizeObserver(callback)
@@ -158,7 +156,7 @@ const observer = new ResizeObserver(entries => {
 
 #### `devicePixelContentBoxSize`
 
-`devicePixelContentBoxSize` 返回一个数组，该数组包含设备像素单位的尺寸信息，用于高精度显示适配。
+`devicePixelContentBoxSize` 返回设备像素尺寸信息，用于高精度显示适配。
 
 - `blockSize` 水平书写模式中，表示高度；垂直书写模式中，表示宽度。
 - `inlineSize` 水平书写模式中，表示宽度；垂直书写模式中，表示高度。
