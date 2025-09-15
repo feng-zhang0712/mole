@@ -1,39 +1,34 @@
 # Resize Observer API
 
-## 介绍
+## 概述
 
-Resize Observer API 提供了一种高性能的机制，通过该机制，可以监控元素尺寸的变化，每次尺寸发生变化时都会执行回调函数。
+Resize Observer API 是一个现代 Web API，提供了高性能的机制来监控 DOM 元素尺寸的变化。当被观察元素的尺寸发生变化时，会自动触发回调函数，实现响应式的布局调整。
 
-有时，我们需要监听某个元素尺寸的变化，一种方案是，设置窗口的 `resize` 监听，然后在回调中执行 `Element.getBoundingClientRect` 或 `getComputedStyle` 等方法，但是，元素大小的改变，不一定是因为窗口尺寸发生了变化，这时事件监听就会失效。另外，相关逻辑在主线程执行，性能也不好。
-
-Resize Observer API 为这类问题提供了解决方案，它允许我们以**异步**的方式，观察和响应元素内容或边框盒尺寸的变化。
-
-Resize Observer 的使用方式跟其他观察器，比如 Intersection Observer 使用方式类似。
+有时，我们需要监听某个元素尺寸的变化，一种方案是，设置窗口的 `resize` 监听，然后在回调中执行 `Element.getBoundingClientRect` 或者 `getComputedStyle` 等方法。
 
 ```javascript
-const calcBorderRadius = (size1, size2) => `${Math.min(100, size1 / 10 + size2 / 10)}px`;
+window.addEventListener('resize', () => {
+  const element = document.querySelector('.my-element');
+  const rect = element.getBoundingClientRect();
+  // 处理尺寸变化...
+});
+```
 
+这种方式只能监听窗口尺寸的变化，无法监听元素本身尺寸的变化。另外，`resize` 事件被频繁触发，会阻塞主线程任务的执行。Resize Observer API 为这类问题提供了解决方案，它允许我们以**异步**的方式，监听一个或者多个元素的尺寸变化。同时，浏览器内部对该 API 进行了优化，能够减少不必要的计算。
+
+```javascript
 const observer = new ResizeObserver(entries => {
   for (const entry of entries) {
-    const boxSize = entry.borderBoxSize;
-    if (boxSize) {
-      entry.target.style.borderRadius = calcBorderRadius(
-        boxSize[0].inlineSize, 
-        boxSize[0].blockSize,
-      );
-    } else {
-      entry.target.style.borderRadius = calcBorderRadius(
-        entry.contentRect.width,
-        entry.contentRect.height,
-      );
-    }
+    console.log(entry.target);
+    console.log(entry.contentRect.width, entry.contentRect.height);
   }
 });
 
-observer.observe(document.querySelector('div'));
+const element = document.querySelector('.my-element');
+observer.observe(element);
 ```
 
-注意，由于 Resize Observer 是一个异步 API，所以，尺寸的变化可能不会立即触发回调事件，通常在下一帧渲染之前或之后执行回调。
+注意，由于 Resize Observer 是一个**异步** API，所以，尺寸的变化可能不会立即触发回调事件，通常在下一帧渲染之前或之后执行回调。
 
 ## 基本使用
 
@@ -45,6 +40,8 @@ ResizeObserver 监听的是元素的尺寸变化，这些变化包括：
 - 内容区域（content）的变化。
 - 内边距区域（padding）的变化。
 - 边框区域（border）的变化。
+
+
 
 ```javascript
 new ResizeObserver(callback)
@@ -67,7 +64,7 @@ function callback(entries, observer) {
 
 #### `observe()`
 
-`observe(target)` 方法开始观察指定的 Element 或 SVGElement。
+`observe(target)` 方法开始观察指定的 DOM 元素。
 
 ```javascript
 observe(target)
@@ -75,17 +72,19 @@ observe(target, options)
 ```
 
 - `target`：被观察的目标元素。
-- `options`：配置对象，该对象只有一个 `box` 属性，用于指定观察哪个盒模型。有三个可选值：
+- `options`：配置对象，该对象只有一个 `box` 属性，用于指定观察哪个盒模型。
 
-  - `content-box` 默认值，标准盒模型。
-  - `border-box` 替代盒模型。
-  - `device-pixel-content-box` 在应用任何 CSS 样式前，元素或者其祖先的内容盒模型，以像素为单位。
+`box` 属性有三个可选值：
+
+- `content-box` 默认值，标准盒模型，只关心内容区域尺寸的变化。
+- `border-box` 替代盒模型，包含 `padding` 和 `border`。
+- `device-pixel-content-box` 设备像素单位，观察精度更高。
 
 ```javascript
-observer.observe(divElem, { box: "border-box" });
+observer.observe(target, { box: "border-box" });
 ```
 
-顺便补充下，CSS 中主要有两种盒模型：标准盒模型（`content-box`）和替代盒模型（`border-box`）。可以通过 `box-sizing` 属性，将元素指定为两者之一。
+CSS 中主要有两种盒模型：标准盒模型（`content-box`）和替代盒模型（`border-box`）。可以通过 `box-sizing` 属性，将元素指定为两者之一。
 
 ```css
 div {
@@ -93,14 +92,13 @@ div {
 }
 ```
 
-盒模型由四部分组成：内容（`content`）、内边距（`padding`）、边框（`border`）和外边距（`margin`）。
+盒模型由四部分组成，包括内容（`content`）、内边距（`padding`）、边框（`border`）和外边距（`margin`）。
 
-- 当对开启了标准盒模型的元素设置 `width` 和 `height` 属性时，实际设置的是内容（`content`）部分的宽和高。整个盒模型的宽高要另外加上 `padding` 和 `border` 部分。
-- 当对开启了替代盒模型的元素设置 `width` 和 `height` 属性时，实际设置的是内容（`content`）、内边距（`padding`）和边框（`border`）三部分，此时就是整个盒模型的宽高。
+当对开启了标准盒模型的元素设置 `width` 和 `height` 属性时，实际设置的是内容（`content`）部分的宽度和高度，整个盒模型的宽高要另外加上 `padding` 和 `border` 部分。当对开启了替代盒模型的元素设置 `width` 和 `height` 属性时，实际设置的是内容（`content`）、内边距（`padding`）和边框（`border`）三部分的宽度和高度。
 
 #### `unobserve()`
 
-`unobserve(target)` 停止观察指定的 Element 或 SVGElement。
+`unobserve(target)` 停止观察指定的 DOM 元素。
 
 ```javascript
 observer.unobserve(target)
@@ -108,7 +106,7 @@ observer.unobserve(target)
 
 #### `disconnect()`
 
-`disconnect()` 方法停止观察所有的 Element 或 SVGElement。
+`disconnect()` 方法停止观察所有的 DOM 元素。
 
 ```javascript
 observer.disconnect();
@@ -116,7 +114,7 @@ observer.disconnect();
 
 ### ResizeObserverEntry
 
-ResizeObserverEntry 接口表示传递给 `ResizeObserver()` 构造函数回调函数的对象，该对象保存着被观察元素的尺寸信息。该对象有下面几个属性。
+ResizeObserverEntry 接口表示传递给 `ResizeObserver()` 回调函数的对象，该对象保存着被观察元素的信息。该对象有下面几个属性。
 
 #### `target`
 
@@ -124,165 +122,364 @@ ResizeObserverEntry 接口表示传递给 `ResizeObserver()` 构造函数回调�
 
 #### `contentBoxSize`
 
-`contentBoxSize` 返回一个数组，数组中包含回调函数运行时被观察元素的新的标准盒模型尺寸。数组中的每个对象都有两个属性。
+`contentBoxSize` 返回被观察元素的标准盒模型尺寸信息（只包含 `content`），该属性是一个数组，其中的每一个对象都有两个属性：
 
-- `blockSize`：被观察元素的盒模型在块维度的长度。对于具有水平书写模式的盒子，表示垂直维度，即高度；如果书写模式是垂直的，表示水平维度，即宽度。
-- `inlineSize`：被观察元素的盒模型在行内维度的长度。对于具有水平书写模式的盒子，表示水平维度，即宽度；如果书写模式是垂直的，表示垂直维度，即高度。
+- `blockSize` 水平书写模式中，表示高度；垂直书写模式中，表示宽度。
+- `inlineSize` 水平书写模式中，表示宽度；垂直书写模式中，表示高度。
 
 ```javascript
+// 处理多列布局的尺寸信息
 const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const boxSize = entry.contentBoxSize[0]; // 获取第一个片段
-    console.log(`宽度: ${boxSize.inlineSize}`);
-    console.log(`高度: ${boxSize.blockSize}`);
-  }
+  entries.forEach(entry => {
+    // 支持多列布局，可能有多个片段
+    entry.contentBoxSize.forEach((size, index) => {
+      console.log(`列 ${index}:`, size.inlineSize, 'x', size.blockSize);
+    });
+  });
 });
 ```
 
 #### `borderBoxSize`
 
-`borderBoxSize` 返回一个数组，该数组包含回调函数运行时被观察元素的新的替代盒模型尺寸。数组中的每个对象都有两个属性。
+`borderBoxSize` 返回被观察元素的标准盒模型尺寸信息（包含 `content`、`padding` 和 `border`），该属性是一个数组，其中的每一个对象都有两个属性：
 
-- `blockSize`：被观察元素的盒模型在块维度的长度。对于具有水平书写模式的盒子，表示垂直维度，即高度；如果书写模式是垂直的，表示水平维度，即宽度。
-- `inlineSize`：被观察元素的盒模型在行内维度的长度。对于具有水平书写模式的盒子，表示水平维度，即宽度；如果书写模式是垂直的，表示垂直维度，即高度。
+- `blockSize` 水平书写模式中，表示高度；垂直书写模式中，表示宽度。
+- `inlineSize` 水平书写模式中，表示宽度；垂直书写模式中，表示高度。
 
 ```javascript
-const resizeObserver = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const boxSize = entry.borderBoxSize[0]; // 获取第一个片段
-    console.log(`总宽度: ${boxSize.inlineSize}`);
-    console.log(`总高度: ${boxSize.blockSize}`);
-  }
+const observer = new ResizeObserver(entries => {
+  entries.forEach(entry => {
+    const borderSize = entry.borderBoxSize[0];
+    console.log('总宽度（含边框）:', borderSize.inlineSize);
+    console.log('总高度（含边框）:', borderSize.blockSize);
+  });
 });
 ```
-
-注意，`borderBoxSize` 包含内容、内边距和边框的完整尺寸，而 `contentBoxSize` 只包含内容区域，不包括内边距和边框。这两个属性都适合多列布局和复杂的文本流等场景。
 
 #### `devicePixelContentBoxSize`
 
-`devicePixelContentBoxSize` 返回一个数组，该数组包含回调函数运行时被观察元素在设备像素中的尺寸。数组中的每个对象都有两个属性。
+`devicePixelContentBoxSize` 返回一个数组，该数组包含设备像素单位的尺寸信息，用于高精度显示适配。
 
-- `blockSize`：被观察元素在块维度的标准盒模型尺寸，以设备像素为单位。对于具有水平书写模式的盒子，表示垂直维度，即高度；如果书写模式是垂直的，表示水平维度，即宽度。
-- `inlineSize`：被观察元素在行内方向的标准盒模型尺寸，以设备像素为单位。对于具有水平书写模式的盒子，表示水平维度，即宽度；如果书写模式是垂直的，表示垂直维度，即高度。
+- `blockSize` 水平书写模式中，表示高度；垂直书写模式中，表示宽度。
+- `inlineSize` 水平书写模式中，表示宽度；垂直书写模式中，表示高度。
 
 ```javascript
-const resizeObserver = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const size = entry.devicePixelContentBoxSize[0];
-    console.log(`设备像素宽度: ${size.inlineSize}`);
-    console.log(`设备像素高度: ${size.blockSize}`);
-  }
+// 高分辨率图片适配
+const observer = new ResizeObserver(entries => {
+  entries.forEach(entry => {
+    const deviceSize = entry.devicePixelContentBoxSize[0];
+    const cssSize = entry.contentBoxSize[0];
+    
+    const dpr = deviceSize.inlineSize / cssSize.inlineSize;
+    const img = entry.target.querySelector('img');
+    if (img && dpr > 1) {
+      img.src = img.dataset.highRes || img.src;
+    }
+  });
 });
 ```
-
-注意，`devicePixelContentBoxSize` 属性以设备像素为单位，而 `contentBoxSize` 和 `borderBoxSize` 以 CSS 像素为单位。
 
 该属性适用于高分辨率显示器适配、精确的像素级布局控制的场景、与 Canvas 或其他像素级操作结合使用以及处理不同设备像素比（DPR）的情况。
 
+```javascript
+const observer = new ResizeObserver(entries => {
+  entries.forEach(entry => {
+    const cssSize = entry.contentBoxSize[0];
+    const deviceSize = entry.devicePixelContentBoxSize[0];
+    
+    console.log('CSS 像素:', cssSize.inlineSize, 'x', cssSize.blockSize);
+    console.log('设备像素:', deviceSize.inlineSize, 'x', deviceSize.blockSize);
+    console.log('像素比:', deviceSize.inlineSize / cssSize.inlineSize);
+  });
+});
+```
+
 #### `contentRect`
 
-`contentRect` 被观察元素的新尺寸，是一个 `DOMRectReadOnly` 类型的值。
+`contentRect` 一个 `DOMRectReadOnly` 类型的值，表示被观察元素的新尺寸。
 
-- 对于 Element 对象，该属性返回标准盒模型信息。
-- 对于 SVGElement 对象，该属性返回替代盒模型信息。
+注意，`contentRect` 是早期 API，已被标记为废弃，建议使用 `contentBoxSize` 和 `borderBoxSize`。
 
 ```javascript
-const resizeObserver = new ResizeObserver(entries => {
-  for (const entry of entries) {
+// 不推荐使用（兼容性回退）
+const observer = new ResizeObserver(entries => {
+  entries.forEach(entry => {
     const { width, height } = entry.contentRect;
-    console.log(`新尺寸: ${width} x ${height}`);
-  }
-});
-```
-
-注意，该属性是 Resize Observer API 的早期实现，兼容性好，但以后可能会被移除。因此建议使用 `contentBoxSize` 和 `borderBoxSize`，因为这两个属性提供了更精确和标准化的尺寸信息。
-
-下面是一个 MDN 上的[例子](https://mdn.github.io/dom-examples/resize-observer/resize-observer-text.html)，
-
-```javascript
-const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const { contentBoxSize } = entry;
-    if(contentBoxSize) {
-      if (contentBoxSize[0]) {
-        h1Elem.style.fontSize = Math.max(1.5, contentBoxSize[0].inlineSize/200) + 'rem';
-        pElem.style.fontSize = Math.max(1, contentBoxSize[0].inlineSize/600) + 'rem';
-      } else {
-        h1Elem.style.fontSize = Math.max(1.5, contentBoxSize.inlineSize/200) + 'rem';
-        pElem.style.fontSize = Math.max(1, contentBoxSize.inlineSize/600) + 'rem';
-      }
-    } else {
-      h1Elem.style.fontSize = Math.max(1.5, entry.contentRect.width/200) + 'rem';
-      pElem.style.fontSize = Math.max(1, entry.contentRect.width/600) + 'rem';
-    }
-  }
-});
-
-observer.observe(divElem);
-```
-
-最终显示的效果如下。
-
-![Resize Observer Example](/2025/assets/resize-observer-exmaple-by-mdn.gif)
-
-## 应用场景
-
-### 懒加载
-
-```javascript
-const container = document.querySelector('.container');
-
-const observer = new ResizeObserver(entries => {
-  checkLazyImages();
-});
-
-observer.observe(container);
-
-window.addEventListener('scroll', throttle(checkLazyImages, 100));
-
-// 页面加载时立即检查一次
-checkLazyImages();
-
-function checkLazyImages() {
-  const lazyImages = container.querySelectorAll('img[data-src]');
-  const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-  
-  lazyImages.forEach(img => {
-    if (img.dataset.src && !img.src) { // 还未加载的图片
-      const rect = img.getBoundingClientRect();
-      const isVisible = (
-        rect.top < windowHeight + 100 && // 提前 100px 加载
-        rect.bottom > -100
-      );
-      
-      if (isVisible) {
-        img.src = img.dataset.src;
-        img.removeAttribute('data-src');
-      }
-
-      observer.unobserve(img);
-    }
+    console.log('旧 API 尺寸:', width, 'x', height);
   });
-}
+});
+
+// 兼容性处理
+const observer = new ResizeObserver(entries => {
+  entries.forEach(entry => {
+    let width, height;
+    
+    // 优先使用新 API
+    if (entry.contentBoxSize && entry.contentBoxSize[0]) {
+      const size = entry.contentBoxSize[0];
+      width = size.inlineSize;
+      height = size.blockSize;
+    } else {
+      // 回退到旧 API
+      width = entry.contentRect.width;
+      height = entry.contentRect.height;
+    }
+    
+    console.log('最终尺寸:', width, 'x', height);
+  });
+});
 ```
+
+## 应用
 
 ### 自适应字体大小
 
-```javascript
-// 当容器宽度发生变化时，动态调整字体大小
-const container = document.querySelector('.adaptive-text');
+下面是一个 MDN 上的[例子](https://mdn.github.io/dom-examples/resize-observer/resize-observer-text.html)，演示了如何根据容器宽度动态调整字体大小。
 
+```javascript
 const observer = new ResizeObserver(entries => {
-  for (const entry of entries) {
-    const width = entry.contentRect.width;
-    const fontSize = Math.max(12, Math.min(24, width / 20));
-    entry.target.style.fontSize = `${fontSize}px`;
-  }
+  entries.forEach(entry => {
+    const { contentBoxSize } = entry;
+    let containerWidth;
+    
+    // 获取容器宽度（兼容性处理）
+    if (contentBoxSize && contentBoxSize[0]) {
+      containerWidth = contentBoxSize[0].inlineSize;
+    } else {
+      containerWidth = entry.contentRect.width;
+    }
+    
+    // 动态调整字体大小
+    const h1 = entry.target.querySelector('h1');
+    const p = entry.target.querySelector('p');
+    
+    if (h1) {
+      h1.style.fontSize = Math.max(1.5, containerWidth / 200) + 'rem';
+    }
+    if (p) {
+      p.style.fontSize = Math.max(1, containerWidth / 600) + 'rem';
+    }
+  });
 });
 
-observer.observe(container);
+observer.observe(document.querySelector('.text-container'));
+```
+
+上面的示例，演示了当容器尺寸变化时，字体大小会自动调整，这种方式能够使字体在不同设备上保持最佳的阅读体验。
+
+![Resize Observer Example](/2025/assets/resize-observer-exmaple-by-mdn.gif)
+
+### 图片懒加载
+
+下面的例子，演示了结合 ResizeObserver 和 IntersectionObserver 实现图片懒加载。
+
+```javascript
+class LazyImageLoader {
+  constructor(container) {
+    this.container = container;
+    this.resizeObserver = new ResizeObserver(() => this.checkImages());
+    this.intersectionObserver = new IntersectionObserver(
+      (entries) => this.handleIntersection(entries),
+      { rootMargin: '100px' }
+    );
+    
+    this.resizeObserver.observe(this.container);
+    this.checkImages();
+  }
+
+  checkImages() {
+    const lazyImages = this.container.querySelectorAll('img[data-src]');
+    lazyImages.forEach(img => {
+      this.intersectionObserver.observe(img);
+    });
+  }
+  
+  handleIntersection(entries) {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target;
+        img.src = img.dataset.src;
+        img.removeAttribute('data-src');
+        this.intersectionObserver.unobserve(img);
+      }
+    });
+  }
+  
+  destroy() {
+    this.resizeObserver.disconnect();
+    this.intersectionObserver.disconnect();
+  }
+}
+```
+
+### 自适应布局切换
+
+下面的例子，演示了如何根据容器尺寸自动切换布局模式。
+
+```javascript
+class ResponsiveLayout {
+  constructor(element) {
+    this.element = element;
+    this.breakpoints = {
+      mobile: 480,
+      tablet: 768,
+      desktop: 1024
+    };
+    
+    this.observer = new ResizeObserver(entries => {
+      entries.forEach(entry => this.handleResize(entry));
+    });
+    
+    this.observer.observe(this.element);
+  }
+  
+  handleResize(entry) {
+    const width = entry.contentBoxSize[0].inlineSize;
+    const currentLayout = this.getCurrentLayout();
+    const newLayout = this.getLayoutByWidth(width);
+    
+    if (currentLayout !== newLayout) {
+      this.switchLayout(newLayout);
+    }
+  }
+  
+  getCurrentLayout() {
+    return this.element.dataset.layout || 'desktop';
+  }
+  
+  getLayoutByWidth(width) {
+    if (width < this.breakpoints.mobile) return 'mobile';
+    if (width < this.breakpoints.tablet) return 'tablet';
+    return 'desktop';
+  }
+  
+  switchLayout(layout) {
+    this.element.dataset.layout = layout;
+    this.element.className = `layout-${layout}`;
+    
+    // 触发自定义事件
+    this.element.dispatchEvent(new CustomEvent('layoutchange', {
+      detail: { layout }
+    }));
+  }
+}
+```
+
+### 虚拟列表滚动优化
+
+下面的例子，演示了优化长列表的虚拟滚动性能。
+
+```javascript
+class VirtualScrollOptimizer {
+  constructor(container) {
+    this.container = container;
+    this.itemHeight = 50;
+    this.visibleCount = 0;
+    this.scrollTop = 0;
+    
+    this.observer = new ResizeObserver(entries => {
+      entries.forEach(entry => this.updateVisibleCount(entry));
+    });
+    
+    this.observer.observe(this.container);
+    this.updateVisibleCount({ contentBoxSize: [{ blockSize: this.container.clientHeight }] });
+  }
+  
+  updateVisibleCount(entry) {
+    const height = entry.contentBoxSize[0].blockSize;
+    const newVisibleCount = Math.ceil(height / this.itemHeight) + 2; // 额外缓冲
+    
+    if (newVisibleCount !== this.visibleCount) {
+      this.visibleCount = newVisibleCount;
+      this.renderVisibleItems();
+    }
+  }
+  
+  renderVisibleItems() {
+    const startIndex = Math.floor(this.scrollTop / this.itemHeight);
+    const endIndex = Math.min(startIndex + this.visibleCount, this.totalItems);
+    
+    this.renderItems(startIndex, endIndex);
+  }
+  
+  renderItems(start, end) {
+    // 项目渲染逻辑...
+  }
+}
+```
+
+### 容器查询替代方案
+
+在没有 CSS Container Queries 支持时，使用 ResizeObserver 实现类似功能。
+
+```javascript
+class ContainerQuery {
+  constructor(element) {
+    this.element = element;
+    this.queries = new Map();
+    
+    this.observer = new ResizeObserver(entries => {
+      entries.forEach(entry => this.evaluateQueries(entry));
+    });
+    
+    this.observer.observe(this.element);
+  }
+  
+  addQuery(name, condition) {
+    this.queries.set(name, condition);
+    this.evaluateQuery(name, this.getCurrentSize());
+  }
+  
+  evaluateQueries(entry) {
+    const size = this.getSizeFromEntry(entry);
+    this.queries.forEach((condition, name) => {
+      this.evaluateQuery(name, size);
+    });
+  }
+  
+  evaluateQuery(name, size) {
+    const condition = this.queries.get(name);
+    const result = condition(size);
+    
+    this.element.classList.toggle(`cq-${name}`, result);
+    this.element.dispatchEvent(new CustomEvent('containerquery', {
+      detail: { query: name, matches: result, size }
+    }));
+  }
+  
+  getCurrentSize() {
+    return {
+      width: this.element.clientWidth,
+      height: this.element.clientHeight
+    };
+  }
+  
+  getSizeFromEntry(entry) {
+    const size = entry.contentBoxSize[0];
+    return {
+      width: size.inlineSize,
+      height: size.blockSize
+    };
+  }
+}
+
+// 使用
+const cq = new ContainerQuery(document.querySelector('.card'));
+
+// 定义查询
+cq.addQuery('small', size => size.width < 300);
+cq.addQuery('medium', size => size.width >= 300 && size.width < 600);
+cq.addQuery('large', size => size.width >= 600);
+
+// 监听查询结果
+document.querySelector('.card').addEventListener('containerquery', (e) => {
+  console.log(`查询 ${e.detail.query} 匹配:`, e.detail.matches);
+});
 ```
 
 ## 参考
 
-- [Resize Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API)，MDN
+- [Resize Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Resize_Observer_API), MDN
+- [Container Queries](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries), MDN
+- [ResizeObserver Polyfill](https://github.com/que-etc/resize-observer-polyfill)
+- [Can I Use - ResizeObserver](https://caniuse.com/resizeobserver)
