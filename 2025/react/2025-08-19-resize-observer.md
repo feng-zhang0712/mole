@@ -286,10 +286,11 @@ class LazyImageLoader {
   }
 
   checkImages() {
-    const lazyImages = this.container.querySelectorAll('img[data-src]');
-    lazyImages.forEach(img => {
-      this.intersectionObserver.observe(img);
-    });
+    this.container
+      .querySelectorAll('img[data-src]')
+      .forEach(img => {
+        this.intersectionObserver.observe(img);
+      });
   }
   
   handleIntersection(entries) {
@@ -325,7 +326,7 @@ class ResponsiveLayout {
     };
     
     this.observer = new ResizeObserver(entries => {
-      entries.forEach(entry => this.handleResize(entry));
+      entries.forEach(this.handleResize);
     });
     
     this.observer.observe(this.element);
@@ -356,9 +357,11 @@ class ResponsiveLayout {
     this.element.className = `layout-${layout}`;
     
     // 触发自定义事件
-    this.element.dispatchEvent(new CustomEvent('layoutchange', {
-      detail: { layout }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('layoutchange', {
+        detail: { layout }
+      })
+    );
   }
 }
 ```
@@ -376,11 +379,15 @@ class VirtualScrollOptimizer {
     this.scrollTop = 0;
     
     this.observer = new ResizeObserver(entries => {
-      entries.forEach(entry => this.updateVisibleCount(entry));
+      entries.forEach(this.updateVisibleCount);
     });
     
     this.observer.observe(this.container);
-    this.updateVisibleCount({ contentBoxSize: [{ blockSize: this.container.clientHeight }] });
+    this.updateVisibleCount({
+      contentBoxSize: [{
+        blockSize: this.container.clientHeight,
+      }],
+    });
   }
   
   updateVisibleCount(entry) {
@@ -395,7 +402,10 @@ class VirtualScrollOptimizer {
   
   renderVisibleItems() {
     const startIndex = Math.floor(this.scrollTop / this.itemHeight);
-    const endIndex = Math.min(startIndex + this.visibleCount, this.totalItems);
+    const endIndex = Math.min(
+      startIndex + this.visibleCount,
+      this.totalItems
+    );
     
     this.renderItems(startIndex, endIndex);
   }
@@ -417,7 +427,7 @@ class ContainerQuery {
     this.queries = new Map();
     
     this.observer = new ResizeObserver(entries => {
-      entries.forEach(entry => this.evaluateQueries(entry));
+      entries.forEach(this.evaluateQueries);
     });
     
     this.observer.observe(this.element);
@@ -440,9 +450,15 @@ class ContainerQuery {
     const result = condition(size);
     
     this.element.classList.toggle(`cq-${name}`, result);
-    this.element.dispatchEvent(new CustomEvent('containerquery', {
-      detail: { query: name, matches: result, size }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent('containerquery', {
+        detail: {
+          query: name,
+          matches: result,
+          size,
+        }
+      })
+    );
   }
   
   getCurrentSize() {
@@ -470,9 +486,14 @@ cq.addQuery('medium', size => size.width >= 300 && size.width < 600);
 cq.addQuery('large', size => size.width >= 600);
 
 // 监听查询结果
-document.querySelector('.card').addEventListener('containerquery', (e) => {
-  console.log(`查询 ${e.detail.query} 匹配:`, e.detail.matches);
-});
+document
+  .querySelector('.card')
+  .addEventListener(
+    'containerquery', 
+    event => {
+      console.log(`查询 ${event.detail.query} 匹配:`, event.detail.matches);
+    }
+  );
 ```
 
 ## 参考
