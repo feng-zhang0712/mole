@@ -1,6 +1,6 @@
 # MutationObserver
 
-`MutationObserver` 用于监听 DOM 的结构与内容变更，是对历史上 DOM Mutation Events（如 `DOMNodeInserted`）的替代。
+`MutationObserver` 用于监听 DOM 的结构与内容变更。
 
 ## 基本使用
 
