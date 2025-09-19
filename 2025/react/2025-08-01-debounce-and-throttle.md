@@ -9,7 +9,7 @@
 下面是基础版本防抖函数的实现。
 
 ```javascript
-function debounce(fn, wait = 300) {
+function debounce(fn, delay) {
   let timer;
   return function() {
     if (timer) { // 关键代码
@@ -20,7 +20,7 @@ function debounce(fn, wait = 300) {
     timer = setTimeout(() => {
       fn.apply(_this, [].slice.call(arguments));
       timer = null;
-    }, wait);
+    }, delay);
   }
 }
 ```
@@ -28,28 +28,23 @@ function debounce(fn, wait = 300) {
 下面是 React 中使用 Hooks 实现的防抖函数，这个函数能够防止对一个值的频繁更新。
 
 ```javascript
-export function useDebounce(value, wait = 300) {
-  const timerRef = useRef();
-
+export function useDebounce(value, delay) {
   const [state, setState] = useState(value);
 
-  const clearTimer = useCallback(() => {
-    if (timerRef.current) {
-      clearTimer(timerRef.current);
-      timerRef.current = null;
-    }
-  }, []);
-
   useEffect(() => {
-    clearTimer();
-
-    timerRef.current = setTimeout(() => {
+    if (delay <= 0) {
       setState(value);
-      timerRef.current = null;
-    }, wait);
+      return;
+    }
 
-    return clearTimer;
-  }, [value, wait, clearTimer]);
+    const timer = setTimeout(() => {
+      setState(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [value, delay]);
 
   return state;
 }
@@ -58,7 +53,7 @@ export function useDebounce(value, wait = 300) {
 下面是 React Hooks 版本的防抖函数实现。
 
 ```javascript
-export function useDebounceFn(fn, wait = 300) {
+export function useDebounceFn(fn, delay) {
   const timerRef = useRef();
 
   const [state, setState] = useState();
@@ -76,8 +71,8 @@ export function useDebounceFn(fn, wait = 300) {
     timerRef.current = setTimeout(() => {
       setState(fn(...args));
       timerRef.current = null;
-    }, wait);
-  }, [fn, wait, clearTimer]);
+    }, delay);
+  }, [fn, delay, clearTimer]);
 
   useEffect(() => clearTimer, [clearTimer]);
 
@@ -123,7 +118,7 @@ function SearchComponent() {
 下面是定时器版本。
 
 ```javascript
-function throttle(fn, wait) {
+function throttle(fn, delay) {
   let timer;
   return function() {
     if (!timer) { // 关键代码
@@ -131,7 +126,7 @@ function throttle(fn, wait) {
       timer = setTimeout(() => {
         fn.apply(_this, [].slice.call(arguments));
         timer = null; // 关键代码
-      }, wait); 
+      }, delay); 
     }
   }
 }
@@ -140,10 +135,10 @@ function throttle(fn, wait) {
 下面是非定时器版本。
 
 ```javascript
-function throttle(fn, wait) {
+function throttle(fn, delay) {
   let lastRan;
   return function() {
-    if (!lastRan || Date.now() - lastRan >= wait) {
+    if (!lastRan || Date.now() - lastRan >= delay) {
       fn.apply(this, Array.prototype.slice.call(arguments));
       lastRan = Date.now();
     }
@@ -154,7 +149,7 @@ function throttle(fn, wait) {
 下面是 React 中使用 Hooks 实现的 debounce 函数，这个方法用来优化对一个数值的频繁更新。
 
 ```javascript
-export function useThrottle(value, wait = 300) {
+export function useThrottle(value, delay) {
   const timerRef = useRef();
 
   const [state, setState] = useState(value);
@@ -171,11 +166,11 @@ export function useThrottle(value, wait = 300) {
       timerRef.current = setTimeout(() => {
         setState(value);
         timerRef.current = null;
-      }, wait);
+      }, delay);
     }
     
     return clearTimer;
-  }, [value, wait, clearTimer]);
+  }, [value, delay, clearTimer]);
 
   return [state, clearTimer];
 }
@@ -184,7 +179,7 @@ export function useThrottle(value, wait = 300) {
 下面是使用 React 中的 Hooks 对一个函数实现节流的例子。
 
 ```javascript
-export function useThrottleFn(fn, wait = 300) {
+export function useThrottleFn(fn, delay) {
   const timerRef = useRef();
 
   const [state, setState] = useState();
@@ -201,9 +196,9 @@ export function useThrottleFn(fn, wait = 300) {
       timerRef.current = setTimeout(() => {
         setState(fn(...args));
         timerRef.current = null;
-      }, wait);
+      }, delay);
     }
-  }, [fn, wait]);
+  }, [fn, delay]);
 
   useEffect(() => clearTimer, [clearTimer]);
 
