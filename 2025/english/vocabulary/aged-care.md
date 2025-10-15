@@ -1,5 +1,6 @@
 # Aged Care
 
+- abrasion `/əˈbreɪʒ(ə)n/` n. 擦伤
 - abuse `/əˈbjuːs/` v.n. 虐待；滥用；辱骂
 - access restriction 访问限制
 - accountability `/əˌkaʊntəˈbɪləti/` n. 责任
@@ -11,9 +12,13 @@
 - aggression `/əˈɡreʃ(ə)n/` n. 攻击性；侵犯，挑衅
 - agitated `/ˈædʒɪteɪtɪd/` adj. 焦虑不安的 v. agitate 的过去式和过去分词
 - agitation `/ˌædʒɪˈteɪʃ(ə)n/` n. 躁动；煽动；（液体的）搅动
+- allergic reaction 过敏反应
+- amputation `/ˌæmpjuˈteɪʃn/` n. 截肢
+- anaphylaxis `/ˌænəfɪˈlæksɪs/` n. 过敏
 - assessment `/əˈsesmənt/` n. 评估/价；估价/计
 - assistive `/əˈsɪstɪv/` 辅助的
 - assistive technology 辅助技术
+- asthma `/ˈæzmə/` n. 哮喘
 - audit `/ˈɔːdɪt/` v.n. 审计；审查
 - authority `/əˈθɔːrəti/` n. 权威人士；权利/限；权威；许可；当局
 - autonomy `//` n. 自治，自治权；自主，自主权
@@ -22,12 +27,16 @@
 - beneficence `/bɪˈnefɪs(ə)ns/` n. 慈善
 - bereavement support `/bɪˈriːvmənt/` 丧亲支持
 - bias `/ˈbaɪəs/` n. 偏见；偏好 v. 使有偏见
+- bite wound 咬伤
 - body fluids 体液
 - breach `/briːtʃ/` v.n. 违反
 - breach of duty 玩忽职守
+- broken bone 骨折
 - bruise `/bruːz/` n. 伤痕 v. 挫伤
 - capacity `/kəˈpæsəti/` n. 能力；容积
 - care plan 护理计划
+- choke `/tʃoʊk/` v. 噎住 n. 窒息
+  - He is choking. 他噎住了。
 - cultural sensitivity 文化敏感性
 - chemical restraint 化学限制
 - clarity `/ˈklærəti/` n. 清晰
@@ -42,9 +51,11 @@
 - complainant `/kəmˈpleɪnənt/` n. 原告
 - complaint `/kəmˈpleɪnt/` n. 抱怨，投诉
 - compliance `/kəmˈplaɪəns/` n. 符合；遵守
+- concussion `/kənˈkʌʃn/` n. 脑震荡
 - confidentiality `/ˌkɑːnfɪˌdenʃiˈæləti/` n. 保密（性）
 - conflict of interest 利益冲突
 - confusion `/kənˈfjuːʒ(ə)n/` n. 困惑；混乱
+- convulsion `/kənˈvʌlʃn/` n. 抽搐/痉挛
 - cognitive disability 认知障碍
 - consent `/kənˈsent/` n. 许可；同意；正式批准文件
 - consent authority 同意权威
@@ -61,6 +72,7 @@
 - dilemma `/dɪˈlemə/` n. （进退两难的）困境
 - disability discrimination 残疾人歧视
 - discrimination `/dɪˌskrɪmɪˈneɪʃ(ə)n/` n. 歧视；辨别
+- dislocation 脱臼
 - dignity `/ˈdɪɡnəti/` n. 尊严；尊贵
 - dignity of risk 风险中的尊严
 - direct / indirect discrimination 直接/间接歧视
@@ -71,7 +83,9 @@
 - distress `/dɪˈstres/` n. 悲伤；痛苦 v. 使悲伤
 - distressed `/dɪˈstrest/` adj. 苦恼的 v. distress 的过去式和过去分词
 - distrust `/dɪsˈtrʌst/` v.n. 不信任
+- drowning 溺水
 - duty of care 看护责任
+- electric shock 触电
 - enhance `/ɪnˈhæns/` v. 增强
 - emergency evacuation 紧急疏散
 - emergency response 紧急响应
@@ -95,6 +109,7 @@
 - exclusion zone 禁区（禁入区域）
 - exemption `/ɪɡˈzempʃn/` n. 豁免
 - exploitation `/ˌeksplɔɪˈteɪʃ(ə)n/` n. 剥削；开发；利用
+- eye injury 眼损伤
 - fairness `/ˈfernəs/` n. 公平
 - fall v.n. 坠落；跌倒；下跌
 - fall detector 跌倒检测器
@@ -110,6 +125,8 @@
 - hand hygiene 手部卫生
 - hazard `/ˈhæzərd/` n. 危险 v. 冒险猜测；使遭危险
 - healthcare environment 医疗保健环境
+- high temperature 高温
+- holistic `/hoʊˈlɪstɪk/` adj. 整体的，全面的
 - human rights 人权
 - impairment `/ɪmˈpermənt/` n. 障碍
 - incident `/ˈɪnsɪdənt/` n. 事件；冲突
@@ -128,7 +145,11 @@
 - infectious prevention 传染病的预防
 - informed choice 知情选择
 - informed consent 知情同意
+- ingestion `/ɪnˈdʒestʃən/` n. 摄取；咽下
+- inhalation `/ˌɪnhəˈleɪʃn/` n. 吸入
+- insertion n. 插入
 - integrity `/ɪnˈteɡrəti/` n. 正直，诚实；完整
+- internal injury 内伤
 - interpret `/ɪnˈtɜːrprət/` v. 解释；口译
 - investigation `/ɪnˌvestɪˈɡeɪʃ(ə)n/` n. 调查
 - isolation `/ˌaɪsəˈleɪʃn/` n. 隔离；绝缘
@@ -161,6 +182,7 @@
 - non-verbal `/ˌnɑːnˈvɜːrb(ə)l/` adj. 非语言的
 - obligation `/ˌɑːblɪˈɡeɪʃn/` n. （法律上或道义上的）责任，义务
 - ombudsman `/ˈɑːmbʌdzmən/` n. 监察专员
+- open wound 开放性伤口
 - organizational policy 组织政策
 - orient `/ˈɔːrient/` v. 朝向，使适应；确定方位 adj. 东方的
 - orientation `/ˌɔːriənˈteɪʃ(ə)n/` n. 定位；方向；倾向
@@ -179,6 +201,7 @@
 - Personal Protective Equipment, PPE 个人防护装备
 - personal support worker, PSW 个人支持工作者
 - person with disability, PWD 残障人士
+- pierce `/pɪrs/` v. 刺入
 - physical restraint 身体限制
 - physical therapy 物理疗法
 - physiological `/ˌfɪziəˈlɑːdʒɪk(ə)l/` adj. 生理（学）的
@@ -197,6 +220,7 @@
 - psychological abuse 心理虐待
 - racial `/ˈreɪʃ(ə)l/` adj. 种族（间）的
 - racial discrimination 种族歧视
+- rash `/ræʃ/` 皮疹 adj. 轻率的
 - reasonable adjustments 合理调整
 - reassure `/ˌriːəˈʃʊr/` v. 使安心
 - redirect `/ˌriːdəˈrekt/` v.n. 重新使用；改寄
@@ -226,9 +250,12 @@
 - risk tolerance 风险承受能力
 - safeguard `/ˈseɪfɡɑːrd/` v. 保护 n. 保护措施
 - sanitize `/ˈsænɪtaɪz/` vt. 消毒
+- scrape `/skreɪp/` n. 擦伤
 - seclusion `/sɪˈkluːʒ(ə)n/` n. 隔离；隐居
 - secondary purpose 次要目的
 - section `/ˈsekʃ(ə)n/` n. 部分；节；条款；地段；部门 v. 切片
+- seizure `/ˈsiːʒər/` n. （疾病的）突然发作
+  - seizures 癫痫
 - self-determination 自我决定
 - self-directed learning 自主学习
 - sensor `/ˈsensər/` n. 传感器
@@ -237,10 +264,14 @@
 - slip `/slɪp/` v. 滑倒；滑落 n. 差错；小纸条；滑倒
 - sprain `/spreɪn/` v.n. 扭伤
 - spiritual `/ˈspɪrɪtʃuəl/` adj. 精神的
+- sprain `/spreɪn/` n. 扭伤
+- stab `/stæb/` v.n. 刺，捅
+- sting `/stɪŋ/` 蜇伤
 - supervision `/ˌsuːpərˈvɪʒ(ə)n/` n. 监督
 - supervisor `/ˈsuːpərvaɪzər/` n. 监督者；主管
 - support worker 支持工作者
 - supported decision-making 支持性决策
+- swelling `/ˈswelɪŋ/` n. 肿胀 v. swell 的现在分词
 - symptom `/ˈsɪmptəm/` n. 症状
 - telehealth 远程医疗
 - trained personnel 受过训练的人员
@@ -249,6 +280,7 @@
 - trauma-informed 创伤知情
 - treaty `/ˈtriːti/` n. 条约
 - trip `/trɪp/` n. （尤指短程往返的）旅行；出行；绊倒 v. 绊倒
+- unconscious `/ʌnˈkɑːnʃəs/` adj. 无意识的
 - uneven floor 不平整的地板
 - unfair dismissal 不公正解雇
 - unlawful treatment 非法对待
@@ -256,43 +288,12 @@
 - universal standard 通用标准
 - universal value 普世价值
 - validation `/ˌvælɪˈdeɪʃn/` n. 验证；确认
+- venomous bite `/ˈvenəməs/` 毒蛇咬伤
 - verbal `/ˈvɜːrb(ə)l/` adj. 口头的
 - voluntary `/ˈvɑːlənteri/` adj. 自愿的；无偿的
+- vulnerable `/ˈvʌlnərəb(ə)l/` adj. 脆弱的，易受伤的
 - vulnerability `/ˌvʌlnərəˈbɪləti/` n. 弱点
 - wandering `/ˈwɑːndərɪŋ/` adj. 漫游的 n. 闲逛 v. wander 的现在分词
 - wet surface 湿滑的表面
 - withdrawal `/wɪðˈdrɔːəl/` n. 收回；撤回；撤退
 - withdrawn `/wɪðˈdrɔːn/` v. 撤离；撤销；取款
-
-
-
-
-Abrasion/Scrape
-Allergic reaction (not anaphylaxis
-Amputation
-Anaphylaxis
-Asthma/respiratory
-Bite wound
-☒ Bruise
-Broken bone/fracture/ dislocation
-Burn/sunburn
-Choking
-Concussion
-Crush/jam
-Cut/open wound
-Drowning (non-fatal)
-Electric shock
-Eye injury
-Infectious disease (including gastrointestinal)
-High temperature
-Ingestion/inhalation/ insertion
-☒ Internal injury/ Infection
-Poisoning
-Rash
-Respiratory
-Seizure/unconscious/ convulsion
-Sprain/swelling
-Stabbing/piercing
-Tooth
-Venomous bite/sting
-Other (please specify)

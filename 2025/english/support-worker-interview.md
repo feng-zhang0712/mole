@@ -6,8 +6,6 @@
 
 ### Introduce yourself.
 
-问题：自我介绍。
-
 我的基本情况如下：
 
 - 有护理三级证书和120小时实习经验。 
@@ -28,7 +26,7 @@ Hello, my name is Zhang Feng, I’m 35 years old, I have a bachelor’s degree.
 - **Physically Healthy**: I’m physically healthy, I don’t smoke or drink, I stay active through regular exercise, so I’m confident in manual handling tasks.
 - **Patient and Calm**: I’m patient and calm, which helps me build trust with clients and handle challenging situations.
 
-I’m excited to use my skills and positive attitude to make a difference in clients’ lives, and contribute to your team.
+I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
 
 ### Why do you choose to work as a support worker?
 
@@ -47,42 +45,15 @@ I’m excited to use my skills and positive attitude to make a difference in cli
 
 分析：考察是否真心诚意想做护理工作，表达出你对这份工作的热情、态度。
 
-I'm currently in China, I perviously work in the Internet industry, but the work environment can be tough for someone at 35.
-
+- I'm currently in China. I previously worked in the Internet industry, but the work environment can be tough for someone at 35.
 - Australia has always been my dream destination to work and live.
-- I believe 35 is the prime of my life, not the end of my career but a new beginning.
+- I believe 35 is the prime of my life, not the end of my career, but a new beginning.
 - Working as a support worker allows me to make a difference in people’s lives, giving me a sense of purpose and fulfillment, and aligns with my personal values.
 - This role offers a stable work environment and opportunities for personal and professional growth, which is important for my long-term career goals.
 - I’m passionate about serving others, especially those who need support to live independently and with dignity.
-- My skills, experience and personality make me well-suited for this work.
+- My skills, experience, and personality make me well-suited for this work.
 
 <!-- - I love talking with older people and listening to their life stories and experiences. It’s rewarding to build relationships and provide companionship. -->
-
-### What do you know about our organization/facility?
-
-问题：你对我们机构有多少了解？
-
-Overview: Your organization provides high-quality aged care and support services in Australia, focusing on helping older people live independently and with dignity in their homes or facilities.
-Services Offered: You offer personal care, like bathing and dressing, daily living help such as meal prep and cleaning, and companionship to reduce loneliness for clients.
-Commitment to Standards: I know you follow Australian Aged Care Quality Standards closely, ensuring safe, respectful care that puts clients' choices first.
-Team and Training: Your team includes trained support workers like me, with ongoing training in manual handling, infection control, and cultural sensitivity to provide the best support.
-Community Focus: You work closely with families and local health services to create personalized care plans, making a real difference in clients' lives.
-Why I'm Interested: I'm excited about your focus on client-centered care because it matches my passion for helping others and my skills from my Certificate III training.
-Recent Updates: From what I've read, you're committed to the new Aged Care Act 2024, improving safety and rights for older Australians.
-My Preparation: I visited your website and read about your values, like respect and empathy, which make me eager to join your team.
-
-### Why do you want to work at our facility/organization?
-
-问题：你为什么想在我们机构工作？
-
-Matches My Passion: Your focus on helping older people live with dignity fits my love for caring and making a difference in their lives.
-High-Quality Care: I admire how you follow Aged Care Quality Standards, ensuring safe and respectful support, which aligns with my training and values.
-Team Environment: I’m excited to join a team that works together and supports training, as I want to grow my skills in aged care and learn from others.
-Client-Centered Approach: Your commitment to personal care plans and respecting clients’ choices inspires me to provide the best care with empathy.
-Community Impact: I like how you connect with families and health services to improve clients’ lives, and I want to be part of that positive change.
-Stable Career Path: Your organization offers a steady job with growth opportunities, which is perfect for my goal to build a long-term career in Australia.
-Cultural Respect: I value your focus on diverse clients, as I enjoy adapting care to different backgrounds, like I learned in my Certificate III.
-Personal Connection: Helping older people feels meaningful to me, and I believe your facility’s values will let me show my dedication every day.
 
 ### Why should we hire you?
 
@@ -100,30 +71,47 @@ Personal Connection: Helping older people feels meaningful to me, and I believe 
 - **Reliable and Hardworking**: I’m a reliable and hardworking person. I take my job seriously and always try to do my best to make clients feel safe and comfortable.
 - **Mandarin and English**: I speak both Mandarin and English, I understand Chinese culture and traditions, which gives me more advantages when serve Chinese clients.
 
-I’m excited to use my skills and positive attitude to make a difference in clients’ lives, and contribute to your team.
+I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
 
 <!-- 如果回答个人弱势，需要加下面这些 -->
 
 As for my weaknesses:
 
 - Sometimes, I hope things can be done perfectly, which causes me to spend extra time, but I’m trying to balance efficiency and quality to better manage my time.
-- As I’m moving from a different industry, I’m still building my confidence in some specialized aged care tasks, like complex medical needs. But I’m eager to learn to improve my skills.
+- Limited Experience in Complex Cases: I’m still building experience with clients who have advanced dementia or complex health issues, but I’m eager to learn through training and guidance.
+- English Fluency: Sometimes I need time to find the right English words in fast conversations, but I practice daily and ask for clarification to improve.
 
 ### What are your future career goals or plans?
 
 对未来的职业发展的想法和规划
 
-1. In the short term, I want to grow as a support worker by building strong skills in aged care. I plan to complete more training, like first aid or dementia care courses, to better help clients.
-2. For the next few years, I aim to take on more responsibility, maybe as a senior support worker or team leader. I want to mentor new workers and share my passion for helping others. I’ll keep learning about aged care standards in Australia to provide top-quality care and make a bigger difference in clients’ lives.
-3. As for the long-term goals, I hope to stay in aged care for a long career, maybe moving into a coordinator or training role to support the industry. My dream is to keep helping older people live with dignity and happiness. This work gives me purpose, and I’m committed to growing in this field while staying true to my passion for caring.
+- In the short term, I want to gain more experience and complete more training to better serve clients, like first aid or dementia care courses.
+- For the next few years, I want to take on more responsibility, maybe as a senior support worker or team leader. I’ll keep learning to provide high-quality services.
+- For the long term, I want to stay in aged care for a long career, maybe as a manager. My dream is to keep helping older people live with dignity and happiness. This work gives me purpose, and aligns with my personal values.
+
+### What do you know about our organization/facility?
+
+问题：你对我们机构有多少了解？
+
+### Why do you want to work at our facility/organization?
+
+问题：你为什么想在我们机构工作？
+
+### What's your hobbies ?
+
+- **Exercise**: I love staying active by working out and running regularly.
+- **Cooking and Cleaning**: I enjoy cooking home meals and keeping my space organized.
+- **Learning New Things:** I’m passionate about learning and recently I am studying to improve my English.
+- **Quiet Time**: I like calm and quiet environments.
+- **Helping Others**: I like to help others, it makes me feel that life is meaningful.
 
 ### What shifts are you available for?
 
-I'm flexible for both weekday and weekend shifts, I'm also open to mornings, afternoons, and evenings depending on the team needs.
+I'm available for both weekday and weekend shifts. I'm also available in the morning, afternoon, and evening, depending on the team's schedules.
 
 ### Do you have a driver's license and reliable transport?
 
-Yes, I hold a valid driver’s license and I'm confident in driving.
+I have a valid driver’s license and I'm confident in driving.
 
 ## 二、技能与经验
 
@@ -131,37 +119,35 @@ Yes, I hold a valid driver’s license and I'm confident in driving.
 
 问题：在护理方面有哪些经历或者经验？
 
-参考 [优势和弱势部分](#what-are-your-strengths-and-weaknesses)。
+参考 [优势和弱势部分](#why-should-we-hire-you)。
 
-### What specific skills do you have in aged care or disability support?
+### What skills do you have in aged care or disability support?
 
-问题：你有哪些护理或支持技能？
+问题：
 
-Personal Care: I help clients with bathing, dressing, and grooming, keeping them comfortable and respecting their dignity, as trained in my Certificate III.
-Safe Manual Handling: I use proper techniques, like bending my knees, to help clients move safely, such as from bed to chair, preventing injuries.
-Clear Communication: I talk clearly and listen well, using simple words or gestures for clients with hearing or speech problems to understand their needs.
-Empathy and Patience: I show care and stay calm, especially with clients who are upset or have dementia, to make them feel safe and valued.
-Cultural Respect: I adjust care to fit clients’ cultural needs, like food preferences, to show respect and follow Aged Care Quality Standards.
-Medication Reminders: I remind clients to take their pills on time, checking their care plan, and report any issues to a nurse or supervisor.
-Observation Skills: I notice changes in clients’ health or mood, like tiredness or pain, and write clear notes to share with the care team.
-Teamwork: I work well with others, sharing updates and helping teammates to ensure clients get the best care.
-Time Management: I plan my tasks to meet all clients’ needs during a shift, staying organized even if things change suddenly.
-Infection Control: I wash hands, use gloves, and clean surfaces to stop germs, keeping clients safe as per my training and aged care rules.
+- 你有哪些护理或支持技能
+- 你会做哪些家务（domestic）或日常生活支持（daily living support）工作
 
-### What domestic or daily living support tasks can you perform?
+Skills in Aged Care or Disability Support
 
-问题：你会做哪些家务或日常生活支持工作？
+- **Personal Care Expertise**: I’m trained to assist with personal care, like bathing and dressing, keeping clients comfortable, and respecting their dignity.
+- **Safe Manual Handling**: I use proper techniques, like bending my knees, to help clients move safely, preventing injuries, as I learned in my training.
+- **Effective Communication**: I speak clearly and listen well, using simple words, gestures, or eye contact for clients with speech or hearing issues to ensure they understand.
+- **Empathy and Patience**: I show kindness and stay calm, especially with clients who have dementia or feel upset, making them feel safe and valued.
+- **Cultural Sensitivity**: I respect clients’ cultural backgrounds, adapting care to their traditions, like food preferences, to meet Aged Care Quality Standards.
+- **Observation and Reporting**: I notice changes in clients’ health or mood, like pain or sadness, and write clear notes to share with the team if needed.
+- **Basic First Aid**: I can provide first aid for minor incidents, like cuts or falls, and follow emergency steps until help arrives, per my training.
+- **Teamwork**: I work well with nurses and other staff, sharing updates and helping teammates to ensure clients get the best care.
 
-- **Personal Care Help**: I help clients with bathing, grooming, dressing, and using the toilet. I make sure they feel comfortable and keep their dignity, following their care plan.
-- **Meal Prep and Help**: I cook simple, healthy meals that fit clients' diets, like low-salt or easy-to-chew foods. I can also help with eating if needed, to keep them safe and happy.
-- **House Cleaning**: I do light cleaning like tidying rooms, vacuuming, dusting, washing dishes, and doing laundry. This keeps the home clean and safe for clients.
-- **Mobility Support**: I help clients move around the house safely, using aids if needed, and follow safe handling rules from my training to avoid injuries.
-- **Medication Reminders**: I remind clients to take their pills on time as per their plan. I report any problems to a nurse or boss, since I can't give meds myself.
-- **Shopping and Errands**: I go shopping for groceries or run small errands, either with the client or alone, to make sure they have what they need.
-- **Transport Help**: With my driver's license, I drive clients to doctor visits or outings, keeping them safe and on time.
-- **Companionship**: I talk with clients, listen to their stories, or help with hobbies to reduce loneliness and support their mood.
-- **Record Keeping**: I write down what I do and any changes in the client's health, following aged care rules for clear notes and team updates.
-- **Safety and Standards**: I always put client safety first, respect their choices, and follow Australian aged care guidelines in every task.
+Domestic or Daily Living Support Tasks I Can Perform
+
+- **Personal Care Tasks**: I help with daily activities like bathing, grooming, dressing, and toileting, following care plans to keep clients comfortable.
+- **Household Duties**: I clean homes (vacuuming, dusting), do laundry, and cook healthy meals, like home-cooked dishes, to meet clients’ dietary needs.
+- **Medication Reminders**: I remind clients to take their pills on time, checking their care plan, and report any issues to a nurse or supervisor.
+- **Transport Support**: With my driver’s license, I drive clients to doctor visits, shopping, or outings, ensuring they’re safe and on time.
+- **Companionship**: I talk with clients, listen to their stories, or join them in hobbies to reduce loneliness and boost their mood.
+- **Record Keeping**: I write down any changes in clients’ health or behavior in their records and share important details with my supervisor or team.
+- **Safety Practices**: I check for hazards, like clutter, and use infection control steps, like handwashing, to keep clients safe, following aged care rules.
 
 ## 三、个人素质与工作态度
 
@@ -269,79 +255,29 @@ Person-centred care is about making a positive difference in clients’ lives by
 
 For example, with a Chinese client, I might use my knowledge of their culture, like offering familiar dishes or greetings in Mandarin, to make them feel at home and strengthen our bond.
 
-### How do you ensure clients’ safety and dignity?
+### How do you ensure clients’ safety?
 
-问题：如何确保客户的安全和尊严？
+- **Review and Follow Care Plan**: I review and follow the client’s care plan to understand their needs, like mobility or health issues, to provide safe and proper care.
+- **Remove Hazards**: I’d check the environment, remove any hazards that may cause harm, to ensure both the client and I are safe.
+- **Prepare Equipment** <!-- 如果是帮助客户从床上到轮椅，加上这句 --> : I check the wheelchair is locked and in good condition, and use tools like a transfer belt or slide board if needed, ensuring they’re safe to use.
+- **Manual Handling**: I use correct techniques, like bending my knees and keeping my back straight, when helping clients move, and use aids like walkers to prevent falls.
+- **Communicate Clearly**: I talk to clients about what I’m doing to keep them calm, aware, and reduce the risk of accidents, like “I’m helping you stand now”.
+- **Check Client’s Condition**: I make sure the client is ready and comfortable before moving, watching for signs of pain or weakness, and stop if they’re unwell.
+- **Monitor During Handling**: I watch the client’s reactions, like if they seem unsteady, and adjust my support to keep them secure during the task.
+- **Ask for Help if Needed**: If a task needs two people, like moving a client to a bed, I ask a teammate for help to stay safe and follow workplace rules.
+- **Document and Report**: If I see risks, like the client’s new mobility problem or faulty equipment, I document it in the client’s notes and report it to my supervisor.
 
+### How do you ensure clients’ dignity（尊严）?
 
-How I Ensure Clients’ Safety
-
-Follow Care Plans: I read and follow each client’s care plan to understand their needs, like mobility or health issues, to provide safe and proper care.
-Use Safe Manual Handling: I use correct techniques, like bending my knees and keeping my back straight, when helping clients move, and use aids like walkers to prevent falls.
-Keep Environment Safe: I check the client’s home for hazards, like loose rugs or clutter, and fix them, like tidying up, to avoid trips or injuries.
-Practice Infection Control: I wash hands, use gloves or masks when needed, and clean surfaces to stop germs, following aged care infection control rules.
-Monitor Health Changes: I watch for signs of illness or discomfort, like pain or confusion, and report them to my supervisor right away with clear details.
-Give Medication Reminders Safely: I remind clients to take their pills as per their plan, checking the schedule carefully, and report any issues to a nurse.
-Communicate Clearly: I talk to clients about what I’m doing, like “I’m helping you stand now,” to keep them calm and aware, reducing the risk of accidents.
-Report Safety Concerns: If I see risks, like broken equipment or unsafe behavior, I tell my supervisor and write it in the client’s records to keep everyone informed.
-Stay Trained: I keep my training updated, like manual handling or first aid, to follow Australian Aged Care Quality Standards and ensure safe care.
-Be Alert and Prepared: I stay focused during shifts, ready to act fast in emergencies, like calling for help if a client falls, to keep them safe.
-
-
-How I Ensure a Client’s Safety During Manual Handling Tasks
-
-Check the Care Plan: I read the client’s care plan to know their mobility needs, like if they need a walker or full support, to plan safe handling.
-Assess the Environment: I look for hazards, like wet floors or clutter, and clear them before moving a client to prevent trips or falls.
-Use Proper Techniques: I bend my knees, keep my back straight, and move slowly when lifting or supporting a client, using my training to avoid strain or injury.
-Use Equipment Correctly: I use tools like hoists, slide sheets, or wheelchairs if needed, checking they’re in good condition to ensure safe transfers.
-Communicate with Client: I explain each step, like “I’m going to help you stand now,” to keep the client calm and aware, reducing fear or sudden movements.
-Check Client’s Condition: I make sure the client is ready and comfortable before moving, watching for signs of pain or weakness, and stop if they’re unwell.
-Ask for Help if Needed: If a task needs two people, like moving a client to a bed, I ask a teammate for help to stay safe and follow workplace rules.
-Monitor During Handling: I watch the client’s reactions, like if they seem unsteady, and adjust my support to keep them secure during the task.
-Report Issues: If I notice risks, like a client’s new mobility problem or faulty equipment, I tell my supervisor and write it in the client’s records.
-Stay Trained: I keep my manual handling training up to date, following Australian Aged Care Quality Standards to ensure safe and proper care.
-
-
-How I Ensure a Client’s Safety During Manual Handling Tasks (e.g., Transferring from Bed to Wheelchair)
-
-Review Care Plan: I check the client’s care plan to understand their mobility needs, such as whether they need full support or can assist partially, to plan a safe transfer.
-Inspect Environment: I clear the area around the bed and wheelchair of hazards, like rugs or clutter, and ensure the floor is dry to prevent slips or falls.
-Prepare Equipment: I check the wheelchair is locked and in good condition, and use tools like a transfer belt or slide board if needed, ensuring they’re safe to use.
-Use Safe Techniques: I bend my knees, keep my back straight, and use my leg strength to support the client, following my Certificate III manual handling training.
-Communicate Clearly: I explain each step, saying, “I’m going to help you move to the wheelchair now,” to keep the client calm and ready, reducing sudden movements.
-Assess Client’s Condition: I check if the client feels okay or has pain before starting, pausing if they seem weak or uncomfortable to avoid risks.
-Ask for Help if Needed: If the transfer requires two people, like for a heavier client, I get a teammate’s help to ensure safety, as per workplace rules.
-Support Client Properly: I hold the client securely, using a transfer belt or their arm, and move slowly to keep them steady during the transfer.
-Monitor During Transfer: I watch the client’s face and body for signs of discomfort or unsteadiness, adjusting my grip or pace to keep them safe.
-Report and Record: After the transfer, I note any issues, like difficulty moving or equipment problems, in the client’s records and tell my supervisor, following Aged Care Quality Standards.
-
-
-How I Ensure a Client’s Safety During Manual Handling Tasks (e.g., Transferring from Bed to Wheelchair)
-
-Check Care Plan: I look at the client’s care plan to know their mobility needs, like if they can stand a little or need full help, to plan a safe transfer.
-Clear the Area: I make sure the space around the bed and wheelchair is free of things like rugs or cords, and check the floor isn’t slippery to avoid falls.
-Prepare the Wheelchair: I lock the wheelchair wheels and check it’s in good shape. If needed, I use tools like a transfer belt, making sure they’re ready and safe.
-Use Safe Moves: I bend my knees, keep my back straight, and use my legs to lift or support, following my training to avoid hurting the client or myself.
-Talk to the Client: I say, “We’re going to move to the wheelchair now, okay?” to keep them calm and let them know what’s happening, so they don’t get scared.
-Check Client’s Condition: I ask if they feel okay or have pain before moving. If they seem weak, I pause and check with my supervisor if needed.
-Get Help if Needed: If the client is heavy or the transfer is hard, I ask a teammate to help, following workplace rules to keep everyone safe.
-Support Carefully: I hold the client firmly, using a transfer belt or their arm, and move slowly to keep them steady while going from bed to wheelchair.
-Watch for Problems: I look at the client’s face and body during the transfer, checking for signs of pain or wobbling, and adjust to keep them safe.
-Write and Report: After the transfer, I write down any issues, like if the client struggled or the wheelchair needs fixing, and tell my supervisor, following Aged Care Quality Standards.
-
-
-How I Maintain a Client’s Privacy and Dignity
-
-Respect Personal Information: I keep client details, like health or personal stories, private, only sharing with authorized staff, like nurses, as per Australian privacy laws.
-Use Private Spaces: I do personal tasks, like bathing or dressing, in a private area, closing doors or curtains to make sure no one else sees.
-Ask for Consent: I ask clients before starting tasks, like “Is it okay if I help you with your shower now?” to show respect and give them control.
-Be Gentle and Kind: I talk softly and move carefully during care, like helping with dressing, to make clients feel comfortable and respected.
-Keep Conversations Private: I avoid talking about a client’s needs in public places or with others not involved in their care, protecting their privacy.
-Handle Records Safely: I write client notes accurately and store them securely, following Aged Care Quality Standards, so only the care team sees them.
-Respect Choices: I follow the client’s wishes, like how they want to be dressed or addressed, to honor their dignity and make them feel valued.
-Stay Professional: I keep a friendly but respectful attitude, avoiding personal questions or comments that might make a client feel uneasy.
-Watch for Comfort: I check if the client looks uncomfortable or embarrassed during tasks and adjust, like covering them with a towel during a bath.
-Follow Training: I use my Certificate III training to uphold privacy and dignity rules, ensuring I meet Australian aged care standards in all tasks.
+- **Respect Personal Information**: I keep client details, like health or personal stories, private, only sharing with authorized staff, like nurses.
+- **Use Private Spaces**: I do personal tasks, like bathing or dressing, in a private area, closing doors or curtains to make sure no one else sees.
+- **Ask for Consent**: I ask clients before starting tasks, like “Is it okay if I help you with your shower now?” to show respect and give them control.
+- **Be Gentle and Kind**: I talk softly and move carefully during care, like helping with dressing, to make clients feel comfortable and respected.
+- **Keep Conversations Private**: I avoid talking about a client’s needs in public places or with others not involved in their care, protecting their privacy.
+- **Handle Records Safely**: I write client notes accurately and store them securely, so only the care team sees them.
+- **Respect Choices**: I follow the client’s wishes, like how they want to be dressed or addressed, to honor their dignity and make them feel valued.
+- **Stay Professional**: I keep a friendly but respectful attitude, avoiding personal questions or comments that might make a client feel uneasy.
+- **Watch for Comfort**: I check if the client looks uncomfortable or embarrassed during tasks and adjust, like covering them with a towel during a bath.
 
 ## 五、情景题
 
@@ -355,10 +291,10 @@ Follow Training: I use my Certificate III training to uphold privacy and dignity
    - I’d avoid moving them unless it’s unsafe to stay (like in a fire).
    - I’d apply basic first aid if appropriate, such as checking airways, breathing, and circulation (ABC) or applying pressure to a wound.
    - If the situation is serious, like the client is unresponsive or has a suspected heart attack, I’d immediately call 000 for emergency services.
-   - If the situation is under control and the client is able to move, I’d help them stand up, using proper manual handling techniques (, like supporting their arm or using a transfer belt).
+   - If the situation is under control and the client is able and safe to move, I’d help them stand up, using proper manual handling techniques (like supporting their arm or using a transfer belt).
    <!-- 如果客户摔倒且身体状况良好，再补充上面这句话 -->
 4. **Provide Comfort**: I’d keep the client comfortable and offer reassurance by talking to them to reduce their anxiety.
-5. **Document and Report**: I'd document and report the incident to my supervisor.
+5. **Document and Report**: I'd document and report the incident to my supervisor and share with my team.
 6. **Monitor**: I’d keep monitoring to prevent the client's condition from getting worse.
 
 ### What would you do if a client refuses your service?
@@ -411,11 +347,6 @@ Follow Training: I use my Certificate III training to uphold privacy and dignity
 - 如果看到同事对客户粗鲁，应该怎么做
 - 如果你注意到虐待或疏忽的迹象，应该怎么做
 
-关键词：
-
-- Duty of care
-- Mandatory Reporting
-
 1. **Ensure Client Safety**: I'd make sure the client is safe. If there’s immediate danger, I would take appropriate action, such as removing the client from harm.
 2. **Observe and Identify Signs**: I would carefully observe any physical, emotional, or behavioral signs of abuse or neglect, ensuring I have clear and accurate details without jumping to conclusions.
 3. **Document and Report**: I'd document and report the incident to my supervisor immediately. I’d provide factual details about what I observed without making assumptions, focusing on the co-worker’s actions and the client’s well-being.
@@ -439,6 +370,32 @@ Follow Training: I use my Certificate III training to uphold privacy and dignity
 6. **Confirm Understanding**: I ask yes/no or observe clients reactions to ensure they understand.
 7. **Involve Support**: I may ask my supervisor for advice, consult family for preferences, or use interpreters for non-English and Mandarin speakers if needed.
 8. **Document and Report**: I document effective methods and report changes in care notes, ensuring the team is informed.
+
+### What to do if the guest is impatient when seeing a doctor?
+
+场景：
+
+- 看病、外出就餐时等待很久，客人不耐烦怎么办
+- 周边环境嘈杂怎么办
+
+分析：关键是分散客户注意力
+
+- **Check Wait Time**: I ask the receptionist how long the wait will be and share this with the client.
+- **Distract Attention**: I talk about topics the client enjoys to distract their attention, like their hobbies or family.
+- **Respect Their Wishes**: I check with the they want to keep waiting or try something else, like taking a short walk.
+- **Monitor for Safety**: I watch the client for signs of stress or restlessness to make sure they stay safe and comfortable during the wait.
+- **Report Concerns**: If the client stays upset, I document it in their care notes and report to my supervisor to ensure proper follow-up care.
+
+### How do you safely transport a patient?
+
+如何安全地转移客户
+
+**Check Care Plan**: I'd review the client’s care plan to know their mobility needs, like if they use a wheelchair or need extra support.
+**Prepare Vehicle and Equipment**: I ensure the vehicle is safe, check wheelchair locks or seat belts, and use aids like transfer belts if needed.
+**Use Safe Techniques**: I'd follow manual handling procedures, bending my knees and moving slowly, to help the client in and out of the vehicle safely.
+**Communicate Clearly**: I'd explain each step to keep the client calm, aware, and reduce stress.
+**Monitor During Transport**: I'd watch for signs of discomfort or distress while driving, ensuring the client's is safety and comfort.
+**Report Issues**: If any thing unexpected happened, I'd document and report it to my supervisor.
 
 ## 六、价值观与文化敏感性
 
@@ -530,8 +487,6 @@ During my 120-hour placement, I assisted a client with limited mobility to showe
 
 ### Infection control procedures
 
-问题：感染控制措施
-
 Infection control procedures are steps to stop the spread of germs, like viruses or bacteria, to keep clients, staff, and others safe in aged care settings.
 
 - **Hand Hygiene**: Wash hands with soap and water for at least 20 seconds before and after client contact, handling food, or toileting. Use alcohol-based hand sanitizer if soap isn’t available.
@@ -545,15 +500,23 @@ Infection control procedures are steps to stop the spread of germs, like viruses
 - **Follow Protocols**: Adhere to Australia’s Aged Care Quality Standards and workplace infection control policies, including isolation procedures if a client has an infectious condition.
 - **Personal Health**: Stay healthy, avoid working when sick, and keep vaccinations up to date to protect clients.
 
-Hand Hygiene: I wash my hands with soap and water or use hand sanitizer before and after touching a client, handling food, or doing tasks like cleaning, to prevent germ spread.
-Use Personal Protective Equipment (PPE): I wear gloves, masks, or gowns when needed, like during personal care or if a client has an infection, following workplace rules and removing PPE safely.
-Clean and Disinfect: I clean surfaces, like tables or bathrooms, with approved disinfectants, and wash clients’ clothes or bedding regularly to keep the environment germ-free.
-Safe Food Handling: I store, prepare, and serve food properly, keeping hot food hot and cold food cold, to avoid foodborne illnesses, as learned in my training.
-Follow Care Plan: I check the client’s care plan for specific infection control needs, like extra precautions for clients with weak immune systems or infections.
-Monitor Client Health: I watch for signs of infection, like fever or redness, and report them to my supervisor right away, writing details in the client’s records.
-Use Safe Practices: I handle waste, like used tissues or dressings, carefully, disposing of it in proper bins to avoid spreading germs, following aged care safety rules.
-Stay Healthy: I keep myself healthy, stay home if I’m sick, and get vaccinated, like for the flu, to protect clients and meet Aged Care Quality Standards.
-Keep Training Updated: I attend infection control training to stay informed about best practices, ensuring I follow Australian aged care guidelines to keep everyone safe.
+### What is Duty of Care?
+
+Duty of care means I have a responsibility to keep clients safe and healthy while providing care, ensuring I do no harm, as required by Australian aged care laws.
+
+- **Follow Care Plans**: I check and follow each client’s care plan to meet their needs, like mobility or health support, to keep them safe and comfortable.
+- **Act Safely**: I use proper techniques, like safe manual handling or infection control, to prevent injuries or illness, following my Certificate III training.
+- **Watch and Report:** I notice any risks or changes, like pain or confusion, and tell my supervisor right away to protect the client.
+- **Respect and Dignity**: I treat clients with kindness and respect, protecting their privacy and choices, to meet Aged Care Quality Standards.
+
+### What is building good boundaries?
+
+Building good boundaries means setting clear, respectful limits in my work with clients to stay professional, keep them safe, and protect their dignity, as per Australian aged care standards.
+
+- **Stay Professional**: I keep a friendly but not personal relationship, avoiding sharing my own problems or getting too close, to maintain trust and focus on care.
+- **Respect Client Privacy**: I only discuss client details with authorized staff, like nurses, and avoid talking about their needs in public to protect their privacy.
+- **Follow Role Limits**: I stick to my support worker tasks, like personal care or cleaning, and don’t do things outside my training, like giving medication, to stay safe.
+- **Communicate Clearly**: I explain what I can do, like “I can help with your shower now,” and respect client choices to keep boundaries clear and professional.
 
 ### What do you know about manual handling in aged care?
 
@@ -585,13 +548,4 @@ During my placement, I helped clients with tasks like transferring from bed to c
 
 ### If you are hired, what do you hope to learn from this job?
 
-问题：如果成功，你希望从这份工作中学到什么？
-
-Better Care Skills: I want to improve my skills in helping clients with daily tasks, like personal care or mobility, to provide even better support.
-Dealing with Challenges: I hope to learn how to handle tough situations, like clients with dementia, by watching and learning from experienced teammates.
-Teamwork: I want to get better at working with nurses and other workers, learning how to share tasks and communicate well to help clients.
-Client Needs: I aim to understand different clients’ needs better, like their cultural preferences, to give more respectful and personalized care.
-New Training: I’m excited to join training programs, like first aid or infection control, to grow my knowledge and meet Aged Care Quality Standards.
-Building Confidence: I hope to gain more confidence in my work by learning from feedback and real-life experience, so I can help clients feel safe and happy.
-Understanding Regulations: I want to learn more about Australian aged care rules, like privacy and safety, to make sure I always follow them correctly.
-Connecting with Clients: I look forward to learning how to build stronger trust with clients, listening to their stories to make their days brighter.
+If I get this job, I want to get better at helping clients, like learning more about personal care or dealing with tricky moments. I’d love to take training, like for dementia, and work with the team to give safe, kind care. This job will teach me how to understand clients better and make their lives happier, which I really care about.
