@@ -215,14 +215,12 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 
 问题：说说你对护理及其工作内容的理解。
 
-- I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing compassionate, person-centered care.
-- The work involves assisting with daily tasks like personal hygiene, mobility, and meals, ensuring clients feel comfortable, safe, and respected.
+- I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing person-centered care.
+- The work involves assisting with Activities of Daily Living, such as personal hygiene, mobility, and meals, ensuring clients feel comfortable, safe, and respected.
 - It requires strong communication and empathy to build trust, especially with clients who may have language barriers or conditions like dementia.
-- A key part is respecting clients’ autonomy, listening to their needs, and adapting care to their preferences, like offering favorite foods or adjusting routines.
+- It's important to respect clients’ autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
 - It also involves teamwork, clear documentation, and following protocols to ensure safety and continuity of care, such as reporting changes in a client’s health.
 - For me, being a support worker means making a real difference by helping clients maintain dignity and independence while creating a positive, supportive environment.
-
-I’m passionate about this role because it combines practical skills with the opportunity to connect with people and make their lives better.
 
 ### What does person-centred care means to you?
 
