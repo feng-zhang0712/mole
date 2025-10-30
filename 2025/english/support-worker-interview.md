@@ -17,7 +17,7 @@
 
 我非常期待能够从能这份工作。
 
-Hello, my name is Zhang Feng, I’m 35 years old, I have a bachelor’s degree.
+Hi everyone! My name is Zhang Feng, I’m 35 years old and I’m from Shandong, China. I have a bachelor’s degree back in China. I have just finished my internship right here at this aged care home behind me, and I’m going to complete my Certificate III in Individual Support (Aged Care) soon.
 
 - **Certificate III and Placement Experience**: I have a Certificate III in Individual Support and 120 hours‘ placement experience in aged care.
 - **Drive**: I can drive, I have a valid driver’s license, which I think can be useful with transportation.
