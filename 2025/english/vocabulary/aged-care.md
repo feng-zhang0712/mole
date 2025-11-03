@@ -60,6 +60,9 @@
 - consent `/kənˈsent/` n. 许可；同意；正式批准文件
 - consent authority 同意权威
 - consequence `/ˈkɑːnsɪkwens/` n. 后果
+- contagious `/kənˈteɪdʒəs/` adj. 接触传染的
+- contaminate `/kənˈtæmɪneɪt/` v. 污染
+- contamination `/kənˌtæmɪˈneɪʃ(ə)n/` n. 污染
 - convention `/kənˈvenʃ(ə)n/` n. 习俗；大会；公约
 - coordination `koʊˌɔːrdɪˈneɪʃ(ə)n` n. 协调
 - culturally appropriate 文化适宜：指在跨文化交流中，根据不同文化的特点和需求，采取合适的行为和表达方式。
@@ -72,6 +75,7 @@
 - dilemma `/dɪˈlemə/` n. （进退两难的）困境
 - disability discrimination 残疾人歧视
 - discrimination `/dɪˌskrɪmɪˈneɪʃ(ə)n/` n. 歧视；辨别
+- disinfectant `/ˌdɪsɪnˈfektənt/` n. 消毒剂 adj. 消毒的
 - dislocation 脱臼
 - dignity `/ˈdɪɡnəti/` n. 尊严；尊贵
 - dignity of risk 风险中的尊严
@@ -80,6 +84,7 @@
 - disclosure `/dɪsˈkloʊʒər/` n. 披露
 - disorient `/dɪsˈɔːrient/` vt. 使...迷惑
 - disoriented `/dɪsˈɔːrientɪd/` adj. 分不清方向或目标的 v. disorient 的过去式和过去分词
+- dispose `/dɪˈspoʊz/` v. 处理；销毁
 - distress `/dɪˈstres/` n. 悲伤；痛苦 v. 使悲伤
 - distressed `/dɪˈstrest/` adj. 苦恼的 v. distress 的过去式和过去分词
 - distrust `/dɪsˈtrʌst/` v.n. 不信任
@@ -122,6 +127,9 @@
 - framework `/ˈfreɪmwɜːrk/` n. 框架
 - freedom from discrimination 不受歧视
 - freedom of association 结社自由
+- germ `/dʒɜːrm/` n. 细菌；胚芽
+- glove `/ɡlʌv/` n. 手套
+- gown `/ɡaʊn/` n. 长袍
 - hand hygiene 手部卫生
 - hazard `/ˈhæzərd/` n. 危险 v. 冒险猜测；使遭危险
 - healthcare environment 医疗保健环境
@@ -206,6 +214,7 @@
 - physical therapy 物理疗法
 - physiological `/ˌfɪziəˈlɑːdʒɪk(ə)l/` adj. 生理（学）的
 - Positive Behavior Support, PBS 积极行为支持
+- precaution `/prɪˈkɔːʃn/` n. 预防措施
 - prevalence `/ˈprevələns/` n. 流行
 - primary purpose 主要目的
 - procedure `/prəˈsiːdʒər/` n. 手续；程序
@@ -215,6 +224,7 @@
 - promote `/prəˈmoʊt/` v. 促进，提倡；升职；促销；晋级
 - prompt `/prɑːmpt/` v.n. 鼓励；提示；提词 v. 导致 adj. 迅速的；及时的 adv. 准时地
 - prompting device 提示器
+- prone `/proʊn/` adj. 易于...的；俯卧的
 - professionalism `/prəˈfeʃənəlɪzəm/` n. 专业主义；专家的地位
 - projection `/prəˈdʒekʃ(ə)n/` n. 预测；投影
 - psychological abuse 心理虐待
