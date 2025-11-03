@@ -19,41 +19,27 @@
 
 Hello, my name is Zhang Feng, I’m 35 years old, I have a bachelor’s degree.
 
-- **Certificate III and Placement Experience**: I have a Certificate III in Individual Support and 120 hours‘ placement experience in aged care.
-- **Drive**: I can drive, I have a valid driver’s license, which I think can be useful with transportation.
-- **Cooking**: I enjoy cooking, I can make Chinese home-style meals, which I think can be useful for supporting clients’ dietary needs and preferences.
-- **Keeping Things Organized**: I enjoy keeping things organized, which is important in aged care.
-- **Physically Healthy**: I’m physically healthy, I don’t smoke or drink, I stay active through regular exercise, so I’m confident in manual handling tasks.
-- **Patient and Calm**: I’m patient and calm, which helps me build trust with clients and handle challenging situations.
+- I have a Certificate III in Individual Support and 120 hours‘ placement experience in aged care.
+- I can drive, I have a valid driver’s license, which I think can be useful with transportation.
+- I enjoy cooking, I can make Chinese home-style meals, which I think can be useful for supporting clients’ dietary needs and preferences.
+- I enjoy keeping things organized, which is important in aged care.
+- I’m physically healthy, I don’t smoke or drink, I stay active through regular exercise, so I’m confident in manual handling tasks.
+- I’m patient and calm, which helps me build trust with clients and handle challenging situations.
 
 I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
 
-### Why do you choose to work as a support worker?
+### Why do you choose to work as a support worker?（*）
 
-问题：
+- 这个职位最吸引你的是什么？（*）
+- 你为什么想在社区老年护理或社区残疾人服务领域从事个人护理员（PCW）的职业？（*）
+- 为什么选择成为一名护工？
 
-- 为什么选择这个工作
-- 为什么选择做老年护理或者残障支持
-
-- 我之前在国内互联网行业中作，当时国内的就业环境很差，特别是对于35岁及以上的人很不友好，很难有发展空间
-- 澳洲一直是我很喜欢的国家，我希望以后能一直在那边工作和生活
-- 我认为35岁是我人生最好的时候，是一个新的开始，而不是事业的终点
-- 我认为，人生最有价值的，是帮助他人，而这个工作就是帮助、改变他人的生活，这样的工作，让我觉得生活有意义，人生有价值
-- 我喜欢与老人们交谈，聆听他们的人生经验
-- 这份工作能给我提供长期的稳定的工作环境、也能够让我成长
-- 我的技能、经验和性格，适合这份工作。
-
-分析：考察是否真心诚意想做护理工作，表达出你对这份工作的热情、态度。
-
-- I'm currently in China. I previously worked in the Internet industry, but the work environment can be tough for someone at 35.
-- Australia has always been my dream destination to work and live.
-- I believe 35 is the prime of my life, not the end of my career, but a new beginning.
-- Working as a support worker allows me to make a difference in people’s lives, giving me a sense of purpose and fulfillment, and aligns with my personal values.
+<!-- - I'm currently in China. I previously worked in the Internet industry, but the work environment can be tough for someone at 35. I believe 35 is the prime of my life, not the end of my career, but a new beginning. -->
+- This role aligns with my goal of contributing to the community in a country I love, because Australia has always been my dream destination to work and live.
 - This role offers a stable work environment and opportunities for personal and professional growth, which is important for my long-term career goals.
-- I’m passionate about serving others, especially those who need support to live independently and with dignity.
+- The most valuable thing is helping others, working as a support worker allows me to make a real difference in people’s lives, giving me a sense of purpose and fulfillment.
+- I’m passionate about serving others, especially those who need support to live with dignity and independence.
 - My skills, experience, and personality make me well-suited for this work.
-
-<!-- - I love talking with older people and listening to their life stories and experiences. It’s rewarding to build relationships and provide companionship. -->
 
 ### Why should we hire you?
 
@@ -91,11 +77,7 @@ As for my weaknesses:
 
 ### What do you know about our organization/facility?
 
-问题：你对我们机构有多少了解？
-
 ### Why do you want to work at our facility/organization?
-
-问题：你为什么想在我们机构工作？
 
 ### What's your hobbies ?
 
@@ -122,8 +104,6 @@ I have a valid driver’s license and I'm confident in driving.
 参考 [优势和弱势部分](#why-should-we-hire-you)。
 
 ### What skills do you have in aged care or disability support?
-
-问题：
 
 - 你有哪些护理或支持技能
 - 你会做哪些家务（domestic）或日常生活支持（daily living support）工作
@@ -181,8 +161,6 @@ For example, in my placement, I once had a colleague who felt I was too slow wit
 
 ### How do you prioritize tasks when supporting multiple clients in one shift?
 
-场景：
-
 - 如何安排繁忙时段（busy shift）的工作
 - 在一个轮班中支持多个客户时，如何确定任务的优先级
 
@@ -213,7 +191,7 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 
 ### How do you think of aged care or support worker?（*）
 
-你对（老年）护理的理解是什么？
+你对老年护理的理解是什么？（*）
 
 - I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing person-centered care.
 - The work involves assisting with Activities of Daily Living, such as personal hygiene, mobility, and meals, ensuring clients feel safe, comfortable, and respected.
@@ -224,7 +202,7 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 
 ### What does person-centred care means to you?
 
-问题：你对以人为本的护理的理解是什么？
+你对以人为本的护理的理解是什么？
 
 分析：The core value of care work。
 
@@ -281,8 +259,7 @@ For example, with a Chinese client, I might use my knowledge of their culture, l
 
 ### What would you do in an emergency situation?（*）
 
-- 客户出现紧急情况，比如突然疾病、摔倒。
-- **如果你发现服务对象躺在地板上且失去意识，你会怎么做？**
+如果你发现服务对象躺在地板上且失去意识，你会怎么做？（*）
 
 1. The first thing I would do is stay calm.
 2. I would check the environment, remove any hazards that may cause further harm, to ensure both the client and I are safe.
@@ -296,25 +273,59 @@ For example, with a Chinese client, I might use my knowledge of their culture, l
 5. I would document and report the incident to my supervisor and share with my team to keep everyone informed if necessary.
 6. I would keep monitoring to prevent the client's condition from getting worse.
 
+### What would you do if there's no response after you arrived client's house?（*）
+
+根据你的工作安排表，你到达了史密斯太太的家。你按了门铃并转动了门锁。但是，史密斯太太没有开门。你会怎么做？（*）
+
+1. First, I wouldn't force the door open or break in.
+2. I check if I have the right address and time from the schedule.
+3. I knock the door a few more times, call the client’s mobile, or leave a short message to ask if the client is okay.
+4. I call the client’s emergency contact or ask the client's neighbors for help.
+5. I check the environment for any unusual signs, like lights or sounds.
+6. I report it to my supervisor for advice.
+
 ### Infection control（*）
 
-**Infection control** is the practice to stop germs (like bacteria or viruses) from spreading to keep clients, support workers, and others safe — especially important in aged care, as older people are more at risk of getting sick. Infection control procedures are rules to follow this practice. 
+Infection control is the practice to stop germs (like bacteria or viruses) from spreading to keep clients, support workers, and others safe — especially important in aged care, as older people are more at risk of getting sick. Infection control procedures are rules to follow this practice. 
 
 - Wash hands with soap and water for at least 20 seconds, or use alcohol-based sanitizer before and after client contact, or touching surfaces.
-- Use appropriate PPE as required, such as gloves, masks, or shoe covers, and dispose of PPE properly after use.
+- Use appropriate PPE, such as gloves, masks, or shoe covers, and dispose of PPE properly after use.
 - Regularly clean and disinfect high-touch surfaces, equipment, and client areas to reduce the risk of infection spread.
 - Observe clients for signs of infection (fever, cough, or red skin), and document and report it to my supervisor immediately.
 - For me, I would stay healthy, avoid working when sick, and keep vaccinations up to date.
 
 What infection control measures will you take when you arrive at Mrs. Smith's house?（*）
 
-- I wash hands with soap and water for at least 20 seconds, or use alcohol-based sanitizer before and after the service.
-- I use appropriate PPE as required, such as gloves, masks, or shoe covers.
-  - I would wear shoe covers to avoid bringing germs from outside.
-  - If Mrs. Smith got a sick, I would wear a mask.
+当你到达史密斯太太家时，你会做哪些感染控制措施？（*）
+
+- I wash hands with soap and water for at least 20 seconds, or use alcohol-based sanitizer before and after client contact, or touching surfaces.
+- I use appropriate PPE, such as gloves, masks, or shoe covers.
+  - I would wear shoe covers to avoid carrying germs from outside.
+  - I would wear a mask if Mrs. Smith got sick.
 - I clean and disinfect high-touch surfaces, equipment, and client areas to reduce the risk of infection spread.
 - I observe Mrs. Smith for signs of infection (fever, cough, or red skin), and document and report it to my supervisor immediately.
 - I would avoid touching my eyes, nose, or mouth during the service process.
+
+### What would you do if Mrs. Smith asked you to clean the ceiling fan?（*）
+
+- 史密斯太太要求你清洁吊扇。你会怎么做？（*）
+- 如果客户要求你做一些超出你职责范围的事情，你会怎么做？
+
+1. If a client asks me to do something, the first thing I would do is to assess whether the task is outside my scope of practice (like providing medical treatments) by reviewing the client's care plan, the employer's policies, job description, support worker's qualification...
+2. If the task is within my role, I would perform the task while ensuring following requirements and procedures, like wearing PPE.
+3. If the task is outside my role (scope of practice), I would explain that the task is outside my role. If possible, I would suggest an appropriate solution within my role, such as assisting with a related task or helping the client access the right support, like contacting a nurse or family member.
+4. If I'm not sure whether should I perform the task, I would document and report the request to my supervisor for guidance.
+5. I would continue to provide care within my role, ensuring the client feels supported and respected while their request is addressed appropriately.
+6. I would follow Australian aged care regulations and my training, ensuring I only perform tasks I’m qualified for to maintain safety and compliance.
+
+### What support would you like your employer to provide to help you in your job?（*）
+
+你希望你的雇主为你提供哪些支持来帮助你的工作？
+
+- I hope for regular training to improve my skills and provide better client support (like dementia, manual handling, and first aid courses).
+- I want guidance from supervisors and team meetings to share ideas and solve problems.
+- I need access to tools to support my work, like PPE or mobility aids.
+- I hope for balanced shifts and breaks to stay healthy and focused.
 
 ### What would you do if a client refuses your service?
 
@@ -337,18 +348,9 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 - **Action**: I stayed calm and spoke gently, saying, “I see you’re not hungry right now. Would you like something else to eat?” I noticed the client seemed overwhelmed by the busy dining room, so I offered to bring their meal to a quieter area. I also checked their care plan, which noted their favorite foods, and prepared a small portion of a dish they liked. I sat with them, talked about their favorite hobby to distract them, and encouraged them to eat slowly.
 - **Result**: The client calmed down, ate a portion of their meal, and seemed more comfortable. My supervisor praised my patience and person-centered approach, and I documented the incident as per policy. This experience taught me how to handle challenging behaviors calmly and effectively.
 
-### What would you do if a client asked you to do something outside your role?
-
-1. **Listen**: I'd listen to the client’s request and ensuring understanding their needs.
-2. **Assess the Request**: I would assess whether the task is outside my scope of practice, such as providing medical treatments or tasks requiring specialized qualifications.
-3. **Explain and Offer Alternatives**: I'd explain that the task is outside my role, and suggest an appropriate solution within my role, such as assisting with a related task or helping the client access the right support, like contacting a nurse or family member.
-4. **Document and Report**: I'd document and report the request to my supervisor 
-5. **Maintain Client Support**: I would continue to provide care within my scope, ensuring the client feels supported and respected while their request is addressed appropriately.
-6. **Stay Within Scope**: I would follow Australian aged care regulations and my training, ensuring I only perform tasks I’m qualified for to prioritize client safety and compliance.
-
 ### How would you handle confidential or sensitive information from a client?
 
-场景：客户告诉你私密（confidential）或敏感的（sensitive）信息，应该怎么做
+客户告诉你私密（confidential）或敏感的（sensitive）信息，应该怎么做？
 
 - **Respect Privacy**: I treat all client information as confidential, understanding that personal details, health conditions, or preferences are private and must be protected.
 - **Share Only with Authorized Personnel**: I will never discuss client information in public areas or with unauthorized individuals.
@@ -356,8 +358,6 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 - **Build Trust with Clients**: I reassure clients that their information is safe with me, explaining how it will be used to support their care, which helps them feel secure and respected.
 
 ### What would you do if you noticed signs of abuse or neglect?
-
-场景：
 
 - 如果看到同事对客户粗鲁，应该怎么做
 - 如果你注意到虐待或疏忽的迹象，应该怎么做
@@ -370,8 +370,6 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 6. **Follow Up**: I would check in with my supervisor to ensure the issue is being addressed and offer any further assistance needed to support the client’s well-being.
 
 ### How do you ensure clear communication with clients who have communication difficulties?
-
-场景：
 
 - 确保与有沟通障碍的客户进行清晰的沟通
 - 如何照顾一个不会说英文（not speak English）的老人
@@ -387,8 +385,6 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 8. **Document and Report**: I document effective methods and report changes in care notes, ensuring the team is informed.
 
 ### What to do if the guest is impatient when seeing a doctor?
-
-场景：
 
 - 看病、外出就餐时等待很久，客人不耐烦怎么办
 - 周边环境嘈杂怎么办
@@ -416,8 +412,6 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 
 ### How do you work with clients from different cultural backgrounds?
 
-问题：
-
 - 如何与不同文化背景的客户相处
 - 如何尊重客户的文化、宗教或个人习惯
 
@@ -428,11 +422,11 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 
 ### How do you demonstrate empathy and patience in your work?
 
-问题：你如何在工作中展示同理心和耐心？
+你如何在工作中展示同理心和耐心？
 
 - **Listen Carefully**: I pay close attention to what clients say or how they act, so they feel heard and understood.
 - **Show Kindness**: I use kind words to make clients feel safe and respected, especially when they’re upset.
-- **Use Gentle Actions**: I‘d use body language, eye contact to show I care, helping clients feel at ease during tasks like bathing or eating.
+- **Use Gentle Actions**: I use body language, eye contact to show I care, helping clients feel at ease during tasks like bathing or eating.
 - **Give Time**: I let clients move or talk at their own pace, especially if they have trouble walking or speaking, so they don’t feel rushed.
 - **Understand Needs**: I follow the client’s care plan to know their likes and needs, showing empathy by respecting their choices, like how they want their meal prepared.
 - **Stay Calm**: If a client is confused or upset, I stay patient, speak softly, and give them time to feel better, keeping the mood peaceful.
@@ -440,8 +434,6 @@ What infection control measures will you take when you arrive at Mrs. Smith's ho
 - **Learn from Feedback**: I ask my supervisor how I can show more care or patience, so I keep improving and meet Aged Care Quality Standards.
 
 ### How do you handle a client complaint or dissatisfaction?
-
-场景：
 
 - 如何面对反馈（feedback）或者批评（criticism）
 - 客户或家属对你的工作提出投诉（complaint）或不满（dissatisfaction），应该怎么处理
