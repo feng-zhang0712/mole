@@ -211,18 +211,16 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 
 ## 四、以人为本护理与客户关系
 
-### How do you think of aged cared or support worker?
+### How do you think of aged care or support worker?（*）
 
-问题：说说你对护理及其工作内容的理解。
+你对（老年）护理的理解是什么？
 
-- I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing compassionate, person-centered care.
-- The work involves assisting with daily tasks like personal hygiene, mobility, and meals, ensuring clients feel comfortable, safe, and respected.
+- I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing person-centered care.
+- The work involves assisting with Activities of Daily Living, such as personal hygiene, mobility, and meals, ensuring clients feel safe, comfortable, and respected.
 - It requires strong communication and empathy to build trust, especially with clients who may have language barriers or conditions like dementia.
-- A key part is respecting clients’ autonomy, listening to their needs, and adapting care to their preferences, like offering favorite foods or adjusting routines.
+- It's important to respect clients’ autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
 - It also involves teamwork, clear documentation, and following protocols to ensure safety and continuity of care, such as reporting changes in a client’s health.
-- For me, being a support worker means making a real difference by helping clients maintain dignity and independence while creating a positive, supportive environment.
-
-I’m passionate about this role because it combines practical skills with the opportunity to connect with people and make their lives better.
+- For me, being a support worker means making a real difference by helping clients maintain dignity and independence while creating a positive and supportive environment.
 
 ### What does person-centred care means to you?
 
@@ -281,39 +279,56 @@ For example, with a Chinese client, I might use my knowledge of their culture, l
 
 ## 五、情景题
 
-### What would you do in an emergency situation?
+### What would you do in an emergency situation?（*）
 
-场景：客户出现紧急情况（emergency situation），比如突然疾病、摔倒
+- 客户出现紧急情况，比如突然疾病、摔倒。
+- **如果你发现服务对象躺在地板上且失去意识，你会怎么做？**
 
-1. **Stay Calm**: I’d stay calm.
-2. **Remove Hazards**: I’d check the environment, remove any hazards that may cause further harm, to ensure both the client and I are safe.
-3. **Assess the Client’s Condition**: I’d check if the client is conscious, breathing, or showing signs of distress (like chest pain).
-   - I’d avoid moving them unless it’s unsafe to stay (like in a fire).
-   - I’d apply basic first aid if appropriate, such as checking airways, breathing, and circulation (ABC) or applying pressure to a wound.
-   - If the situation is serious, like the client is unresponsive or has a suspected heart attack, I’d immediately call 000 for emergency services.
-   - If the situation is under control and the client is able and safe to move, I’d help them stand up, using proper manual handling techniques (like supporting their arm or using a transfer belt).
+1. The first thing I would do is stay calm.
+2. I would check the environment, remove any hazards that may cause further harm, to ensure both the client and I are safe.
+3. I would check if the client is conscious, breathing, or showing signs of distress (like chest pain).
+   - I would avoid moving them unless it’s unsafe to stay (like in a fire).
+   - I would apply basic first aid if appropriate, such as checking airways, breathing, and circulation (ABC) or applying pressure to a wound.
+   - If the situation is serious, like the client is unresponsive or has a suspected heart attack, I would call 000 for emergency services immediately.
+   - If the situation is under control and the client is able and safe to move, I would help them stand up, using proper manual handling techniques (like supporting their arm or using a transfer belt).
    <!-- 如果客户摔倒且身体状况良好，再补充上面这句话 -->
-4. **Provide Comfort**: I’d keep the client comfortable and offer reassurance by talking to them to reduce their anxiety.
-5. **Document and Report**: I'd document and report the incident to my supervisor and share with my team.
-6. **Monitor**: I’d keep monitoring to prevent the client's condition from getting worse.
+4. I would keep the client comfortable and offer reassurance by talking to them to reduce their anxiety.
+5. I would document and report the incident to my supervisor and share with my team to keep everyone informed if necessary.
+6. I would keep monitoring to prevent the client's condition from getting worse.
+
+### Infection control（*）
+
+**Infection control** is the practice to stop germs (like bacteria or viruses) from spreading to keep clients, support workers, and others safe — especially important in aged care, as older people are more at risk of getting sick. Infection control procedures are rules to follow this practice. 
+
+- Wash hands with soap and water for at least 20 seconds, or use alcohol-based sanitizer before and after client contact, or touching surfaces.
+- Use appropriate PPE as required, such as gloves, masks, or shoe covers, and dispose of PPE properly after use.
+- Regularly clean and disinfect high-touch surfaces, equipment, and client areas to reduce the risk of infection spread.
+- Observe clients for signs of infection (fever, cough, or red skin), and document and report it to my supervisor immediately.
+- For me, I would stay healthy, avoid working when sick, and keep vaccinations up to date.
+
+What infection control measures will you take when you arrive at Mrs. Smith's house?（*）
+
+- I wash hands with soap and water for at least 20 seconds, or use alcohol-based sanitizer before and after the service.
+- I use appropriate PPE as required, such as gloves, masks, or shoe covers.
+  - I would wear shoe covers to avoid bringing germs from outside.
+  - If Mrs. Smith got a sick, I would wear a mask.
+- I clean and disinfect high-touch surfaces, equipment, and client areas to reduce the risk of infection spread.
+- I observe Mrs. Smith for signs of infection (fever, cough, or red skin), and document and report it to my supervisor immediately.
+- I would avoid touching my eyes, nose, or mouth during the service process.
 
 ### What would you do if a client refuses your service?
-
-场景：
 
 - 客户拒绝服务/帮助
 - 客户拒绝洗澡、吃饭或不配合护理
 - 客户出现情绪低落、波动、抑郁等
 - 应对来自客户的压力或者挑战
 
-分析：体现出同理心 (empathy)、耐心 (patience)、和以人为本的护理理念 (person-centred care)。
-
-1. **Respect Their Choice**: I'd stay calm and respect the client’s right to make choices.
-2. **Find Out the Reason**: I’d gently ask questions to find out why they’re refusing (which helps me address their concerns).
-3. **Offer Alternatives**: I’d offer options. For instance, if they refuse to shower, I might say, “Would you like to freshen up with a washcloth instead, or maybe later today?” (This gives them control and reduces tension).
-4. **Follow Care Plan and Policies**: I’d check the client’s care plan for guidance on handling refusals and follow workplace policies (, ensuring I respect their autonomy while prioritizing their well-being).
-5. **Document and Report**: If the refusal impacts their health or safety, I’d document and report it to my supervisor, and share with my team to keep everyone informed.
-6. **Check Back Later**: I’d give them some time and check back later to see if they’re ready for service.
+1. I would stay calm and respect the client’s right to make choices.
+2. I would ask questions to find out why they’re refusing (which helps me address their concerns).
+3. I would offer options. For instance, if they refuse to shower, I might say, “Would you like to freshen up with a washcloth instead, or maybe later today?” (This gives them control and reduces tension).
+4. I would check the client’s care plan to find out how to handle refusals and follow workplace policies (ensuring I respect their autonomy while prioritizing their well-being).
+5. If the refusal impacts their health or safety, I would document and report it to my supervisor, and maybe share with my team to keep everyone informed if necessary.
+6. I would give them some time and check back later to see if they’re ready for service.
 
 下面是一个使用 STAR 法则处理这种情况的例子。
 
@@ -484,21 +499,6 @@ Operational Details for Key ADLs:
 - **Documentation**: Record details in care notes, like “Client needed assistance with shower but ate independently,” and report changes to the team.
 
 During my 120-hour placement, I assisted a client with limited mobility to shower using a chair, ensured their favorite clothes were ready for dressing, and used gestures to communicate meal choices, keeping them comfortable and safe.
-
-### Infection control procedures
-
-Infection control procedures are steps to stop the spread of germs, like viruses or bacteria, to keep clients, staff, and others safe in aged care settings.
-
-- **Hand Hygiene**: Wash hands with soap and water for at least 20 seconds before and after client contact, handling food, or toileting. Use alcohol-based hand sanitizer if soap isn’t available.
-- **Personal Protective Equipment (PPE)**: Wear gloves, masks, or gowns as required, especially for tasks like toileting or wound care. Dispose of PPE properly after use.
-- **Cleaning and Disinfection**: Clean high-touch surfaces like bedrails, doorknobs, or mobility aids with disinfectant daily or after use. Use single-use cloths or color-coded systems to avoid cross-contamination.
-- **Equipment Hygiene**: Sterilize or disinfect reusable equipment, like hoists or utensils, according to workplace protocols. Store equipment in clean, dry areas.
-- **Waste Management**: Dispose of soiled items, like continence pads, in sealed biohazard bags and follow workplace waste disposal guidelines.
-- **Client Hygiene Support**: Assist clients with personal hygiene, like bathing or oral care, using clean supplies and following their care plan to reduce infection risks.
-- **Food Safety**: Prepare and store food safely, ensuring proper temperatures and hygiene. Use my cooking skills to make safe, culturally appropriate meals, like for Chinese clients.
-- **Monitor and Report**: Observe clients for signs of infection, like fever or redness, and report immediately to my supervisor. Document incidents in care notes.
-- **Follow Protocols**: Adhere to Australia’s Aged Care Quality Standards and workplace infection control policies, including isolation procedures if a client has an infectious condition.
-- **Personal Health**: Stay healthy, avoid working when sick, and keep vaccinations up to date to protect clients.
 
 ### What is Duty of Care?
 
