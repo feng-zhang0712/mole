@@ -75,20 +75,20 @@
 - dilemma `/dɪˈlemə/` n. （进退两难的）困境
 - disability discrimination 残疾人歧视
 - discrimination `/dɪˌskrɪmɪˈneɪʃ(ə)n/` n. 歧视；辨别
-- disinfectant `/ˌdɪsɪnˈfektənt/` n. 消毒剂 adj. 消毒的
+- disinfect `/ˌdɪsɪnˈfekt/` v. 消毒
+- disinfectant `/ˌdɪsɪnˈfektənt/` n. 消毒剂
 - dislocation 脱臼
 - dignity `/ˈdɪɡnəti/` n. 尊严；尊贵
-- dignity of risk 风险中的尊严
 - direct / indirect discrimination 直接/间接歧视
 - disclose `/dɪsˈkloʊz/` v. 公开
-- disclosure `/dɪsˈkloʊʒər/` n. 披露
+- disclosure `/dɪsˈkloʊʒər/` n. 公开
 - disorient `/dɪsˈɔːrient/` vt. 使...迷惑
 - disoriented `/dɪsˈɔːrientɪd/` adj. 分不清方向或目标的 v. disorient 的过去式和过去分词
 - dispose `/dɪˈspoʊz/` v. 处理；销毁
 - distress `/dɪˈstres/` n. 悲伤；痛苦 v. 使悲伤
 - distressed `/dɪˈstrest/` adj. 苦恼的 v. distress 的过去式和过去分词
 - distrust `/dɪsˈtrʌst/` v.n. 不信任
-- drowning 溺水
+- drowning `/ˈdraʊnɪŋ/` 溺水
 - duty of care 看护责任
 - electric shock 触电
 - enhance `/ɪnˈhæns/` v. 增强
@@ -111,6 +111,7 @@
 - ethical obligation 道德义务
 - ethics `/ˈeθɪks/` n. 道德规范
 - evacuation `/ɪˌvækjuˈeɪʃ(ə)n/` n. 疏散；排泄
+- exclusion `ɪkˈskluːʒn` n. 排斥，排除在外
 - exclusion zone 禁区（禁入区域）
 - exemption `/ɪɡˈzempʃn/` n. 豁免
 - exploitation `/ˌeksplɔɪˈteɪʃ(ə)n/` n. 剥削；开发；利用
