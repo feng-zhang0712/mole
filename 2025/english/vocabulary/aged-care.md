@@ -35,6 +35,7 @@
 - bruise `/bruːz/` n. 伤痕 v. 挫伤
 - capacity `/kəˈpæsəti/` n. 能力；容积
 - care plan 护理计划
+- casualty `/ˈkæʒuəlti/` n. 伤亡人员；急诊室；灾难
 - choke `/tʃoʊk/` v. 噎住 n. 窒息
   - He is choking. 他噎住了。
 - cultural sensitivity 文化敏感性
@@ -120,6 +121,7 @@
 - fall v.n. 坠落；跌倒；下跌
 - fall detector 跌倒检测器
 - fall prevention 跌倒预防
+- fatality `/feɪˈtæləti/` n. （灾难、事故中的）死亡
 - fatigue `/fəˈtiːɡ/` v. 使疲劳 n. 疲劳
 - financial exploitation 经济剥削
 - first aid kit 急救包
@@ -133,6 +135,7 @@
 - gown `/ɡaʊn/` n. 长袍
 - hand hygiene 手部卫生
 - hazard `/ˈhæzərd/` n. 危险 v. 冒险猜测；使遭危险
+- hazardous `/ˈhæzərdəs/` adj. 危险的
 - healthcare environment 医疗保健环境
 - high temperature 高温
 - holistic `/hoʊˈlɪstɪk/` adj. 整体的，全面的
@@ -160,6 +163,7 @@
 - integrity `/ɪnˈteɡrəti/` n. 正直，诚实；完整
 - internal injury 内伤
 - interpret `/ɪnˈtɜːrprət/` v. 解释；口译
+- intervention `/ˌɪntərˈvenʃ(ə)n/` n. 干预；斡旋；（为改善情况尤指病痛采取的）措施
 - investigation `/ɪnˌvestɪˈɡeɪʃ(ə)n/` n. 调查
 - isolation `/ˌaɪsəˈleɪʃn/` n. 隔离；绝缘
 - joint pain 关节痛
@@ -190,23 +194,19 @@
 - non-maleficence 不伤害
 - non-verbal `/ˌnɑːnˈvɜːrb(ə)l/` adj. 非语言的
 - obligation `/ˌɑːblɪˈɡeɪʃn/` n. （法律上或道义上的）责任，义务
+- obstruct `/əbˈstrʌkt/` v. 堵塞
 - ombudsman `/ˈɑːmbʌdzmən/` n. 监察专员
 - open wound 开放性伤口
-- organizational policy 组织政策
 - orient `/ˈɔːrient/` v. 朝向，使适应；确定方位 adj. 东方的
 - orientation `/ˌɔːriənˈteɪʃ(ə)n/` n. 定位；方向；倾向
 - outcome tracking 结果跟踪
 - outside job scope 工作范围之外
 - over-involvement 过度介入
-- overprotection 过度保护
 - palliative approach 安宁的照顾方式
 - participation `/pɑːrˌtɪsɪˈpeɪʃ(ə)n/` n. 参与
 - payslip `/ˈpeɪslɪp/` 工资单
 - peer support 同伴支持
 - penalty `/ˈpenəlti/` n. 处罚
-- person-centred 以人为本的
-- person-centred care 以人为本的保健服务
-- person-centred practice 以人为本的做法
 - Personal Protective Equipment, PPE 个人防护装备
 - personal support worker, PSW 个人支持工作者
 - person with disability, PWD 残障人士
@@ -217,7 +217,6 @@
 - Positive Behavior Support, PBS 积极行为支持
 - precaution `/prɪˈkɔːʃn/` n. 预防措施
 - prevalence `/ˈprevələns/` n. 流行
-- primary purpose 主要目的
 - procedure `/prəˈsiːdʒər/` n. 手续；程序
 - professional conduct 专业行为
 - professional integrity 职业道德

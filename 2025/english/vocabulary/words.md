@@ -591,6 +591,7 @@
 - speech pathologist `/pəˈθɑːlədʒɪst/` 言语病理学家
 - spinal `/ˈspaɪnl/` adj. 脊髓的
 - cord `/kɔːrd/` n. 线，绳
+- corridor `/ˈkɔːrɪdɔːr/` n. 过道；（一国领土通过他国境内的）走廊
   - spinal cord 脊髓
 - spiritual `/ˈspɪrɪtʃuəl/` adj. 精神的
 - spot `/spɑːt/` n. 地点；斑点；污点；几滴 v. 看见

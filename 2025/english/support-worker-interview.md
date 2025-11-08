@@ -4,6 +4,10 @@
 
 ## 一、关于“我”
 
+### Tell me about yourself, and any industry experience you have in aged care or disability services?
+
+
+
 ### Introduce yourself.
 
 - 自我介绍
@@ -47,7 +51,7 @@ I have a valid driver’s license and I'm confident in driving.
 <!-- - I'm currently in China. I previously worked in the Internet industry, but the work environment can be tough for someone at 35. I believe 35 is the prime of my life, not the end of my career, but a new beginning. -->
 - This role aligns with my goal of making a contribution in a country I love, because Australia has always been my dream destination to work and live.
 - This role offers a stable work environment and opportunity for personal and professional growth, which is important for my long-term career goals.
-- I think the most valuable thing is helping others, working as a support worker allows me to make a real difference in people’s lives, giving me a sense of purpose and fulfillment.
+- I think the most valuable thing is helping others, being a support worker allows me to make a real difference in people’s lives, giving me a sense of purpose and fulfillment.
 - I’m passionate about serving others, especially those who need support to live with dignity and independence.
 - My skills, experience, and personality make me well-suited for this work.
 
@@ -171,8 +175,8 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 - I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing person-centered care.
 - The work involves assisting with **Activities of Daily Living**, such as personal hygiene, mobility, and meals, ensuring clients feel safe, comfortable, and respected.
 - It requires strong communication and empathy to build trust, especially with clients who may have language barriers or conditions like dementia.
-- It's important to respect clients’ autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
 - It also involves teamwork, clear documentation, and following workplace policies to ensure safety and continuity of care, such as reporting changes in a client’s health.
+- It's important to respect clients’ autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
 - For me, being a support worker means making a real difference by helping clients maintain dignity and independence while creating a supportive and positive environment.
 
 ### What does person-centred care means to you?
@@ -268,7 +272,7 @@ For example, with a Chinese client, I might use my knowledge of their culture, l
 Infection control procedures are rules to follow this practice. 
 
 - I would wash hands with soap and water or use alcohol-based sanitizer before and after client contact or touching surfaces. <!-- for at least 20 seconds -->
-- I would use appropriate PPE, such as gloves, masks, or shoe covers, and dispose of PPE properly after use.
+- I would use appropriate PPE, such as gloves, masks, or apron, and dispose of PPE properly after use.
   - For example, I would wear a mask if the client got sick.
   - I would wear shoe covers to avoid carrying germs from the outside.
 - I would (regularly) clean and disinfect high-touch surfaces, equipment, and client areas to reduce the risk of infection spread.
@@ -284,8 +288,8 @@ Infection control procedures are rules to follow this practice.
 <!-- If a client asks me to do something -->
 
 1. The first thing I would do is to assess whether the task is outside my scope of practice (like providing medical treatments). This can be done by reviewing the client's care plan, the employer's policies, the support worker's qualifications, and my job description.
-2. If the task is within my role, I would perform the task while ensuring following the requirements and procedures, like wearing PPE.
-3. If the task is outside my role, I would explain it to the client. If possible, I would suggest an appropriate solution within my role, such as assisting with a related task or helping the client access the right support, like contacting a nurse or family member.
+2. If the task is within my role, I would perform it while ensuring following the requirements and procedures, like wearing PPE.
+3. If the task is outside my role, I would explain it to the client. If possible, I would suggest an appropriate solution within my role, such as helping the client access the right support, like contacting a nurse or family member.
 4. If I'm not sure whether should I perform the task, I would report it to my supervisor for advice.
 5. I would document the request in the client's records.
 6. I would continue to provide care within my role, ensuring the client feels supported and respected while their request is addressed appropriately.
@@ -294,12 +298,24 @@ Infection control procedures are rules to follow this practice.
 
 你希望你的雇主为你提供哪些支持来帮助你的工作？
 
-- I hope for regular training such as handling clients with dementia, emergency first aid, and using specialized tools.
-- I hope for essential care tools, such as PPE, mobility aids, basic medical supplies (thermometers, medication organizers), and cleaning materials for client homes.
+- I hope for regular training, such as emergency first aid, handling clients with dementia, and using specialized tools.
+- I hope for essential care tools, such as PPE, mobility aids, and basic medical supplies (thermometers, medication organizers).
 - I hope for safety measures, such as providing support for high-risk tasks (having a second staff member for client transfers).
 - I hope for timely, detailed information, such as client care plans, schedule changes, and feedback from clients/families.
 - I hope for supervisor support, so I can consult when facing tricky situations.
 - I hope for updates on industry standards (new infection control guidelines) to ensure my skills stay up-to-date.
+
+### Have you ever work with clients from different cultural backgrounds?（*）
+
+- 你是否曾与来自不同文化背景的客户合作过？（你的文化背景除外）（*）
+- 如何与不同文化背景的客户相处
+
+I don’t have direct experience with clients from different culture backgrounds, but if I have a chance to work with them, I'll follow these steps.
+
+- Before starting the care, I'll check the client’s care plan for cultural, language, or religious needs. If the plan is incomplete, I'll seek general knowledge about their backgrounds and preferences.
+- I'll listen patiently and communicate effectively with the client. I'll never assume their needs based on their cultural backgrounds. I'll ask open-ended questions to encourage them to share their specific needs. For example, "How do you prefer to receive your personal care?"
+- I'll use their feedback to adjust the care I deliver. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer..
+- I'll document the client's specific needs and adaptations. If a language barrier creates a safety risk or if I have any concerns, I'll report it to my supervisor. This ensures the whole team provides consistent and safe support.
 
 ### What would you do if a client refuses your service?
 
@@ -382,18 +398,6 @@ Infection control procedures are rules to follow this practice.
 **Monitor During Transport**: I'd watch for signs of discomfort or distress while driving, ensuring the client's is safety and comfort.
 **Report Issues**: If any thing unexpected happened, I'd document and report it to my supervisor.
 
-## 六、价值观与文化敏感性
-
-### How do you work with clients from different cultural backgrounds?
-
-- 如何与不同文化背景的客户相处
-- 如何尊重客户的文化、宗教或个人习惯
-
-- I respect clients’ cultural, religious, and personal habits.
-- If I'm not sure about something, I avoid making assumptions but ask politely.
-- I make sure to follow these preferences wherever possible while ensuring their safety and wellbeing.
-- I also adapt my communication and approach to make clients feel comfortable and respected. Understanding and respecting each client’s individual background is a key part of providing person-centred care.
-
 ### How do you demonstrate empathy and patience in your work?
 
 你如何在工作中展示同理心和耐心？
@@ -422,7 +426,7 @@ Infection control procedures are rules to follow this practice.
 6. **Follow Up**: I check in with the client later to ensure they’re satisfied with the resolution.
 7. **Learn and Improve**: I reflect on the complaint to identify ways to improve my practice to prevent similar issues.
 
-## 七、专业题
+## 六、专业题
 
 ### Activities of Daily Living, ADLs
 
@@ -501,7 +505,7 @@ Manual handling in aged care is about safely moving or supporting clients, like 
 
 During my placement, I helped clients with tasks like transferring from bed to chair using a slide sheet or supporting them while walking with a walker. My steady personality helps me stay focused, and my habit of keeping spaces tidy ensures the environment is clear of trip hazards. I also prioritize the client’s dignity, making sure they feel secure and respected during any manual handling task.
 
-## 八、结束问题
+## 七、结束问题
 
 注意结束时表达感谢，并再次强调对岗位的兴趣。
 
