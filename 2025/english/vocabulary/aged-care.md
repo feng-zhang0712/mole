@@ -13,6 +13,7 @@
 - agitated `/ˈædʒɪteɪtɪd/` adj. 焦虑不安的 v. agitate 的过去式和过去分词
 - agitation `/ˌædʒɪˈteɪʃ(ə)n/` n. 躁动；煽动；（液体的）搅动
 - allergic reaction 过敏反应
+- ambulation `/æmbjʊˈleɪʃən/` n. 移动；步行
 - amputation `/ˌæmpjuˈteɪʃn/` n. 截肢
 - anaphylaxis `/ˌænəfɪˈlæksɪs/` n. 过敏
 - assessment `/əˈsesmənt/` n. 评估/价；估价/计

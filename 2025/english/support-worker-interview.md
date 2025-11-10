@@ -4,27 +4,33 @@
 
 ## 一、关于“我”
 
-### Tell me about yourself, and any industry experience you have in aged care or disability services?
+### Tell me about yourself, and any industry experience you have in aged care or disability services?（*）
 
-
-
-### Introduce yourself.
-
+- 请你谈谈你自己，以及你在老年护理或残疾人服务领域的任何行业经验？（*）
 - 自我介绍
 - 我的优势和弱点
 - 为什么应该雇用你
 
-Hello, my name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a bachelor’s degree back in China.
+My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a bachelor’s degree.
 
-- I have a Certificate III in Individual Support and 120 hours‘ placement experience in aged care.
-- I can drive, I have a valid driver’s license, which I think can be useful with transportation.
-- I enjoy cooking, I can make meals, which I think can be useful for supporting clients’ dietary needs and preferences.
-- I enjoy keeping things clean and organized, which is important in aged care.
-- I’m physically healthy, I don’t smoke or drink, I stay active through regular exercise, so I’m confident in manual handling tasks.
-- I’m a reliable and hardworking person. I take my job seriously which helps me build trust with clients and handle challenging situations.
-- I speak both Mandarin and English, I understand Chinese culture and traditions, which gives me more advantages when serve Chinese clients.
+- I have completed the Certificate III in Individual Support and placement experience in aged care.
+- During my placement, I provided **Person-Centred Care** for clients with different health conditions, including dementia, heart disease, mobility issues, and clients with psychological trauma. The clients I supported were between their 50s and 80s.
+  - I provided **Mobility Assistance** by walking with them.
+  - I provided **Dressing Assistance**, **Toileting Assistance**, and **Incontinence Care**.
+  - I provided **Personal Hygiene Care**, like helping clients take baths and wash their feet.
+  - I provided **Assisted Feeding**, **Enteral Feeding**, and **Meal Serving** for clients with eating challenges.
+  - I provided **Medication Reminders** and **Insulin Administration Support** — like communicating with nurses before meals to arrange insulin shots for diabetic clients.
+  - For daily life, I did **Laundry and Linen Care**, such as washing their clothes and bed sheets, and did Light Housekeeping to clean their rooms. 
+  - I often chatted with clients to offer **Emotional Support**.
+  <!-- - Additionally, I accompanied clients and their families to hospital appointments. -->
+- As for me:
+  - I can drive, I have a valid driver’s license from China, which I think can be useful with transportation.
+  - I can cook meals, which I think can be useful for clients’ meal preparation.
+  - I enjoy keeping the environment clean and organized, which is important for infection control.
+  - I’m physically healthy, I don’t smoke or drink, and I stay active through regular exercise, so I’m confident in manual handling tasks.
+  - I’m patient and calm. I take my job seriously which helps me build trust with clients and handle challenging situations.
+  - I speak both Mandarin and English, I understand Chinese culture and traditions, which gives me more advantages when serving Chinese clients.
 
-<!-- I’m patient and calm -->
 <!-- 如果回答个人弱势，需要加下面这些 -->
 
 As for my weaknesses:
@@ -37,10 +43,6 @@ I’m excited to use my skills and positive attitudes to make a difference in cl
 <!-- What shifts are you available for? -->
 
 I'm available for both weekday and weekend shifts. I'm also available in the morning, afternoon, and evening, depending on the team's schedules.
-
-<!-- Do you have a driver's license and reliable transport? -->
-
-I have a valid driver’s license and I'm confident in driving.
 
 ### Why do you choose to work as a support worker?（*）
 
@@ -303,7 +305,49 @@ Infection control procedures are rules to follow this practice.
 - I hope for safety measures, such as providing support for high-risk tasks (having a second staff member for client transfers).
 - I hope for timely, detailed information, such as client care plans, schedule changes, and feedback from clients/families.
 - I hope for supervisor support, so I can consult when facing tricky situations.
-- I hope for updates on industry standards (new infection control guidelines) to ensure my skills stay up-to-date.
+<!-- I hope for updates on industry standards (new infection control guidelines) to ensure my skills stay up-to-date. -->
+
+### How to handle challenging situations?（*）
+
+你能描述一次你在照顾他人时遇到的挑战性经历，并解释你是如何处理的吗？（*）
+
+"When dealing with challenging situations or resistance from a client, my first priority is always to stay calm and ensure the safety of the client and myself."    
+
+"I understand that challenging behavior is often a way for the client to communicate an unmet need, such as pain, confusion, or a feeling of losing control. I will approach the situation with empathy and patience."    
+
+My 4-Step Professional Procedure
+"I follow a four-step method to handle these challenges professionally and safely:"
+
+Step 1: Stop and De-escalate "If a client becomes agitated or resistant, I will immediately stop the task I am doing. I will take one step back to give them space."  "I will speak in a calm, clear, and reassuring voice. I will not argue or raise my voice. I will use non-threatening body language to help them feel safe."    
+
+Step 2: Identify the Trigger "I will observe the client and the environment to find the cause. I will ask myself: Is the client in pain? Are they hungry or thirsty? Is the environment too noisy or crowded? Did I move too fast?"  "I will try to validate their feelings first, for example, by saying: 'I understand you are feeling frustrated right now.'"    
+
+Step 3: Adapt and Redirect "Based on the trigger, I will adapt my approach. I will offer a simple choice to give them back some control, for instance: 'Do you want to wear the blue shirt or the white shirt?' or 'Shall we try again in five minutes?'"  "If they are fixated on a frustration, I will use a simple distraction technique, such as offering a cup of tea, playing their favorite music, or looking at a photo album, to redirect their attention."    
+
+Step 4: Report and Document "After the situation is safe, I will accurately document the incident. I will note what happened, what I think the trigger was, and what actions worked best. This information is critical for continuity of care."  "I will report the situation to the Registered Nurse or my supervisor immediately, so the care plan can be reviewed and adjusted to prevent the issue from happening again."    
+
+"By being methodical, I ensure the care is safe and truly person-centred."
+
+例子：
+
+**S - Situation**
+"During my placement/training, I was assigned to assist a client with their morning shower and personal care. The client was living with dementia, and on this particular morning, they became very agitated and resistant. They were shouting, pulling their arm away, and repeating: 'You are hurting me! Get away!'"    
+
+**T - Task**
+"My immediate task was to ensure their safety and maintain their dignity, while still trying to complete the necessary personal care, as this was important for their hygiene and health. The main challenge was to complete the task without escalating their distress."    
+
+**A - Action (My Steps)**
+"I followed a clear process for handling challenging behavior:
+
+1. Stop and Reassure: I immediately stopped the care task and took one step back to give the client space. I used a calm, clear, and quiet voice to reassure them: 'I am sorry you feel scared. I am here to help you. We can stop for a moment.' I did not argue with them."    
+2. Identify the Trigger: I gently assessed the environment. I realized the room was cold, and the sudden touch of the cold water may have triggered their distress or pain. I covered them with a dry towel and focused on validating their feelings by saying: 'I understand you are feeling cold and uncomfortable.'    
+3. Redirect and Offer Choice: I avoided mentioning the shower again. I used a distraction technique by asking a simple question about their preference: 'We can try again in five minutes, but first, would you like me to put on your favorite music now?' This gave them a choice and a sense of control.
+4. Adapt the Care: After five minutes, when they were calmer, I adapted the care by only washing their face and teeth first, before trying the shower again. I made sure the water was warmer."
+
+**R - Result**
+"The client slowly calmed down and was distracted by the music. We successfully completed a modified version of the personal care session without any further distress or conflict. Afterward, I immediately documented the incident in their file, noting that cold temperatures are a major trigger for their agitation. I also reported this to the Registered Nurse so that their care plan could be updated to adjust the room temperature and use distraction techniques moving forward."    
+
+"This experience taught me that patience and flexibility are the most important tools in aged care, and that challenging behavior is a form of communication."
 
 ### Have you ever work with clients from different cultural backgrounds?（*）
 
@@ -312,10 +356,10 @@ Infection control procedures are rules to follow this practice.
 
 I don’t have direct experience with clients from different culture backgrounds, but if I have a chance to work with them, I'll follow these steps.
 
-- Before starting the care, I'll check the client’s care plan for cultural, language, or religious needs. If the plan is incomplete, I'll seek general knowledge about their backgrounds and preferences.
+- Before starting the care, I'll check the client’s care plan for cultural, language, or religious needs. If the plan is incomplete, I'll seek general knowledge about their preferences.
 - I'll listen patiently and communicate effectively with the client. I'll never assume their needs based on their cultural backgrounds. I'll ask open-ended questions to encourage them to share their specific needs. For example, "How do you prefer to receive your personal care?"
-- I'll use their feedback to adjust the care I deliver. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer..
-- I'll document the client's specific needs and adaptations. If a language barrier creates a safety risk or if I have any concerns, I'll report it to my supervisor. This ensures the whole team provides consistent and safe support.
+- I'll use their feedback to adjust the care I deliver. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer.
+- I'll document the client's specific needs and adaptations. If I have any concerns, I'll report it to my supervisor. This ensures the whole team provides consistent and safe support.
 
 ### What would you do if a client refuses your service?
 
