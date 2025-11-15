@@ -579,6 +579,7 @@
 - simulate `/ˈsɪmjuleɪt/` v. 冒充；模拟
 - signature `/ˈsɪɡnətʃər/` n. 签名
 - slip over 滑倒
+- slogan `/ˈsloʊɡən/` n. 口号，标语；广告语
 - socialize `/ˈsoʊʃəlaɪz/` v. 交际
 - solidly `/ˈsɑːlɪdli/` adv. 坚固地
 - sordid `/ˈsɔːrdɪd/` adj. 肮脏的；卑鄙的
@@ -662,6 +663,7 @@
 - underlying `/ˌʌndərˈlaɪɪŋ/` adj. 潜在的 v. 位于...的下面（underlie 的现在分词形式）
 - undertake `/ˌʌndərˈteɪk/` v. 承担
 - unmet `/ˌʌnˈmet/` adj. 未满足的
+- universal `/ˌjuːnɪˈvɜːrs(ə)l/` adj. 普遍的，全体的，全世界的；通用的
 - untidy `/ʌnˈtaɪdi/` adj. 不整洁的；不干净利落的
 - uphold `/ʌpˈhoʊld/` v. 鼓励；举起
 - upstairs `/ˌʌpˈsterz/` adv. 在楼上 n. 楼上（the upstairs）

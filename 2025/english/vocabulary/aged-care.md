@@ -3,7 +3,9 @@
 - abrasion `/əˈbreɪʒ(ə)n/` n. 擦伤
 - abuse `/əˈbjuːs/` v.n. 虐待；滥用；辱骂
 - access restriction 访问限制
+- accommodation `/əˌkɑːməˈdeɪʃn/` n. 住宿；住处
 - accountability `/əˌkaʊntəˈbɪləti/` n. 责任
+- accumulate `/əˈkjuːmjəleɪt/` v. 累积
 - acknowledge `/əkˈnɑːlɪdʒ/` v. 承认；认可；致谢
 - Activities of Daily Living, ADLs 日常活动
 - adverse `/ədˈvɜːrs/` adj. 不利的
@@ -15,7 +17,8 @@
 - allergic reaction 过敏反应
 - ambulation `/æmbjʊˈleɪʃən/` n. 移动；步行
 - amputation `/ˌæmpjuˈteɪʃn/` n. 截肢
-- anaphylaxis `/ˌænəfɪˈlæksɪs/` n. 过敏
+- apron `/ˈeɪprən/` n. 围裙
+- assembly `/əˈsembli/` n. 大会；集会；装配；（计算机）汇编
 - assessment `/əˈsesmənt/` n. 评估/价；估价/计
 - assistive `/əˈsɪstɪv/` 辅助的
 - assistive technology 辅助技术
@@ -24,9 +27,7 @@
 - authority `/əˈθɔːrəti/` n. 权威人士；权利/限；权威；许可；当局
 - autonomy `//` n. 自治，自治权；自主，自主权
 - Alzheimer’s `/ˈɑːltshaɪmərz/` 阿兹海默症
-- behavior incident 行为事件
 - beneficence `/bɪˈnefɪs(ə)ns/` n. 慈善
-- bereavement support `/bɪˈriːvmənt/` 丧亲支持
 - bias `/ˈbaɪəs/` n. 偏见；偏好 v. 使有偏见
 - bite wound 咬伤
 - body fluids 体液
@@ -42,6 +43,7 @@
 - cultural sensitivity 文化敏感性
 - chemical restraint 化学限制
 - clarity `/ˈklærəti/` n. 清晰
+- clutter `/ˈklʌtər/` n. 杂乱 v. 乱堆
 - code of conduct 行为准则
 - code of ethics 道德准则
 - code of practice 惯例准则
@@ -49,15 +51,18 @@
 - cognition `/kɑːɡˈnɪʃ(ə)n/` n. 认识，认知
 - comfort `/ˈkʌmfərt/`v. 安慰  n. 舒适；安慰
 - comfort repositioning 舒适性翻身
+- compassionate `/kəmˈpæʃənət/` adj. 有同情心的
 - competency `/ˈkɑːmpɪtənsi/` n. 能力
 - complainant `/kəmˈpleɪnənt/` n. 原告
 - complaint `/kəmˈpleɪnt/` n. 抱怨，投诉
 - compliance `/kəmˈplaɪəns/` n. 符合；遵守
+- comply `/kəmˈplaɪ/` v. 遵从
+- comply with 遵守：按照规定、要求或命令执行或履行
 - concussion `/kənˈkʌʃn/` n. 脑震荡
 - confidentiality `/ˌkɑːnfɪˌdenʃiˈæləti/` n. 保密（性）
 - conflict of interest 利益冲突
 - confusion `/kənˈfjuːʒ(ə)n/` n. 困惑；混乱
-- convulsion `/kənˈvʌlʃn/` n. 抽搐/痉挛
+- convulsion `/kənˈvʌlʃn/` n. 惊厥；抽搐/痉挛
 - cognitive disability 认知障碍
 - consent `/kənˈsent/` n. 许可；同意；正式批准文件
 - consent authority 同意权威
@@ -69,8 +74,9 @@
 - coordination `koʊˌɔːrdɪˈneɪʃ(ə)n` n. 协调
 - culturally appropriate 文化适宜：指在跨文化交流中，根据不同文化的特点和需求，采取合适的行为和表达方式。
 - culturally safe 文化安全
+- cumulative `/ˈkjuːmjəleɪtɪv/` adj. 累积的
 - de-escalation `/,di:eskə'leiʃən/` n. 降级
-- Dementia `/dɪˈmenʃə/` 痴呆，失智症
+- dementia `/dɪˈmenʃə/` 痴呆，失智症
 - designate `/ˈdezɪɡneɪt/` v. 任命，指定 adj. 已当选而尚未上任的
 - designated person 指定人员
 - deterioration `/dɪˌtɪriəˈreɪʃn/` n. 恶化
@@ -95,8 +101,6 @@
 - electric shock 触电
 - enhance `/ɪnˈhæns/` v. 增强
 - emergency evacuation 紧急疏散
-- emergency response 紧急响应
-- emotional distress 情绪困扰
 - empathy `/ˈempəθi/` 共鸣，同情心
 - employment status 雇佣状况
 - empower `/ɪmˈpaʊər/` v. 授权
@@ -104,6 +108,7 @@
 - equal rights 平等权利
 - equity `/ˈekwəti/` n. 公平，公正；资产净值；普通股
 - ergonomics `/ˌɜːrɡəˈnɑːmɪks/` 人体工程学
+- escalation `/ˌeskəˈleɪʃ(ə)n/` n. 增加，上涨；恶化
 - esteem `/ɪˈstiːm/` v.n. 尊重
 - ethical `/ˈeθɪk(ə)l/` adj. 道德的，伦理的
 - ethical breach 道德违规
@@ -120,7 +125,6 @@
 - eye injury 眼损伤
 - fairness `/ˈfernəs/` n. 公平
 - fall v.n. 坠落；跌倒；下跌
-- fall detector 跌倒检测器
 - fall prevention 跌倒预防
 - fatality `/feɪˈtæləti/` n. （灾难、事故中的）死亡
 - fatigue `/fəˈtiːɡ/` v. 使疲劳 n. 疲劳
@@ -134,6 +138,7 @@
 - germ `/dʒɜːrm/` n. 细菌；胚芽
 - glove `/ɡlʌv/` n. 手套
 - gown `/ɡaʊn/` n. 长袍
+- grieve `/ɡriːv/` v. 感到悲伤
 - hand hygiene 手部卫生
 - hazard `/ˈhæzərd/` n. 危险 v. 冒险猜测；使遭危险
 - hazardous `/ˈhæzərdəs/` adj. 危险的
@@ -141,7 +146,9 @@
 - high temperature 高温
 - holistic `/hoʊˈlɪstɪk/` adj. 整体的，全面的
 - human rights 人权
-- impairment `/ɪmˈpermənt/` n. 障碍
+- impairment `/ɪmˈpermənt/` n. 缺陷，障碍
+- in accordance with 与...一致
+- in relation to 关于
 - incident `/ˈɪnsɪdənt/` n. 事件；冲突
 - incident management 事故管理
 - incident report 事故报告
@@ -161,6 +168,8 @@
 - ingestion `/ɪnˈdʒestʃən/` n. 摄取；咽下
 - inhalation `/ˌɪnhəˈleɪʃn/` n. 吸入
 - insertion n. 插入
+- instinct `/ˈɪnstɪŋkt/` n. 本能；直觉；天赋
+- instrument `/ˈɪnstrəmənt/` n. 器械；乐器；仪器；促成某事的人（或事物），手段
 - integrity `/ɪnˈteɡrəti/` n. 正直，诚实；完整
 - internal injury 内伤
 - interpret `/ɪnˈtɜːrprət/` v. 解释；口译
@@ -175,8 +184,10 @@
 - legal obligation 法律责任
 - legality `/lɪˈɡæləti/` n. 合法（性）
 - legislation `/ˌledʒɪsˈleɪʃ(ə)n/` n. 法规；立法
+- legislative `/ˈledʒɪsleɪtɪv/` adj. 立法的
 - least restrictive 最少限制的
 - liability `/ˌlaɪəˈbɪləti/` n. （法律上应承担的）责任，义务
+- liberty `/ˈlɪbərti/` n. 自由
 - mandatory `ˈmændətɔːri` adj. 强制性的，义务的
 - mandatory reporting 强制报告
 - manual handling 人工搬运
@@ -185,6 +196,7 @@
 - mobility aid 移动辅助工具
 - mobility device 移动设备
 - mobility impairment 行动障碍
+- moral `/ˈmɔːrəl/` adj. 道德上的 n. 道德准则
 - mouth care 口腔护理
 - mouth swab 口腔棉签
 - musculoskeletal system `/ˌmʌskjəloʊˈskelətl/` 肌肉骨骼系统
@@ -194,23 +206,23 @@
 - nonjudgmental `/ˌnɑːndʒʌdʒˈmentl/` adj. 无偏见的
 - non-maleficence 不伤害
 - non-verbal `/ˌnɑːnˈvɜːrb(ə)l/` adj. 非语言的
+- norm `/nɔːrm/` n. 规范；标准
 - obligation `/ˌɑːblɪˈɡeɪʃn/` n. （法律上或道义上的）责任，义务
 - obstruct `/əbˈstrʌkt/` v. 堵塞
 - ombudsman `/ˈɑːmbʌdzmən/` n. 监察专员
 - open wound 开放性伤口
 - orient `/ˈɔːrient/` v. 朝向，使适应；确定方位 adj. 东方的
 - orientation `/ˌɔːriənˈteɪʃ(ə)n/` n. 定位；方向；倾向
-- outcome tracking 结果跟踪
-- outside job scope 工作范围之外
 - over-involvement 过度介入
+- overstimulation n. 过度刺激
 - palliative approach 安宁的照顾方式
 - participation `/pɑːrˌtɪsɪˈpeɪʃ(ə)n/` n. 参与
 - payslip `/ˈpeɪslɪp/` 工资单
 - peer support 同伴支持
 - penalty `/ˈpenəlti/` n. 处罚
 - Personal Protective Equipment, PPE 个人防护装备
-- personal support worker, PSW 个人支持工作者
-- person with disability, PWD 残障人士
+- Personal Support Worker, PSW 个人支持工作者
+- Person with Disability, PWD 残障人士
 - pierce `/pɪrs/` v. 刺入
 - physical restraint 身体限制
 - physical therapy 物理疗法
@@ -218,6 +230,7 @@
 - Positive Behavior Support, PBS 积极行为支持
 - precaution `/prɪˈkɔːʃn/` n. 预防措施
 - prevalence `/ˈprevələns/` n. 流行
+- proactive `/ˌproʊˈæktɪv/` adj. 积极主动的；前瞻性的
 - procedure `/prəˈsiːdʒər/` n. 手续；程序
 - professional conduct 专业行为
 - professional integrity 职业道德
@@ -237,6 +250,7 @@
 - redirect `/ˌriːdəˈrekt/` v.n. 重新使用；改寄
 - referral services 转介服务
 - reflection `/rɪˈflekʃ(ə)n/` n. 反射；倒影；反思
+- regulate `/ˈreɡjuleɪt/` v. 控制；调节
 - regulation `/ˌreɡjuˈleɪʃn/` n. 规章制度 adj. 规定的
 - regulatory `/ˈreɡjələtɔːri/` adj. 监管的
 - reinforcement `/ˌriːɪnˈfɔːrsmənt/` n. 援兵；加强
@@ -273,6 +287,7 @@
 - sensor mat 传感器垫
 - sex discrimination 性别歧视
 - slip `/slɪp/` v. 滑倒；滑落 n. 差错；小纸条；滑倒
+- sore `/sɔːr/` adj. 疼痛的，酸痛的 n. 伤处，疮
 - sprain `/spreɪn/` v.n. 扭伤
 - spiritual `/ˈspɪrɪtʃuəl/` adj. 精神的
 - sprain `/spreɪn/` n. 扭伤
@@ -287,8 +302,9 @@
 - telehealth 远程医疗
 - trained personnel 受过训练的人员
 - transparency `/trænsˈpærənsi/` n. 透明
-- trauma `//` 
+- trauma `/ˈtrɔːmə/` n. 创伤
 - trauma-informed 创伤知情
+- torture `/ˈtɔːrtʃər/` n. 酷刑；折磨 v. 拷打/问
 - treaty `/ˈtriːti/` n. 条约
 - trip `/trɪp/` n. （尤指短程往返的）旅行；出行；绊倒 v. 绊倒
 - unconscious `/ʌnˈkɑːnʃəs/` adj. 无意识的
@@ -298,6 +314,7 @@
 - unmet need 未满足的需求
 - universal standard 通用标准
 - universal value 普世价值
+- uphold `/ʌpˈhoʊld/` v. 支持；维持；鼓励；举起
 - validation `/ˌvælɪˈdeɪʃn/` n. 验证；确认
 - venomous bite `/ˈvenəməs/` 毒蛇咬伤
 - verbal `/ˈvɜːrb(ə)l/` adj. 口头的

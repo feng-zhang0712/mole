@@ -13,17 +13,16 @@
 
 My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a bachelor’s degree.
 
-- I have completed the Certificate III in Individual Support and placement experience in aged care.
-- During my placement, I provided **Person-Centred Care** for clients with different health conditions, including dementia, heart disease, mobility issues, and clients with psychological trauma. The clients I supported were between their 50s and 80s.
-  - I provided **Mobility Assistance** by walking with them.
-  - I provided **Dressing Assistance**, **Toileting Assistance**, and **Incontinence Care**.
-  - I provided **Personal Hygiene Care**, like helping clients take baths and wash their feet.
-  - I provided **Assisted Feeding**, **Enteral Feeding**, and **Meal Serving** for clients with eating challenges.
+- I have placement experience in aged care. During my placement, I provided **Person-Centred Care** for clients with different health conditions, including dementia, heart disease, mobility issues, and clients with psychological trauma. The clients I supported were between their 50s and 80s.
+  During my placement:
+  - I provided **Personal Hygiene Care**, like helping the clients wash feet and take baths.
+  - I provided **Mobility**, **Dressing**, **Toileting Assistance**, and **Incontinence Care**.
+  - I provided **Meal Serving**, **Assisted Feeding**, and **Enteral Feeding** for clients with eating challenges.
   - I provided **Medication Reminders** and **Insulin Administration Support** — like communicating with nurses before meals to arrange insulin shots for diabetic clients.
-  - For daily life, I did **Laundry and Linen Care**, such as washing their clothes and bed sheets, and did Light Housekeeping to clean their rooms. 
+  - For daily life, I helped the clients wash their clothes and bed sheets, and clean their rooms. 
   - I often chatted with clients to offer **Emotional Support**.
-  <!-- - Additionally, I accompanied clients and their families to hospital appointments. -->
 - As for me:
+  <!-- - I'm going to complete the Certificate III in Individual Support. -->
   - I can drive, I have a valid driver’s license from China, which I think can be useful with transportation.
   - I can cook meals, which I think can be useful for clients’ meal preparation.
   - I enjoy keeping the environment clean and organized, which is important for infection control.
@@ -36,7 +35,7 @@ My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a ba
 As for my weaknesses:
 
 - I hope things can be done perfectly, which causes me to spend extra time, but I’m trying to balance efficiency and quality to better manage my time.
-- I’m still building experience with clients who have advanced dementia or complex health issues, but I’m eager to learn through training and guidance.
+- I’m still building experience with clients who have complex health issues (advanced dementia), but I’m eager to learn through training and guidance.
 
 I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
 
@@ -78,12 +77,6 @@ I'm available for both weekday and weekend shifts. I'm also available in the mor
 
 ## 二、技能与经验
 
-### What experience do you have?
-
-问题：在护理方面有哪些经历或者经验？
-
-参考 [优势和弱势部分](#why-should-we-hire-you)。
-
 ### What skills do you have in aged care or disability support?
 
 - 你有哪些护理或支持技能
@@ -114,9 +107,7 @@ Domestic or Daily Living Support Tasks I Can Perform
 
 ### How do you work as part of a team?
 
-问题：“你如何与团队成员合作？
-
-分析：团队合作精神（teamwork）、清晰沟通（clear communication）、能与他人协作、尊重他人、积极沟通、可靠负责。
+你如何与团队成员合作？
 
 - **Communicate Clearly**: I share updates and client information with my team, like nurses or supervisors, using clear words to ensure everyone knows what’s happening.
 - **Listen to Others**: I listen carefully to my teammates’ ideas or feedback, respecting their views to make sure we work well together and support clients.
@@ -127,18 +118,33 @@ Domestic or Daily Living Support Tasks I Can Perform
 - **Stay Positive**: I keep a friendly attitude, even during busy shifts, to create a good team environment and make work easier for everyone.
 - **Learn from Team**: I ask for advice or training from teammates to improve my skills, helping the team provide better care together.
 
-### How do you handle conflict with colleagues? 
+### How do you handle conflict with colleagues? （*）
 
 问题：你如何在团队中解决冲突的？
 
-- **Stay Calm and Professional**: If a conflict arises, like a disagreement over a task, I stay calm and listen carefully to my colleague’s perspective to understand their point of view.
-- **Communicate Openly**: I’d approach them respectfully and say something like, “Can we talk about what happened? I’d like to understand your thoughts.” This keeps the conversation constructive.
-- **Focus on the Issue**: I focus on the problem, not the person. For example, if we disagree on how to assist a client, I’d discuss what’s best for the client based on their care plan.
-- **Find a Solution Together**: I’d suggest compromises or solutions, like dividing tasks or consulting the care plan to ensure we’re aligned with workplace standards.
-- **Involve a Supervisor if Needed**: If we can’t resolve it, I’d escalate the issue to a supervisor respectfully, following workplace policies, to ensure it doesn’t affect client care.
-- **Learn and Move Forward**: After resolving the conflict, I reflect on what I learned and maintain a positive working relationship to keep the team strong.
+Case 1: Conflict with a Client’s Family Member
 
-For example, in my placement, I once had a colleague who felt I was too slow with a task. I listened to their concern, explained I was ensuring the client’s comfort, and we agreed to clarify priorities in the future. This kept our teamwork smooth and client-focused.
+Situation: During my placement, a client's daughter is upset about changes to her mother’s care plan. She felt her mother needed more support and was angry with me for not doing enough.
+Task: My task was to listen to the family member's concerns and find a solution while keeping the client’s best interests.
+Action:
+
+  1. I invited the family member to sit and talk privately.
+  2. I apologized for any misunderstanding and explained the care plan clearly. I explained that we were following the doctor’s advice. I asked how we could improve the plan. 
+  3. We worked together to adjust the schedule so the client got extra help in the morning when needed.
+Result: In the end, the family member was happier with the new plan. The conflict ended peacefully, and my client continued to receive good care. I learned that calm, clear communication and respect help solve conflicts.
+
+Case 2: Conflict with a Colleague
+
+Situation: During a busy shift, a colleague and I disagreed about tasks for a client. We both thought we should attend to the same client first. This led to tension and a brief argument between us.
+Task: My task was to resolve the misunderstanding quickly so the client’s care would not be affected, and to maintain a respectful working relationship with my colleague.
+Action:
+
+  1. I asked my colleague if we could talk privately, away from the client.
+  2. I listened to her concerns, then calmly explained why I had started the task.
+  3. We realized there was confusion in our schedule, so we reviewed the care plan and decided who would do which tasks. 
+  4. We agreed that I would finish helping this client and she would start another urgent task.
+  5. I thanked her for working together to find a solution.
+Result: By communicating calmly and sharing tasks, we both felt respected and the client was helped promptly. The conflict was resolved professionally, and we learned to coordinate better to avoid confusion in future shifts.
 
 ### How do you prioritize tasks when supporting multiple clients in one shift?
 
@@ -184,8 +190,6 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 ### What does person-centred care means to you?
 
 你对以人为本的护理的理解是什么？
-
-分析：The core value of care work。
 
 Person-centred care is not only about physical support but also emotional and social wellbeing.
 
@@ -289,9 +293,9 @@ Infection control procedures are rules to follow this practice.
 
 <!-- If a client asks me to do something -->
 
-1. The first thing I would do is to assess whether the task is outside my scope of practice (like providing medical treatments). This can be done by reviewing the client's care plan, the employer's policies, the support worker's qualifications, and my job description.
+1. The first thing I would do is to assess whether the task is outside my **Scope of Practice** (like providing medical treatments). This can be done by reviewing the client's care plan, the employer's policies, the support worker's qualifications, and my job description.
 2. If the task is within my role, I would perform it while ensuring following the requirements and procedures, like wearing PPE.
-3. If the task is outside my role, I would explain it to the client. If possible, I would suggest an appropriate solution within my role, such as helping the client access the right support, like contacting a nurse or family member.
+3. If the task is outside my role, I would explain it to the client. I would suggest an appropriate solution within my role if possible, such as helping the client access the right support, like contacting a nurse or family member.
 4. If I'm not sure whether should I perform the task, I would report it to my supervisor for advice.
 5. I would document the request in the client's records.
 6. I would continue to provide care within my role, ensuring the client feels supported and respected while their request is addressed appropriately.
@@ -300,10 +304,10 @@ Infection control procedures are rules to follow this practice.
 
 你希望你的雇主为你提供哪些支持来帮助你的工作？
 
-- I hope for regular training, such as emergency first aid, handling clients with dementia, and using specialized tools.
+- I hope for regular training, such as handling clients with complex health issues and using specialized tools.
 - I hope for essential care tools, such as PPE, mobility aids, and basic medical supplies (thermometers, medication organizers).
 - I hope for safety measures, such as providing support for high-risk tasks (having a second staff member for client transfers).
-- I hope for timely, detailed information, such as client care plans, schedule changes, and feedback from clients/families.
+- I hope for timely and detailed information, such as client care plans, schedule changes, and feedback from clients/families.
 - I hope for supervisor support, so I can consult when facing tricky situations.
 <!-- I hope for updates on industry standards (new infection control guidelines) to ensure my skills stay up-to-date. -->
 
@@ -311,43 +315,22 @@ Infection control procedures are rules to follow this practice.
 
 你能描述一次你在照顾他人时遇到的挑战性经历，并解释你是如何处理的吗？（*）
 
-"When dealing with challenging situations or resistance from a client, my first priority is always to stay calm and ensure the safety of the client and myself."    
+**Situation**
+During my placement, I experienced a challenging situation that I was assisting a client who was living with **dementia** to have a shower (**personal hygiene care**) in the afternoon. When I began the task, the client became very **agitated** and showed strong **resistance**, pulling their arm away (pushed my hands away) and shouting.
 
-"I understand that challenging behavior is often a way for the client to communicate an unmet need, such as pain, confusion, or a feeling of losing control. I will approach the situation with empathy and patience."    
+**Task**
+My task was to **stop the distress**, ensure the client's **safety** and **dignity**, and find a way to complete the care without making the situation worse. I needed to identify the **trigger** for their resistance.
 
-My 4-Step Professional Procedure
-"I follow a four-step method to handle these challenges professionally and safely:"
+**Action**
+"I followed these steps to manage the challenge:
 
-Step 1: Stop and De-escalate "If a client becomes agitated or resistant, I will immediately stop the task I am doing. I will take one step back to give them space."  "I will speak in a calm, clear, and reassuring voice. I will not argue or raise my voice. I will use non-threatening body language to help them feel safe."    
+1. I stayed calm and lowered my voice and body position to be reassuring.
+2. I explained each step before I did it and showed him the towel and soap so he could see them.
+3. I offered simple choices to give him control — for example, “Would you like to wash your arms or legs first?”.
+4. I distracted him by turning on his favorite music and used gentle touch to comfort him. When he was too distressed, I stopped and documented the incident in the client’s records.
 
-Step 2: Identify the Trigger "I will observe the client and the environment to find the cause. I will ask myself: Is the client in pain? Are they hungry or thirsty? Is the environment too noisy or crowded? Did I move too fast?"  "I will try to validate their feelings first, for example, by saying: 'I understand you are feeling frustrated right now.'"    
-
-Step 3: Adapt and Redirect "Based on the trigger, I will adapt my approach. I will offer a simple choice to give them back some control, for instance: 'Do you want to wear the blue shirt or the white shirt?' or 'Shall we try again in five minutes?'"  "If they are fixated on a frustration, I will use a simple distraction technique, such as offering a cup of tea, playing their favorite music, or looking at a photo album, to redirect their attention."    
-
-Step 4: Report and Document "After the situation is safe, I will accurately document the incident. I will note what happened, what I think the trigger was, and what actions worked best. This information is critical for continuity of care."  "I will report the situation to the Registered Nurse or my supervisor immediately, so the care plan can be reviewed and adjusted to prevent the issue from happening again."    
-
-"By being methodical, I ensure the care is safe and truly person-centred."
-
-例子：
-
-**S - Situation**
-"During my placement/training, I was assigned to assist a client with their morning shower and personal care. The client was living with dementia, and on this particular morning, they became very agitated and resistant. They were shouting, pulling their arm away, and repeating: 'You are hurting me! Get away!'"    
-
-**T - Task**
-"My immediate task was to ensure their safety and maintain their dignity, while still trying to complete the necessary personal care, as this was important for their hygiene and health. The main challenge was to complete the task without escalating their distress."    
-
-**A - Action (My Steps)**
-"I followed a clear process for handling challenging behavior:
-
-1. Stop and Reassure: I immediately stopped the care task and took one step back to give the client space. I used a calm, clear, and quiet voice to reassure them: 'I am sorry you feel scared. I am here to help you. We can stop for a moment.' I did not argue with them."    
-2. Identify the Trigger: I gently assessed the environment. I realized the room was cold, and the sudden touch of the cold water may have triggered their distress or pain. I covered them with a dry towel and focused on validating their feelings by saying: 'I understand you are feeling cold and uncomfortable.'    
-3. Redirect and Offer Choice: I avoided mentioning the shower again. I used a distraction technique by asking a simple question about their preference: 'We can try again in five minutes, but first, would you like me to put on your favorite music now?' This gave them a choice and a sense of control.
-4. Adapt the Care: After five minutes, when they were calmer, I adapted the care by only washing their face and teeth first, before trying the shower again. I made sure the water was warmer."
-
-**R - Result**
-"The client slowly calmed down and was distracted by the music. We successfully completed a modified version of the personal care session without any further distress or conflict. Afterward, I immediately documented the incident in their file, noting that cold temperatures are a major trigger for their agitation. I also reported this to the Registered Nurse so that their care plan could be updated to adjust the room temperature and use distraction techniques moving forward."    
-
-"This experience taught me that patience and flexibility are the most important tools in aged care, and that challenging behavior is a form of communication."
+**Result**
+After being patient and giving him time, he gradually relaxed, and I successfully completed the essential parts of his care. From this experience I learned that using **patience** and **flexibility** is an effective way to care for people with dementia, and that safety is always built on a **person-centred approach**.
 
 ### Have you ever work with clients from different cultural backgrounds?（*）
 
@@ -359,7 +342,7 @@ I don’t have direct experience with clients from different culture backgrounds
 - Before starting the care, I'll check the client’s care plan for cultural, language, or religious needs. If the plan is incomplete, I'll seek general knowledge about their preferences.
 - I'll listen patiently and communicate effectively with the client. I'll never assume their needs based on their cultural backgrounds. I'll ask open-ended questions to encourage them to share their specific needs. For example, "How do you prefer to receive your personal care?"
 - I'll use their feedback to adjust the care I deliver. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer.
-- I'll document the client's specific needs and adaptations. If I have any concerns, I'll report it to my supervisor. This ensures the whole team provides consistent and safe support.
+- I'll document the client's specific needs and adaptations, and report it to my supervisor if I have any concerns. This ensures the whole team provides consistent and safe support.
 
 ### What would you do if a client refuses your service?
 
