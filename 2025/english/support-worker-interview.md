@@ -11,6 +11,11 @@
 - 我的优势和弱点
 - 为什么应该雇用你
 
+What skills do you have in aged care or disability support?
+
+- 你有哪些护理或支持技能
+- 你会做哪些家务（domestic）或日常生活支持（daily living support）工作
+
 My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a bachelor’s degree.
 
 - I have placement experience in aged care. During my placement, I provided **Person-Centred Care** for clients with different health conditions, including dementia, heart disease, mobility issues, and clients with psychological trauma. The clients I supported were between their 50s and 80s.
@@ -76,32 +81,6 @@ I'm available for both weekday and weekend shifts. I'm also available in the mor
 - learn new things
 
 ## 二、技能与经验
-
-### What skills do you have in aged care or disability support?
-
-- 你有哪些护理或支持技能
-- 你会做哪些家务（domestic）或日常生活支持（daily living support）工作
-
-Skills in Aged Care or Disability Support
-
-- **Personal Care Expertise**: I’m trained to assist with personal care, like bathing and dressing, keeping clients comfortable, and respecting their dignity.
-- **Safe Manual Handling**: I use proper techniques, like bending my knees, to help clients move safely, preventing injuries, as I learned in my training.
-- **Effective Communication**: I speak clearly and listen well, using simple words, gestures, or eye contact for clients with speech or hearing issues to ensure they understand.
-- **Empathy and Patience**: I show kindness and stay calm, especially with clients who have dementia or feel upset, making them feel safe and valued.
-- **Cultural Sensitivity**: I respect clients’ cultural backgrounds, adapting care to their traditions, like food preferences, to meet Aged Care Quality Standards.
-- **Observation and Reporting**: I notice changes in clients’ health or mood, like pain or sadness, and write clear notes to share with the team if needed.
-- **Basic First Aid**: I can provide first aid for minor incidents, like cuts or falls, and follow emergency steps until help arrives, per my training.
-- **Teamwork**: I work well with nurses and other staff, sharing updates and helping teammates to ensure clients get the best care.
-
-Domestic or Daily Living Support Tasks I Can Perform
-
-- **Personal Care Tasks**: I help with daily activities like bathing, grooming, dressing, and toileting, following care plans to keep clients comfortable.
-- **Household Duties**: I clean homes (vacuuming, dusting), do laundry, and cook healthy meals, like home-cooked dishes, to meet clients’ dietary needs.
-- **Medication Reminders**: I remind clients to take their pills on time, checking their care plan, and report any issues to a nurse or supervisor.
-- **Transport Support**: With my driver’s license, I drive clients to doctor visits, shopping, or outings, ensuring they’re safe and on time.
-- **Companionship**: I talk with clients, listen to their stories, or join them in hobbies to reduce loneliness and boost their mood.
-- **Record Keeping**: I write down any changes in clients’ health or behavior in their records and share important details with my supervisor or team.
-- **Safety Practices**: I check for hazards, like clutter, and use infection control steps, like handwashing, to keep clients safe, following aged care rules.
 
 ## 三、个人素质与工作态度
 
@@ -184,23 +163,21 @@ Adhere to Training and Standards: I rely on my training and Aged Care Quality St
 - The work involves assisting with **Activities of Daily Living**, such as personal hygiene, mobility, and meals, ensuring clients feel safe, comfortable, and respected.
 - It requires strong communication and empathy to build trust, especially with clients who may have language barriers or conditions like dementia.
 - It also involves teamwork, clear documentation, and following workplace policies to ensure safety and continuity of care, such as reporting changes in a client’s health.
-- It's important to respect clients’ autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
+- It's important to respect clients' autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
 - For me, being a support worker means making a real difference by helping clients maintain dignity and independence while creating a supportive and positive environment.
 
-### What does person-centred care means to you?
+### What does person-centred care means to you?（*）
 
 你对以人为本的护理的理解是什么？
 
-Person-centred care is not only about physical support but also emotional and social wellbeing.
+Person-centred care means **putting the client at the center of everything I do**.
 
-- To me, person-centred care means **putting the client at the center of everything I do**. It’s about respecting their needs, preferences, and values to help them live with dignity and independence.
-- It’s about building trust through empathy and patience, making sure clients feel valued and heard, even if they have language barriers or health challenges.
-- It means following their care plan while adapting to their daily mood or needs, ensuring they feel safe, comfortable, and independent.
-- It involves listening and respecting their choices, like letting them decide when to eat or what activities they enjoy.
-- I make sure care is tailored to their background, such as offering familiar foods for a Chinese client or respecting their cultural traditions.
-- I maybe involve their family when appropriate to understand their preferences better and provide holistic care.
+- It's not only about physical support but also emotional and social well-being.
+- It’s about respecting their needs and choices to help them live with dignity and independence, while ensuring they feel safe, comfortable, and respected.
+- It's important to respect clients' autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
+- I'll try to make sure the care is tailored and do things with them instead of doing things for them, encouraging them to participate as much as possible.
 
-Person-centred care is about making a positive difference in clients’ lives by treating them as individuals, not just tasks. For example, instead of just doing things for a client, I try to do things with them — encouraging them to participate as much as possible.
+In summary, Person-centred care is about creating a supportive and positive environment in clients’ lives while treating them as individuals.
 
 ### How do you build a good relationship with clients?
 
@@ -316,21 +293,22 @@ Infection control procedures are rules to follow this practice.
 你能描述一次你在照顾他人时遇到的挑战性经历，并解释你是如何处理的吗？（*）
 
 **Situation**
-During my placement, I experienced a challenging situation that I was assisting a client who was living with **dementia** to have a shower (**personal hygiene care**) in the afternoon. When I began the task, the client became very **agitated** and showed strong **resistance**, pulling their arm away (pushed my hands away) and shouting.
+During my placement, I experienced a challenging situation that I was assisting a client who was living with dementia to have a shower in the afternoon. When I began the task, the client became very agitated and showed strong resistance, pushing my hands away and shouting.
 
 **Task**
-My task was to **stop the distress**, ensure the client's **safety** and **dignity**, and find a way to complete the care without making the situation worse. I needed to identify the **trigger** for their resistance.
+My task was to ensure the client's safety and dignity, and find a way to complete the care without making the situation worse.
 
 **Action**
-"I followed these steps to manage the challenge:
+I followed these steps to manage the situation:
 
 1. I stayed calm and lowered my voice and body position to be reassuring.
 2. I explained each step before I did it and showed him the towel and soap so he could see them.
-3. I offered simple choices to give him control — for example, “Would you like to wash your arms or legs first?”.
-4. I distracted him by turning on his favorite music and used gentle touch to comfort him. When he was too distressed, I stopped and documented the incident in the client’s records.
+3. <!-- 3. I offered simple choices to give him control — for example, “Would you like to wash your arms or legs first?”. -->
+4. I distracted him by turning on his favorite music and used gentle touch to comfort him.
+5. When he was too distressed, I stopped the care and documented the incident in the client’s records.
 
 **Result**
-After being patient and giving him time, he gradually relaxed, and I successfully completed the essential parts of his care. From this experience I learned that using **patience** and **flexibility** is an effective way to care for people with dementia, and that safety is always built on a **person-centred approach**.
+After being patient and giving him time, he gradually relaxed, and I successfully completed the essential parts of his care. From this experience I learned that using patience and flexibility is an effective way to care for people with dementia, and that safety is always built on a person-centred approach.
 
 ### Have you ever work with clients from different cultural backgrounds?（*）
 
@@ -344,7 +322,7 @@ I don’t have direct experience with clients from different culture backgrounds
 - I'll use their feedback to adjust the care I deliver. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer.
 - I'll document the client's specific needs and adaptations, and report it to my supervisor if I have any concerns. This ensures the whole team provides consistent and safe support.
 
-### What would you do if a client refuses your service?
+### What would you do if a client refuses your service?（*）
 
 - 客户拒绝服务/帮助
 - 客户拒绝洗澡、吃饭或不配合护理
@@ -462,8 +440,8 @@ Activities of Daily Living, or ADLs, are the essential tasks people need to do e
 Key points:
 
 - **Person-Centred Approach**: I follow the client’s care plan and preferences, like helping them choose clothes or offering foods they enjoy.
-- **Encourage Independence**: I support clients to do as much as they can themselves, e.g., guiding them to hold a spoon rather than feeding them, if possible.
-- **Ensure Safety**: I use safe manual handling techniques, like supporting mobility with a walker, to prevent falls or injuries.
+- **Independence**: I support clients to do as much as they can themselves, e.g., guiding them to hold a spoon rather than feeding them, if possible.
+- **Safety**: I use safe manual handling techniques, like supporting mobility with a walker, to prevent falls or injuries.
 - **Communication**: For clients with communication difficulties, I use gestures or visual aids, like pointing to a towel for bathing, to assist with ADLs.
 - **Document and Report**: I record how clients manage ADLs, noting any changes, like difficulty dressing, and report to my supervisor to update care plans.
 
