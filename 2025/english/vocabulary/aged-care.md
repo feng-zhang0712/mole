@@ -38,6 +38,7 @@
 - capacity `/kəˈpæsəti/` n. 能力；容积
 - care plan 护理计划
 - casualty `/ˈkæʒuəlti/` n. 伤亡人员；急诊室；灾难
+- causative `/ˈkɔːzətɪv/` adj. 成为原因的
 - choke `/tʃoʊk/` v. 噎住 n. 窒息
   - He is choking. 他噎住了。
 - cultural sensitivity 文化敏感性
@@ -92,6 +93,7 @@
 - disclosure `/dɪsˈkloʊʒər/` n. 公开
 - disorient `/dɪsˈɔːrient/` vt. 使...迷惑
 - disoriented `/dɪsˈɔːrientɪd/` adj. 分不清方向或目标的 v. disorient 的过去式和过去分词
+- disposal `dɪˈspoʊz(ə)l` n. 处理
 - dispose `/dɪˈspoʊz/` v. 处理；销毁
 - distress `/dɪˈstres/` n. 悲伤；痛苦 v. 使悲伤
 - distressed `/dɪˈstrest/` adj. 苦恼的 v. distress 的过去式和过去分词
@@ -117,6 +119,7 @@
 - ethical duty 伦理责任
 - ethical obligation 道德义务
 - ethics `/ˈeθɪks/` n. 道德规范
+- etiquette `/ˈetɪkət/` n. 礼节
 - evacuation `/ɪˌvækjuˈeɪʃ(ə)n/` n. 疏散；排泄
 - exclusion `ɪkˈskluːʒn` n. 排斥，排除在外
 - exclusion zone 禁区（禁入区域）
@@ -216,6 +219,8 @@
 - over-involvement 过度介入
 - overstimulation n. 过度刺激
 - palliative approach 安宁的照顾方式
+- parasite `/ˈpærəsaɪt/` n. 寄生植物（或动物），寄生虫
+- parasitic `/ˌpærəˈsɪtɪk/` 寄生的（等于 parasitical）
 - participation `/pɑːrˌtɪsɪˈpeɪʃ(ə)n/` n. 参与
 - payslip `/ˈpeɪslɪp/` 工资单
 - peer support 同伴支持
@@ -227,6 +232,7 @@
 - physical restraint 身体限制
 - physical therapy 物理疗法
 - physiological `/ˌfɪziəˈlɑːdʒɪk(ə)l/` adj. 生理（学）的
+- portal `/ˈpɔːrtl/` n. 壮观的大门，正门；门户
 - Positive Behavior Support, PBS 积极行为支持
 - precaution `/prɪˈkɔːʃn/` n. 预防措施
 - prevalence `/ˈprevələns/` n. 流行
@@ -260,6 +266,7 @@
 - reminiscence `/ˌremɪˈnɪsns/` 回忆录；回忆
 - reportable incident 可报告的事件
 - reporting procedure 报告程序
+- reservoir `/ˈrezərvwɑːr/` n. 蓄水池；蓄积
 - residential facilities 居住设施
 - resistance `/rɪˈzɪstəns/` n. 反对；抵抗；抵抗力；电阻
 - resolution `/ˌrezəˈluːʃ(ə)n/` n. 决议；解决；决心
@@ -289,6 +296,7 @@
 - slip `/slɪp/` v. 滑倒；滑落 n. 差错；小纸条；滑倒
 - sore `/sɔːr/` adj. 疼痛的，酸痛的 n. 伤处，疮
 - sprain `/spreɪn/` v.n. 扭伤
+- spine `/spaɪn/` n. 脊柱
 - spiritual `/ˈspɪrɪtʃuəl/` adj. 精神的
 - sprain `/spreɪn/` n. 扭伤
 - stab `/stæb/` v.n. 刺，捅
@@ -297,6 +305,7 @@
 - supervisor `/ˈsuːpərvaɪzər/` n. 监督者；主管
 - support worker 支持工作者
 - supported decision-making 支持性决策
+- susceptible `/səˈseptəb(ə)l/` adj. 易得病的
 - swelling `/ˈswelɪŋ/` n. 肿胀 v. swell 的现在分词
 - symptom `/ˈsɪmptəm/` n. 症状
 - telehealth 远程医疗
@@ -325,3 +334,163 @@
 - wet surface 湿滑的表面
 - withdrawal `/wɪðˈdrɔːəl/` n. 收回；撤回；撤退
 - withdrawn `/wɪðˈdrɔːn/` v. 撤离；撤销；取款
+
+
+
+
+anticipate
+substance
+splash
+droplet
+tract
+secretion
+excretion
+mucous
+membrane
+non-intack
+visibly
+soil
+soiled
+administration
+spray
+face shield
+airborne
+aerosol
+particle
+pathogen
+acute
+moisture
+removal
+discard
+goggle
+hook
+temple
+tip
+receptacle
+routine
+inpatient
+ward
+session
+saturated
+reprocessing
+incubator
+satisfactory
+thoroughly
+soak
+wipe
+manner
+cechanical
+cloth
+portable
+mop
+squeegee
+bucket
+caution
+high-intensity
+high-traffic
+high-touch
+healthcare
+facility
+faculty
+manufacturer
+pictorial
+disassembly
+purchase
+inspect
+corrosive
+rinse
+deteriorate
+glue
+tubling
+silicone
+rubber
+immerse
+detergent
+stethoscope
+thermometer
+linen
+mucous
+membrane
+receptacle
+laundry
+faece
+residue
+spill
+absorbent
+confine
+solidify
+granules
+spill
+intermediate
+accordingly
+splattering
+incineration
+autoclave
+sterilisation
+compact
+therapeutic
+intend
+conformance
+audit
+confer
+microorganism
+Laparoscope
+Thransvaginal probe
+Intravenous pump
+sterilize
+sterilant
+sterilization
+moisture
+ethylene
+preferable
+tolerate
+detergent
+decontamination
+compatible
+intermediate
+circumstance
+tong
+barrel
+puncture
+proof
+stick out
+get lost
+re-cap
+styrofoam
+tissue
+utensil
+straw
+wrapper
+wheelie
+lid
+clearance
+contagious
+unsanitary
+likelihood
+mitigation
+set out
+stakeholder
+particle
+inhaling
+governance
+outline
+intervene
+hinder
+inherent
+mutual
+genuine
+Ombudsman
+administer
+palliative
+conciliate
+absene
+harassment
+anonymity
+pseudonymity
+solicited
+identifier
+interference
+availing
+grave
+premise
+mandate
