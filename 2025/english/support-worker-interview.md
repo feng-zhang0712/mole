@@ -4,11 +4,11 @@
 
 ## 关于“我”
 
-### Tell me about yourself, and any industry experience you have in aged care or disability services?（*）
+### Self Introduction.
 
-- 请你谈谈你自己，以及你在老年护理或残疾人服务领域的任何行业经验？（*）
+<!-- 优势 -->
 
-- My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. I have a bachelor’s degree from China.
+- My name is Zhang Feng, I’m 35 years old, I'm from Shandong, China. <!-- I have a bachelor’s degree from China. -->
 - I have complete my Certificate III in individual support and placement experience in aged care.
 - I can drive, I have a valid driver’s license from China, which I think can be useful with transportation.
 - I can cook meals, which I think can be useful for clients’ meal preparation.
@@ -16,6 +16,21 @@
 - I’m physically healthy, I don’t smoke or drink, and I stay active through regular exercise, so I’m confident in manual handling tasks.
 - I’m patient and calm. I take my job seriously which helps me build trust with clients and handle challenging situations.
 - I speak both Mandarin and English, I understand Chinese culture and traditions, which gives me more advantages when serving Chinese clients.
+
+<!-- 弱势 -->
+As for my weaknesses:
+
+- I hope things can be done perfectly, which causes me to spend extra time, but I’m trying to balance efficiency and quality to better manage my time.
+- I’m still building experience with clients who have complex health issues (advanced dementia), but I’m eager to learn through training and guidance.
+- I'm still building my communication skills in English, but I believe I can handle it through daily learning, like online courses, YouTube videos, and podcasts.
+
+<!-- 关于以前的工作 -->
+I previously worked in the internet industry as a software engineer, I have experience working with foreign English-speaking teams.
+
+<!-- 结尾 -->
+I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
+
+### Experiences I have in aged care or disability services（*）
 
 - During my placement, I provided **Person-Centred Care** for clients with different health conditions, including dementia, heart disease, mobility issues, and clients with psychological trauma. The clients I supported were between their 50s and 80s.
 - I provided **Personal Hygiene Care**, like helping the clients wash feet and take baths.
@@ -25,15 +40,19 @@
 - For daily life, I helped the clients wash their clothes and bed sheets, and clean their rooms. 
 - I often chatted with clients to offer **Emotional Support**.
 
-<!-- 如果回答个人弱势，需要加下面这些 -->
+### What I learned from my previous job.
 
-As for my weaknesses:
+From my previous job, I learned three key skills that make me a better Support Worker.
 
-- I hope things can be done perfectly, which causes me to spend extra time, but I’m trying to balance efficiency and quality to better manage my time.
-- I’m still building experience with clients who have complex health issues (advanced dementia), but I’m eager to learn through training and guidance.
-- I'm still building my communication skills in English, but I believe I can handle it through daily learning, like online courses, YouTube videos, and podcasts.
+- **Attention to Detail**: In programming, one small mistake in the code can crash the whole system. I developed a habit of being **careful and double-checking**. In Aged Care, this is very important for reviewing clients' Care Plans, checking dietary requirements, and writing accurate records. I never guess; I always check.
+- **Patience and Problem Solving**: Programming requires a lot of patience to fix problems. I learned to stay calm under pressure and not give up easily. This helps me in Aged Care. For example, if a client with dementia is confused or upset, I have the patience to listen, wait, and find a gentle way to help them.
+- **Teamwork and Communication**: In my previous job, I worked in a big team where clear communication was essential to finish projects. I know that Aged Care is also **team-based work**. I am good at following instructions, reporting issues to supervisors, and working smoothly with nurses and other carers.
 
-I’m excited to use my skills and positive attitudes to make a difference in clients’ lives and contribute to your team.
+### How do you pre colleagues describe you?
+
+- I am known as someone who is easy to get along with. I am always happy to help a colleague if they are busy or struggling. I don't just focus on my own work; I care about the whole team's success.
+- I am punctual (on time) and I never leave a task unfinished. In my previous team, if I promised to do something, I always did it. I know that in Aged Care, reliability is crucial because the residents and the team depend on me showing up on time.
+- My colleagues often mentioned that I stay very calm under pressure. When we had technical problems or tight deadlines, I didn't panic. I just focused on solving the problem. I believe this will help me when dealing with busy shifts or challenging behaviors in Aged Care.
 
 ### What shifts are you available for?
 
@@ -44,12 +63,13 @@ I'm available for both weekday and weekend shifts. I'm also available in the mor
 - 这个职位最吸引你的是什么？（*）
 - 你为什么想在社区老年护理或社区残疾人服务领域从事个人护理员（PCW）的职业？（*）
 
-<!-- - I'm currently in China. I previously worked in the Internet industry, but the work environment can be tough for someone at 35. I believe 35 is the prime of my life, not the end of my career, but a new beginning. -->
+- I previously worked in the internet industry as a software engineer, but the work environment can be tough for someone over 35, especially with the development of Artificial Intelligence.
+- I have almost spent every day facing the computer screen for the past 10 years, I realized, especially in recent years, that as I get older, I don't want to just talk to the cold machines, I want to do something more meaningful.
+- I believe 35 is the prime of my life, not the end of my career, it can be a new beginning. <!-- but a new beginning. -->
 - This role aligns with my goal of making a contribution in a country I love, because Australia has always been my dream destination to work and live.
-- This role offers a stable work environment and opportunity for personal and professional growth, which is important for my long-term career goals.
-- I think the most valuable thing is helping others, being a support worker allows me to make a real difference in people’s lives, giving me a sense of purpose and fulfillment.
-- I’m passionate about serving others, especially those who need support to live with dignity and independence.
-- My skills, experience, and personality make me well-suited for this work.
+- This role offers a stable work environment and opportunity for both personal and professional growth, which is important for my long-term career goals.
+- I think the most valuable thing is helping others, especially those who need support to live with dignity and independence, being a support worker allows me to make a real difference in people’s lives, giving me a sense of purpose and fulfillment.
+<!-- - My skills, experience, and personality make me well-suited for this work. -->
 
 ### What are your future career goals or plans?
 
@@ -474,7 +494,7 @@ Activities of Daily Living, or ADLs, are the essential tasks people need to do e
 
 #### What is duty of care?
 
-- Duty of care refers to a person’s obligation to their job.
+- Duty of care is about safety and health, it refers to a person’s obligation to their job.
 - It relates to the responsibility to not cause harm or injury to others that could be reasonably foreseen.
 - In aged care settings, this requires capable staff, safe premises, and quality clinical care. 
 
@@ -488,7 +508,7 @@ In addition, duty of care is connected to the Charter of Aged Care Rights. Suppo
 
 #### Support workers' duty of care
 
-Support workers' duty of care includes eight obligations, these are:
+Support workers' duty of care includes eight obligations:
 
 - Providing safe and high-quality service
 - Treating people with dignity and respect
@@ -504,18 +524,18 @@ Support workers' duty of care includes eight obligations, these are:
 #### What is dignity of risk?
 
 - Dignity of risk means that older people can choose what they do and how they live. It means that these choices come with possible dangers.
-- Support workers should respect their choices and accept the risks of these choices. 
+- Support workers should accept the risks of these choices. 
 - Support workers should respect clients' dignity by helping them carry out their choices despite the risks.
-- Support workers and the care team should help minimise the risk involved with the person’s choices.
+- Support workers and the care team should help minimise the risks involved with the clients' choices.
 
 #### What is the support worker's duty of care in relation to dignity of risk?
 
 - Support workers must ensure that the older person they are supporting is able to live their lives however they choose while maintaining their health and safety.
-- It's support workers' duty to reduce the risks as much as possible.
+- It's the support workers' duty to reduce the risks as much as possible.
 
 #### Examples to reduce the risks
 
-Support workers can develop ways to honour clients' dignity of risk while protecting their well-being, here are some ways to reduce the risks:
+Support workers can develop ways to honour clients' dignity of risk while protecting their well-being. Here are some ways to reduce the risks:
 
 - Situation: A person wants to continue living alone despite their mobility issues.
 - Result: They may hurt themselves without anyone there to help them.
@@ -535,6 +555,38 @@ Support workers can develop ways to honour clients' dignity of risk while protec
 - Suggestions:
   - Monitor their health more closely.
   - Minimise their potential exposure to the flu.
+
+### Individualised Plan
+
+#### What is an individualised plan?
+
+individualised plans detail an old person’s medical and care information and what services or lifestyle modifications they may need to address their individual needs.
+
+Individual plans are vital because they are tailored to each person. It ensures that older people do not just receive generic services that do not fit their needs. It also enables them to decide when and how to receive services.
+
+#### Contents
+
+A person’s individualised plan contains the following information:
+
+- Basic information
+- Current medical needs
+- Care needs
+- Goals and preferences
+- Members of care team
+- Services being availed
+- Assessment results
+- Family or carer contact information
+
+#### Purpose
+
+Individualised plan serves as a guide.
+
+A person’s individualised plan serves the following purposes:
+
+- Tells the team basic and medical information about the person
+- Tells each aged care worker what to do for the person and when to do it
+- Serves as a record of the person’s goals and progress
+- Serves as an agreement between the person and the care provider
 
 ### Mandatory Reporting
 
@@ -606,6 +658,8 @@ During my placement, I helped clients with tasks like transferring from bed to c
 ## 七、结束问题
 
 注意结束时表达感谢，并再次强调对岗位的兴趣。
+
+什么时候可以知道面试结果？
 
 ### Do you have any questions for us?
 
