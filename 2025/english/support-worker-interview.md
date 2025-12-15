@@ -92,16 +92,40 @@ I'm available for both weekday and weekend shifts. I'm also available in the mor
 
 ### How do you handle conflict with colleagues? （*）
 
-Case 1: Conflict with a Client’s Family Member
+As a Support Worker, I think there are two kinds of conflicts: conflict with clients or their families and conflict with colleagues. I'll give two examples of how I handle these two different situations.
 
-Situation: During my placement, a client's daughter is upset about changes to her mother’s care plan. She felt her mother needed more support and was angry with me for not doing enough.
-Task: My task was to listen to the family member's concerns and find a solution while keeping the client’s best interests.
+#### 1. Conflict with Clients or Their Family
+
+Situation: During my placement, I provided mobility assistance for a client living with dementia who had limited mobility. His wife was dissatisfied with the walking time we provided. She believed we should increase her husband's daily activity.
+
+Task: My task was to address her concerns and ensure the client's safety while finding a safe and reasonable way to adjust the client's walking time.
+
 Action:
+I took these steps:
 
-  1. I invited the family member to sit and talk privately.
-  2. I apologized for any misunderstanding and explained the care plan clearly. I explained that we were following the doctor’s advice. I asked how we could improve the plan. 
-  3. We worked together to adjust the schedule so the client got extra help in the morning when needed.
-Result: In the end, the family member was happier with the new plan. The conflict ended peacefully, and my client continued to receive good care. I learned that calm, clear communication and respect help solve conflicts.
+- First, I stayed calm. I listened to her carefully without arguing and showed understanding for her concerns.
+- I used de-escalating techniques: I kept a gentle tone, maintained a comfortable distance, and focused on the issue rather than emotions.
+- I explained our current plan: “We walk him 20 minutes twice a day in the morning and afternoon, but we’re happy to explore adjustments if it’s safe.”
+- With the involvement of the nurse, we agreed to increase the client's walking time safely.
+- I documented and reported the incident to my supervisor, and updated the client’s care plan.
+
+Result: The result was that the client received more beneficial exercise safely and the wife was satisfied about the adjustment. From this experience, I learned the importance of communication and person-centered approaches.
+
+#### 2. Conflict with Colleagues
+
+Situation: Imagine I am working with a colleague in the kitchen, and they tell me they are too busy to complete the **light housekeeping** or **laundry and linen care** duties assigned to them. They ask me to do their tasks instead.
+
+Task: My task is to ensure that all tasks are completed efficiently for client safety and comfort, but also to maintain professional **teamwork** without encouraging them to avoid their responsibilities.
+
+Action:
+I would handle this privately and diplomatically
+
+- I would speak to my colleague alone and use a **calm** and **objective** tone. I would focus on the tasks, not the person. I would say: 'I understand you are busy, but the linen for Client X must be changed today for **infection prevention and control**.'
+- I would offer to **collaborate** by saying: 'If I finish **assisted feeding** for Client Y now, can we work together to finish the laundry quickly?' [2]
+- If the essential tasks still cannot be completed, I would **report** the time management issue to the supervisor. This is not about blame; it is about ensuring **client safety** is not compromised due to unfinished work." [5]
+
+Result: By focusing on **collaboration** and **prioritizing** the client's needs (like infection control), we would complete the necessary tasks and maintain a professional working relationship.
+
 
 Case 2: Conflict with a Colleague
 
@@ -141,28 +165,17 @@ A good support worker demonstrates empathy, patience, and reliability to provide
 
 ### How do you manage stress in this role?
 
-I identify situations that may cause stress, such as a busy shift or a client’s complex needs, to prepare myself mentally and stay calm.
-I use care plans and schedules to prioritize tasks, breaking them into manageable steps to reduce overwhelm and ensure all clients receive timely support.
-I maintain my physical and mental health through regular exercise, healthy eating, and rest.
-When possible, I take brief moments during shifts to pause, breathe, and refocus.
-If stress builds, I discuss challenges with my supervisor or colleagues to gain advice or share responsibilities, fostering a supportive team environment.
-After a shift, I reflect on what went well and what could improve, using feedback to build confidence and reduce stress in future situations.
-I respect the emotional boundaries of my role, staying empathetic but avoiding over-involvement, which helps me manage emotional stress while supporting clients.
-I rely on my training and Aged Care Quality Standards to guide my actions, ensuring I handle stressful situations professionally and safely, maintaining client-centered care.
-
-1.  How Do You Deal With Emotional Stress In This Role?
-Care work can be emotionally demanding, so I prioritize self-care and emotional resilience.
-I talk to colleagues or supervisors when I need support, which helps me process difficult experiences.
-I practice healthy habits like exercise, rest, and setting boundaries between work and personal life.
-I also remind myself of the positive impact I have on clients’ lives, which gives me motivation.
-Participating in training and reflective practice sessions also helps me manage stress constructively.
-By taking care of my mental health, I remain present and effective in my role without becoming overwhelmed.
+- Being a support worker can be physically and emotionally challenging, and managing stress is essential to provide better service for clients.
+- I recognize stressful situations to prepare myself, such as busy shifts or clients' complex needs.
+- I use care plans and schedules to prioritize tasks, breaking them into manageable steps to reduce overwhelm and ensure all clients receive timely support.
+- During a shift, if I feel overwhelmed, I stop and take a deep breath or maybe step away for one minute to calm down.
+- After a shift, I reflect on what went well and what could improve, using feedback to build confidence and reduce stress in the future.
+- I discuss challenging situations with my supervisor or colleagues for advice or share responsibilities.
+- During my daily routine, I maintain physical and emotional health through regular exercise, healthy eating, and rest.
 
 ## 四、以人为本护理与客户关系
 
 ### How do you think of aged care or support worker?（*）
-
-你对老年护理的理解是什么？（*）
 
 - I see aged care and support work as a deeply meaningful role focused on improving the quality of life for elderly or disabled clients by providing person-centered care.
 - The work involves assisting with **Activities of Daily Living**, such as personal hygiene, mobility, and meals, ensuring clients feel safe, comfortable, and respected.
@@ -173,26 +186,14 @@ By taking care of my mental health, I remain present and effective in my role wi
 
 ### What does person-centred care means to you?（*）
 
-Person-centred care means **putting the client at the center of everything I do**.
+Person-centred care means putting the client at the centre of everything we do.
 
 - It's not only about physical support but also emotional and social well-being.
 - It’s about respecting their choices to help them live with dignity and independence, while ensuring they feel safe, comfortable, and respected.
-- It's important to respect clients' autonomy, listen to their needs, and adapt care to their preferences, like offering favorite foods or adjusting routines.
+- It's about treating them as unique individuals, not just a list of medical conditions.
 - As a support worker, I'll try to ensure the care is tailored and do things with them instead of doing things for them, encouraging them to participate as much as possible.
-- In summary, Person-centred care is about creating a supportive and positive environment in clients’ lives while treating them as individuals.
-
-1.  Can You Describe Your Approach To Personal Care Tasks?
-My approach to personal care is respectful, gentle, and centered around the client’s comfort and dignity.
-I always explain what I’m doing, seek consent, and encourage the client to participate as much as possible.
-I ensure privacy by closing doors and using screens or towels during care.
-I pay close attention to hygiene, skin integrity, and changes in health.
-I use proper techniques for lifting or assisting to avoid injury.
-Most importantly, I remain patient and supportive, adjusting my pace based on the client’s needs.
-Personal care is more than a task—it’s a chance to build trust and connection.
 
 ### How do you build a good relationship with clients?
-
-问题：你如何与客户建立良好的关系？
 
 - I always treat clients with dignity, listening to their feelings and needs with a kind and patient attitude to make them feel valued.
 - I use simple, friendly language and non-verbal cues like smiles or gestures, especially for clients with language barriers, to ensure they understand and feel comfortable.
@@ -258,8 +259,8 @@ By focusing on these steps, I ensure that the client is safe, respected, and tre
    <!-- 如果客户摔倒且身体状况良好，再补充下面这句话 -->
    - If the situation is under control and the client is able and safe to move, I would help them stand up, using proper manual handling techniques (like supporting their arm or using a transfer belt).
 4. I would keep the client comfortable and offer reassurance by talking to them to reduce their anxiety.
-5. I would document and report the incident to my supervisor and share with my team to keep everyone informed if necessary.
-6. I would keep monitoring to prevent the client's condition from getting worse.
+5. I would keep monitoring to prevent the client's condition from getting worse until the emergency services arrived.
+6. I would document and report the incident to my supervisor and share with my team to keep everyone informed if necessary.
 
 STAR 举个例子
 
@@ -291,14 +292,14 @@ Infection control procedures are rules to follow this practice.
 - I would avoid touching my eyes, nose, or mouth during the service period.
 - I would stay healthy, avoid working when sick, and keep vaccinations up to date.
 
-### What would you do if Mrs. Smith asked you to clean the ceiling fan?（*）
+### What would you do if the client ask you to do something?（*）
 
 - 史密斯太太要求你清洁吊扇。你会怎么做？（*）
 - 如果客户要求你做一些超出你职责范围的事情，你会怎么做？
 
 <!-- If a client asks me to do something -->
 
-1. The first thing I would do is to assess whether the task is outside my **Scope of Practice** (like providing medical treatments). This can be done by reviewing the client's care plan, the employer's policies, the support worker's qualifications, and my job description.
+1. The first thing I would do is to assess whether the task is within my Scope of Practice (like providing medical treatments). This can be done by reviewing the client's individualised support plan, my job description, and the employer's policies.
 2. If the task is within my role, I would perform it while ensuring following the requirements and procedures, like wearing PPE.
 3. If the task is outside my role, I would explain it to the client. I would suggest an appropriate solution within my role if possible, such as helping the client access the right support, like contacting a nurse or family member.
 4. If I'm not sure whether should I perform the task, I would report it to my supervisor for advice.
@@ -318,17 +319,16 @@ Infection control procedures are rules to follow this practice.
 
 ### How to handle challenging situations?（*）
 
-- Situation: During my placement, I experienced a challenging situation that I was assisting a client who was living with dementia to have a shower in the afternoon. When I began the task, the client became very agitated and showed strong resistance, pushing my hands away and shouting.
+- Situation: During my placement, I experienced a challenging situation that I was assisting a client who was living with dementia to have a shower in the afternoon. During the task, the client became very agitated and showed strong resistance, pushing my hands away.
 - Task: My task was to ensure the client's safety and dignity, and find a way to complete the care without making the situation worse.
 - Action: I followed these steps to manage the situation:
 
-  1. I stayed calm and lowered my voice and body position to be reassuring.
-  2. I explained each step before I did it and showed him the towel and soap so he could see them.
-  3. <!-- 3. I offered simple choices to give him control — for example, “Would you like to wash your arms or legs first?”. -->
-  4. I distracted him by turning on his favorite music and used gentle touch to comfort him.
-  5. When he was too distressed, I stopped the care and report the incident to my supervisor.
+  1. I explained each step before I did it.
+  2. When the client became agitated, I stopped the care and stepped back to give him some space.
+  3. I realized the water might have been cold, or maybe I moved my hands too quickly, so I adjusted the water temperature and used gentle touch to comfort him, and distracted him by turning on his favorite music.
+  4. After finishing the care, I covered him with a dry, warm towel to maintain his dignity and reported the incident to my supervisor.
 
-- Result: The result was I successfully completed the essential parts of his care. From this experience I learned that using patience and flexibility is an effective way to care for people with dementia, and that safety is always built on a person-centred approach.
+- Result: The result was I successfully completed the care. From this experience, I learned that using patience and flexibility is an effective way to care for people with dementia, and safety is always built on a person-centred approach.
 
 ### Have you ever work with clients from different cultural backgrounds?（*）
 
@@ -363,7 +363,13 @@ I don’t have direct experience with clients from different culture backgrounds
 - **Action**: I stayed calm and spoke gently, saying, “I see you’re not hungry right now. Would you like something else to eat?” I noticed the client seemed overwhelmed by the busy dining room, so I offered to bring their meal to a quieter area. I also checked their care plan, which noted their favorite foods, and prepared a small portion of a dish they liked. I sat with them, talked about their favorite hobby to distract them, and encouraged them to eat slowly.
 - **Result**: The client calmed down, ate a portion of their meal, and seemed more comfortable. My supervisor praised my patience and person-centered approach, and I documented the incident as per policy. This experience taught me how to handle challenging behaviors calmly and effectively.
 
-12. What Would You Do If A Client Refuses Medication?
+### What would you do if a client refuses to take medication?
+
+- Ask the client why they do not want to take the medication.
+- Calmly explain the consequences of not taking their pre-packaged medication.
+- If the medication is still refused, document the situation, including The action taken, The reason for the refusal, and What was done with the refused medication.
+- Escalate the situation by reporting to the client’s healthcare professional and your supervisors.
+
 If a client refuses medication, I first try to understand the reason—whether it’s fear, confusion, side effects, or personal preference.
 I speak to them calmly, explain the purpose of the medication, and offer reassurance.
 If they still refuse, I respect their decision and document the refusal accurately.
@@ -371,22 +377,20 @@ I then report it to a nurse or supervisor so the situation can be monitored or r
 Consistent refusals may require a review by a healthcare professional.
 My approach balances respect for the client’s autonomy with the duty to protect their health and well-being.
 
-### How would you handle confidential or sensitive information from a client?
+### How do you handle client's confidential or sensitive information?
 
-客户告诉你私密（confidential）或敏感的（sensitive）信息，应该怎么做？
+For me, protecting client’s confidential or sensitive information is important for providing safe and professional care. I follow all workplace policies, the Privacy Act, and the organisation’s confidentiality rules.
 
-- **Respect Privacy**: I treat all client information as confidential, understanding that personal details, health conditions, or preferences are private and must be protected.
-- **Share Only with Authorized Personnel**: I will never discuss client information in public areas or with unauthorized individuals.
-- **Document and Report**: If a client shares information indicating potential harm, such as abuse or health concerns, I report it immediately to my supervisor
-- **Build Trust with Clients**: I reassure clients that their information is safe with me, explaining how it will be used to support their care, which helps them feel secure and respected.
+- I treat all client information as confidential.
+- If a client tells me personal or sensitive information, I listen respectfully and keep it private.
+- I only share client information with authorized personnel on a need-to-know basis, and I never discuss them in public areas.
+- I make sure all documents and notes are handled properly — for example, keeping care records secure, logging out of computer systems, and not leaving paperwork unattended.
+- If the information impacts clients' safety and health, such as abuse or health concerns, I document and report it to my supervisor.
+- I’m always mindful of privacy in the physical environment — speaking quietly, not discussing clients in public areas, and making sure conversations happen in private spaces.
+- Overall, confidentiality means respecting the client, protecting their dignity, and ensuring their information is always safe and used only for their care.
 
-18. How Do You Maintain Confidentiality In Your Role?
-I treat all client information as strictly confidential.
-I only share details with authorized personnel on a need-to-know basis, and I never discuss clients outside the workplace.
-Records are kept securely, whether written or digital, and I follow data protection regulations at all times.
-When discussing care in front of others, I ensure privacy is maintained.
-I also explain confidentiality policies to clients and reassure them their personal information is safe.
-Respecting confidentiality builds trust and complies with legal and ethical standards, ensuring a secure and respectful environment for everyone under my care.
+
+
 
 ### What would you do if you noticed signs of abuse or neglect?
 
@@ -494,17 +498,20 @@ Activities of Daily Living, or ADLs, are the essential tasks people need to do e
 
 #### What is duty of care?
 
-- Duty of care is about safety and health, it refers to a person’s obligation to their job.
-- It relates to the responsibility to not cause harm or injury to others that could be reasonably foreseen.
-- In aged care settings, this requires capable staff, safe premises, and quality clinical care. 
+Duty of care is our most important legal and ethical responsibility as a Support Worker. It means we have an obligation to take reasonable action to ensure the clients' safety, health, and well-being, and to protect them from harm that could be reasonably foreseen.
+
+#### How do you practice duty of care?
+
+- I must ensure the client's environment is safe and follow manual handling procedures when lifting or moving a client to prevent falls or injuries to them and myself.
+- I must ensure the client's dignity, privacy, and quality of life while providing care, such as ensuring curtains are closed during personal care.
+- I must follow the client's care plan and the facility's Work Health and Safety (WHS) procedures.
+- If I see a change in a client's health (like a new bruise, fever, or confusion), I have a duty to report it to my supervisor or the Registered Nurse. Otherwise, it is a breach of my duty of care.
 
 #### What is the relevance of duty of care in aged care?
 
-- Duty of care lists what support workers should do.
-- It describes the standards of reasonable and appropriate care. 
-- It provides a legal basis for determining how to make the best decisions regarding aged care. 
+A duty of care outlines standards of reasonable and appropriate care. It also provides a legal basis for determining how to make the best decisions regarding the care of a person with disability.
 
-In addition, duty of care is connected to the Charter of Aged Care Rights. Support workers must perform their obligations to ensure the clients enjoy their rights. 
+<!-- Reference: Reference: CHCDIS020 -->
 
 #### Support workers' duty of care
 
@@ -523,15 +530,13 @@ Support workers' duty of care includes eight obligations:
 
 #### What is dignity of risk?
 
-- Dignity of risk means that older people can choose what they do and how they live. It means that these choices come with possible dangers.
-- Support workers should accept the risks of these choices. 
-- Support workers should respect clients' dignity by helping them carry out their choices despite the risks.
-- Support workers and the care team should help minimise the risks involved with the clients' choices.
+Dignity of risk means respecting client's right to make choices, even if these choices involve possible risks.
 
 #### What is the support worker's duty of care in relation to dignity of risk?
 
-- Support workers must ensure that the older person they are supporting is able to live their lives however they choose while maintaining their health and safety.
-- It's the support workers' duty to reduce the risks as much as possible.
+It is the disability support worker’s duty of care to ensure that the person they are supporting is able to live their life however they choose while maintaining their health and safety (as far as reasonably practicable).
+
+<!-- Reference: CHCDIS020 -->
 
 #### Examples to reduce the risks
 
@@ -592,6 +597,8 @@ A person’s individualised plan serves the following purposes:
 
 #### What is Mandatory Reporting?
 
+Mandatory reporting is a legal obligation to report any reasonable belief of abuse to the proper authorities. Any person with a duty of care over a person with disability must determine whether the person with disability needs immediate help or is suffering from significant harm.
+
 Mandatory reporting is the responsibility of reporting suspected instances of abuse. Professionals like teachers, medical workers and care workers all have this responsibility. When it comes to aged care, mandatory reporting enables older people to be protected from indicators and allegations of exploitation, abuse, harassment and neglect. 
 
 As an aged care worker, you should know the mandatory reporting laws that apply to aged care. Familiarise yourself with the reporting policies and procedures of your workplace. This will help you protect the rights of the older people in your care.
@@ -612,6 +619,10 @@ Aged care workers must report these cases to the proper authorities. Aged care p
 Mandatory reporting is related to your duty of care as an aged care worker. You must ensure that any reasonable belief of abuse to the older person you are supporting is reported to the proper authorities. 
 
 If you have spotted any indicator of abuse or neglect in the older person, reach out immediately for help from authorities. Remember that mandatory reporting plays a vital role in preventing and stopping the harm that abuse, harassment and neglect can bring to older people.
+
+#### What is the support workers duty of care in relation to mandatory reporting?
+
+Its role is to enable persons with disability to be protected from indicators and allegations of exploitation, abuse, harassment, and neglect.
 
 ### What is building good boundaries?
 
@@ -671,7 +682,6 @@ During my placement, I helped clients with tasks like transferring from bed to c
 ### If you are hired, what do you hope to learn from this job?
 
 If I get this job, I want to get better at helping clients, like learning more about personal care or dealing with tricky moments. I’d love to take training, like for dementia, and work with the team to give safe, kind care. This job will teach me how to understand clients better and make their lives happier, which I really care about.
-
 
 14. How Do You Communicate With Non-Verbal Or Hearing-Impaired Clients?
 I adapt my communication methods based on the client’s abilities.
