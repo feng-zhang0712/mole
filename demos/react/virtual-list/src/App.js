@@ -3,7 +3,7 @@ import FixedHeightVirtualList from './components/FixedHeightVirtualList';
 import DynamicHeightVirtualList from './components/DynamicHeightVirtualList';
 import IntersectionObserverVirtualList from './components/IntersectionObserverVirtualList';
 import WorkerBasedVirtualList from './components/WorkerBasedVirtualList';
-import ReducerBasedVirtualList from './components/ReducerBasedVirtualList';
+import UltraOptimizedVirtualList from './components/UltraOptimizedVirtualList';
 import './App.css';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
     { id: 'dynamic', name: '动态高度', component: DynamicHeightVirtualList },
     { id: 'intersection', name: 'Intersection Observer', component: IntersectionObserverVirtualList },
     { id: 'worker', name: 'Web Worker', component: WorkerBasedVirtualList },
-    { id: 'reducer', name: 'useReducer', component: ReducerBasedVirtualList }
+    { id: 'ultra', name: '极致优化', component: UltraOptimizedVirtualList }
   ];
 
   const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;

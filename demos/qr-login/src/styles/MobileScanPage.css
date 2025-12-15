@@ -1,0 +1,156 @@
+.mobile-scan-page {
+  min-height: 100vh;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-scan-page__container {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+}
+
+.mobile-scan-page__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mobile-scan-page__title {
+  font-size: 1.75rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-scan-page__subtitle {
+  color: #666;
+}
+
+.mobile-scan-page__content {
+  margin-bottom: 2rem;
+}
+
+.mobile-scan-page__qr-info {
+  margin-bottom: 1.5rem;
+}
+
+.mobile-scan-page__field {
+  margin-bottom: 1rem;
+}
+
+.mobile-scan-page__label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-scan-page__input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+}
+
+.mobile-scan-page__status {
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+}
+
+.mobile-scan-page__status--ready {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.mobile-scan-page__status--pending_confirmation {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.mobile-scan-page__status--confirmed {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+}
+
+.mobile-scan-page__status--cancelled {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.mobile-scan-page__error {
+  background-color: #fee;
+  color: #c33;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+.mobile-scan-page__success {
+  background-color: #efe;
+  color: #363;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #cfc;
+}
+
+.mobile-scan-page__actions {
+  margin-bottom: 1rem;
+}
+
+.mobile-scan-page__scan-btn {
+  width: 100%;
+  background: #007bff;
+  color: white;
+  padding: 0.875rem 1rem;
+  border: none;
+  font-size: 1rem;
+}
+
+.mobile-scan-page__scan-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mobile-scan-page__confirm-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.mobile-scan-page__confirm-btn {
+  flex: 1;
+  background: #28a745;
+  color: white;
+  padding: 0.875rem 1rem;
+  border: none;
+}
+
+.mobile-scan-page__confirm-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mobile-scan-page__cancel-btn {
+  flex: 1;
+  background: #6c757d;
+  color: white;
+  padding: 0.875rem 1rem;
+  border: none;
+}
+
+.mobile-scan-page__cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mobile-scan-page__footer {
+  text-align: center;
+}
+
+.mobile-scan-page__help {
+  color: #666;
+  font-size: 0.8rem;
+  margin: 0;
+}

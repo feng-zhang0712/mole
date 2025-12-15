@@ -53,10 +53,9 @@ XSS 攻击通常分为三种类型：存储型 XSS (Stored XSS)、反射型 XSS 
 攻击者向用户发送了一个这样的链接。
 
 ```html
-<a
-  href="https://my-bank.example.com/welcome?user=<img src=x onerror=alert('hello!')>">
-  Get a free kitten!</a
->
+<a href="https://my-bank.example.com/welcome?user=<img src=x onerror=alert('hello!')>">
+  Get a free kitten!
+</a>
 ```
 
 用户点击这个链接之后，页面被加载，站点从 URL 中提取 `user` 信息，然而，该字段指向的是一段 HTML 代码 `<img src=x onerror=alert('hello!')>`，这行代码被 `innerHTML` 执行后，`<img>` 标签被创建，`<img>` 的 `src` 属性指向一个错误的地址，于是触发了 `onerror` 函数。最终造成的后果就是，`onerror` 中的恶意脚本被执行。
@@ -605,8 +604,50 @@ export const useBatchXSSProtection = (data, encodingRules = {}) => {
 
 ## CSRF
 
+### CSRF 介绍
+
+CSRF（Cross-site request forgery，跨站请求伪造）指攻击者利用合法的用户身份，向目标站点发起请求，从而执行恶意操作的行为。
+
+```html
+<form action="https://my-bank.example.org/transfer" method="POST">
+  <input type="hidden" name="recipient" value="attacker" />
+  <input type="hidden" name="amount" value="1000" />
+</form>
+
+<script>
+  document.querySelector("form").submit();
+</script>
+```
+
+比如，攻击者诱导用户进入自己创建的恶意站点，页面内部有个 `<form>` 表单，当页面加载时，表单中的数据被提交到 `my-bank.example.org`，如果用户之前在这个银行网站登录过，就会留下 cookie 信息，此时，表单数据提交时，用户的 cookie 信息会一并携带至服务器，服务器就可能认为是用户主动发起的转账请求，于是执行转账操作，从而给用户造成损失。
+
+![攻击者通过 CSRF 攻击，模拟用户身份，执行了转账操作](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF/csrf-form-post.svg)
+
+上面的 `<form>` 表单是一个 POST 请求的例子，攻击者还可以利用 `<img>` 标签发起 GET 请求。
+
+```html
+<img src="https://my-bank.example.org/transfer?recipient=attacker&amount=1000" />
+```
+
+如果站点使用 HTTP 通信，且仅使用 cookie 作为验证用户身份的手段，CSRF 就可能发生。
+
+### CSRF 防护
+
+#### CSRF Token
+
+
+
+#### 双重 Token 验证
+
+#### Referer、Origin
+
+#### Samesite
+
 ## 参考
 
 - [Cross-site scripting (XSS)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/XSS), MDN
+- [Cross-site request forgery (CSRF)](https://developer.mozilla.org/en-US/docs/Web/Security/Attacks/CSRF), MDN
 - [Same-origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy), MDN
 - [同源限制](https://wangdoc.com/javascript/bom/same-origin), 阮一峰
+- [前端安全系列（一）：如何防止XSS攻击？](https://tech.meituan.com/2018/09/27/fe-security.html), 美团技术团队
+- [前端安全系列（二）：如何防止CSRF攻击？](https://tech.meituan.com/2018/10/11/fe-security-csrf.html), 美团技术团队

@@ -10,7 +10,7 @@ export function throttle(func, ms) {
   return function () {
     if (!timer) {
       const _this = this;
-      timer = setTimeout(function () {
+      timer = setTimeout(() => {
         func.apply(_this, [].slice.call(arguments));
         timer = null;
       }, ms);

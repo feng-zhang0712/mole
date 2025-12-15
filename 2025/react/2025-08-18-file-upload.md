@@ -580,3 +580,9 @@ target.addEventListener(
 
 - [HTML 拖放 API](https://developer.mozilla.org/zh-CN/docs/Web/API/HTML_Drag_and_Drop_API)，MDN
 - [拖拉事件](https://wangdoc.com/javascript/events/drag)，阮一峰
+
+##
+
+- 文件切片时，有哪些考虑因素？
+- 王阔贷款一定的请款下，切片上传和整体上传消耗的时间差不多，这种说法正确吗？
+- 

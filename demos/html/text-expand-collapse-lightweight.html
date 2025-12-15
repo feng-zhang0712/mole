@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>轻量级文本展开/收起组件</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      line-height: 1.6;
+      padding: 200px;
+    }
+
+    .expand__content {
+      overflow: hidden;
+    }
+
+    .expand__content--collapsed {
+      max-height: 3em;
+    }
+
+    .expand__content--expanded {
+      max-height: none;
+    }
+
+    .expand__button--hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="expand" data-max-lines="3">
+    <div class="expand__content expand__content--collapsed">
+      这是一段很长的文本内容，用来演示轻量级展开和收起功能。这个组件使用纯JavaScript实现，没有任何外部依赖，体积小巧，性能优秀。在现代Web开发中，我们经常需要处理长文本的显示问题。当文本内容过长时，我们需要提供一个优雅的方式来让用户选择是否查看完整内容。这种展开/收起的功能在很多场景下都非常有用，比如文章摘要、评论列表、产品描述等。
+    </div>
+    <button class="expand__button">展开</button>
+  </div>
+
+  <script>
+    class TextExpand {
+      constructor(element, options = {}) {
+        this.element = element;
+        this.options = {
+          maxLines: parseInt(element.dataset.maxLines) || 3,
+          collapsedClass: 'expand__content--collapsed',
+          expandedClass: 'expand__content--expanded',
+          buttonHiddenClass: 'expand__button--hidden',
+          ...options
+        };
+
+        this.content = element.querySelector('.expand__content');
+        this.button = element.querySelector('.expand__button');
+        this.isExpanded = false;
+        this.needsExpansion = false;
+
+        this.init();
+      }
+
+      init() {
+        this.checkIfExpansionNeeded();
+        this.button.addEventListener('click', () => this.toggle());
+        this.updateButtonVisibility();
+      }
+
+      checkIfExpansionNeeded() {
+        // 临时移除限制来测量实际高度
+        this.content.classList.remove(this.options.collapsedClass);
+        this.content.style.maxHeight = 'none';
+
+        const lineHeight = parseFloat(getComputedStyle(this.content).lineHeight);
+        const maxHeight = lineHeight * this.options.maxLines;
+        const actualHeight = this.content.scrollHeight;
+
+        this.needsExpansion = actualHeight > maxHeight;
+
+        // 恢复限制
+        this.content.classList.add(this.options.collapsedClass);
+        this.content.style.maxHeight = '';
+      }
+
+      toggle() {
+        this.isExpanded = !this.isExpanded;
+
+        if (this.isExpanded) {
+          this.expand();
+        } else {
+          this.collapse();
+        }
+      }
+
+      expand() {
+        this.content.classList.remove(this.options.collapsedClass);
+        this.content.classList.add(this.options.expandedClass);
+        this.button.textContent = '收起';
+        this.button.setAttribute('aria-expanded', 'true');
+      }
+
+      collapse() {
+        this.content.classList.remove(this.options.expandedClass);
+        this.content.classList.add(this.options.collapsedClass);
+        this.button.textContent = '展开';
+        this.button.setAttribute('aria-expanded', 'false');
+      }
+
+      updateButtonVisibility() {
+        if (!this.needsExpansion) {
+          this.button.classList.add(this.options.buttonHiddenClass);
+        } else {
+          this.button.classList.remove(this.options.buttonHiddenClass);
+        }
+      }
+    }
+
+    function initTextExpands() {
+      const elements = document.querySelectorAll('.expand');
+      const instances = [];
+
+      elements.forEach(element => {
+        const instance = new TextExpand(element);
+        instances.push(instance);
+      });
+
+      return instances;
+    }
+
+    document.addEventListener('DOMContentLoaded', initTextExpands);
+
+  </script>
+</body>
+
+</html>

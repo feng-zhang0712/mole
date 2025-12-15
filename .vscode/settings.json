@@ -1,14 +1,32 @@
 {
   "liveServer.settings.port": 5501,
   "cSpell.words": [
+    "CHCDIS",
+    "Contentful",
     "copylink",
+    "CSSOM",
     "dragenter",
     "dragleave",
     "dragover",
+    "individualised",
+    "languagedetector",
+    "longtask",
+    "messageerror",
+    "minimise",
     "MVVM",
     "OLED",
+    "oneline",
+    "organisation’s",
+    "overscan",
+    "Rects",
+    "Referer",
+    "reflog",
     "selectionchange",
+    "srcset",
     "srgb",
-    "unobserve"
+    "stackoverflow",
+    "TTFB",
+    "unobserve",
+    "visibilitychange"
   ]
 }

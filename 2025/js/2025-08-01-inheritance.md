@@ -36,7 +36,7 @@ ins.colors // ['red', 'blue', 'green', 'black']
 
 ### 2.2 `原型链`方式实现继承
 
-使用 `原型链`（Prototype）的方式实现继承，优点是子类可以继承父类的属性和方法，以及父类原型上的属性和方法。
+使用 `原型链`（Prototype）的方式实现继承，优点是子类可以继承父类实例的属性和方法，以及父类原型上的属性和方法。
 
 缺点也很明显。
 
@@ -73,7 +73,7 @@ SubType.prototype.getSubValue = function() {
 
 ![原型式继承中，子类实例对象的结构](/2025/assets/instance-structure-while-using-prototype-inheritance.png)
 
-从上面可以看出，原型链的指向是，`sub.__proto__` -> `SubType.prototype` -> `SuperType.prototype` -> `Object.prototype` -> `null`。
+从上面可以看出，原型链的指向是，`sub` -> `SubType` -> `SuperType` -> `Object` -> `null`。
 
 对于构造函数来说，`sub.constructor === SuperType`，并且 `SubType.prototype.constructor = SuperType.prototype.constructor`。
 
@@ -94,13 +94,13 @@ ins2.colors // ['red', 'blue', 'green', 'black']
 
 优点是：
 
-1. 可以向父类的构造函数传递参数；
-2. 即能继承父类的实例属性，又能继承父类原型上的属性和方法。
+- 可以向父类的构造函数传递参数；
+- 即能继承父类的实例属性，又能继承父类原型上的属性和方法。
 
 缺点是：
 
-1. 父类构造函数要调用两次（一次在创建字类原型时，一次在子类构造函数中调用）；
-2. 通过这种方式创建的子类实例，父类实例上的属性会同时存在于子类实例以及其 `[[Prototype]]` 对象上，这是两次调用 `SuperType` 构造函数的结果（下面的例子中是 `name` 和 `colors` 属性）。
+- 父类构造函数要调用两次（一次在创建字类原型时，一次在子类构造函数中调用）；
+- 通过这种方式创建的子类实例，父类实例上的属性会同时存在于子类实例以及其 `[[Prototype]]` 对象上，这是两次调用 `SuperType` 构造函数的结果（下面的例子中是 `name` 和 `colors` 属性）。
 
 ```javascript
 function SuperType(name) {

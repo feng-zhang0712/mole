@@ -1,6 +1,27 @@
 # 浏览器的一帧执行了哪些操作？
 
-浏览器在渲染网页时，会以大约每秒 60 帧（即每 16.6 毫秒一帧）的速度更新屏幕，以实现流畅的视觉效果。这一过程涉及多个步骤，主要包括输入事件、JavaScript 执行、样式计算、布局、绘制和合成，但并非每一帧都需完整执行所有步骤，浏览器会根据变化优化流程。如果页面无变化，浏览器可能跳过某些环节以节省资源。然而，在复杂交互或动画中，过多计算可能导致卡顿（jank）。
+浏览器在渲染网页时，会以大约每秒 60 帧（即每 16.6 毫秒一帧）的速度更新屏幕，以实现流畅的视觉效果。这一过程涉及多个步骤，主要包括输入事件处理、JavaScript 执行、样式计算、布局、绘制、合成和显示，但并非每一帧都需完整执行所有步骤，浏览器会根据变化优化流程。如果页面无变化，浏览器可能跳过某些环节以节省资源。然而，在复杂交互或动画中，过多计算可能导致卡顿（jank）。
+
+```mermaid
+graph TD
+    A[开始新帧] --> B[处理输入事件]
+    B --> C[执行 JavaScript]
+    C --> D[requestAnimationFrame 回调]
+    D --> E[样式计算]
+    E --> F[布局/重排]
+    F --> G[绘制]
+    G --> H[合成]
+    H --> I[光栅化]
+    I --> J[显示]
+    J --> K[requestIdleCallback 回调]
+    K --> L[结束当前帧]
+    L --> A
+    
+    style A fill:#e1f5fe
+    style L fill:#e8f5e8
+    style D fill:#fff3e0
+    style K fill:#f3e5f5
+```
 
 ## 执行流程
 
@@ -17,12 +38,13 @@
 
 JavaScript 执行是浏览器渲染过程中的关键环节，它直接影响着页面的交互性和动态性。
 
-- 主线程执行：JavaScript 代码在浏览器的主线程中执行。主线程是单线程的，这意味着同一时间只能执行一个 JavaScript 任务。浏览器会按照一定的优先级来调度 JavaScript 的执行。
-- 事件循环处理：浏览器使用事件循环机制来管理 JavaScript 的执行。事件循环包含多个队列，包括**宏任务**队列（macro task queue）和**微任务**队列（micro task queue）。宏任务包括 `setTimeout`、`setInterval`、I/O 操作、事件处理函数、MessageChannel 的回调等，微任务包括 Promise 回调、`queueMicroTask`、MutationObserver 等。
-- 定时器回调执行：浏览器会检查定时器队列，执行到期的 `setTimeout` 和 `setInterval` 回调函数。这些回调函数会被添加到宏任务队列中，等待执行。
-- Promise 和异步操作处理：对于 Promise、`async`/`await` 等异步操作，浏览器会在微任务队列中处理它们的回调函数。微任务具有高优先级，会在当前宏任务执行完毕后立即执行。
-- DOM 操作处理：JavaScript 可能会对 DOM 进行各种操作，如创建、删除、修改元素，改变元素属性等。这些操作会触发后续的样式计算和布局阶段。
-- 垃圾回收：浏览器会在适当的时机进行垃圾回收，清理不再使用的内存。垃圾回收可能会暂停 JavaScript 的执行，影响页面的响应性。
+- **主线程执行**：JavaScript 代码在浏览器的主线程中执行。主线程是单线程的，这意味着同一时间只能执行一个 JavaScript 任务。浏览器会按照一定的优先级来调度 JavaScript 的执行。
+- **事件循环处理**：浏览器使用事件循环机制来管理 JavaScript 的执行。事件循环包含多个队列，包括**宏任务**队列（macro task queue）和**微任务**队列（micro task queue）。宏任务包括 `setTimeout`、`setInterval`、I/O 操作、事件处理函数、MessageChannel 的回调等，微任务包括 Promise 回调、`queueMicroTask`、MutationObserver 等。
+- **requestAnimationFrame 回调**：在每一帧开始前，浏览器会执行通过 `requestAnimationFrame` 注册的回调函数。这些回调通常用于动画和 DOM 更新，确保与浏览器的刷新率同步。
+- **定时器回调执行**：浏览器会检查定时器队列，执行到期的 `setTimeout` 和 `setInterval` 回调函数。这些回调函数会被添加到宏任务队列中，等待执行。
+- **Promise 和异步操作处理**：对于 Promise、`async`/`await` 等异步操作，浏览器会在微任务队列中处理它们的回调函数。微任务具有高优先级，会在当前宏任务执行完毕后立即执行。
+- **DOM 操作处理**：JavaScript 可能会对 DOM 进行各种操作，如创建、删除、修改元素，改变元素属性等。这些操作会触发后续的样式计算和布局阶段。
+- **垃圾回收**：浏览器会在适当的时机进行垃圾回收，清理不再使用的内存。垃圾回收可能会暂停 JavaScript 的执行，影响页面的响应性。
 
 ### 样式计算（Style Calculation）
 
@@ -86,17 +108,31 @@ JavaScript 执行是浏览器渲染过程中的关键环节，它直接影响着
 
 显示阶段负责将最终的图像显示在屏幕上，这是整个渲染过程的最后一步。
 
-- 帧缓冲管理：浏览器会将合成的图像写入帧缓冲（Frame Buffer）。帧缓冲是内存中的一块区域，用于存储要显示的图像数据。
-- 垂直同步：浏览器会与显示器的刷新率进行同步，确保在显示器刷新时提供新的图像数据。这可以避免画面撕裂和卡顿。
-- 屏幕显示：显示控制器会从帧缓冲中读取图像数据，并通过显示接口（如 HDMI、DisplayPort 等）将图像发送到显示器。
-- 色彩校正：浏览器可能会应用色彩校正，确保在不同显示设备上显示的颜色一致。
-- 性能监控：浏览器会监控渲染性能，收集各种指标，如帧率、渲染时间等，用于性能优化和调试。
+- **帧缓冲管理**：浏览器会将合成的图像写入帧缓冲（Frame Buffer）。帧缓冲是内存中的一块区域，用于存储要显示的图像数据。
+- **垂直同步**：浏览器会与显示器的刷新率进行同步，确保在显示器刷新时提供新的图像数据。这可以避免画面撕裂和卡顿。
+- **屏幕显示**：显示控制器会从帧缓冲中读取图像数据，并通过显示接口（如 HDMI、DisplayPort 等）将图像发送到显示器。
+- **色彩校正**：浏览器可能会应用色彩校正，确保在不同显示设备上显示的颜色一致。
+- **性能监控**：浏览器会监控渲染性能，收集各种指标，如帧率、渲染时间等，用于性能优化和调试。
+
+### requestIdleCallback 执行（可选）
+
+当浏览器完成所有必要的工作后，如果还有剩余时间，会执行通过 `requestIdleCallback` 注册的回调函数。
+
+- **空闲时间检测**：浏览器会检测当前帧是否有剩余时间
+- **低优先级任务执行**：执行非关键的、可以延后的任务
+- **时间限制**：通常限制在 5ms 以内，避免影响下一帧
+- **任务调度**：可以用于数据预取、日志记录、性能分析等
 
 ## 参考
 
-- [真正理解浏览器渲染更新流程](https://blog.csdn.net/weixin_52834435/article/details/133468543)
-- [浏览器的每一帧](https://juejin.cn/post/7009556285343416334)
-- [Deep Dive into the Browser's Rendering Pipeline](https://medium.com/stackademic/deep-dive-into-the-browsers-rendering-pipeline-4c88c91f7bdc)
-- [RenderingNG architecture](https://developer.chrome.com/docs/chromium/renderingng-architecture)
+- [Chrome DevTools Performance](https://developer.chrome.com/docs/devtools/evaluate-performance/)
+- [Web Vitals](https://web.dev/vitals/)
+- [RenderingNG architecture](https://developer.chrome.com/docs/chromium/renderingng-architecture/)
 - [The Rendering Critical Path](https://www.chromium.org/developers/the-rendering-critical-path/)
+- [真正理解浏览器渲染更新流程](https://blog.csdn.net/weixin_52834435/article/details/133468543)
 - [The Anatomy of a Frame](https://aerotwist.com/blog/the-anatomy-of-a-frame/)
+- [Deep Dive into the Browser's Rendering Pipeline](https://medium.com/stackademic/deep-dive-into-the-browsers-rendering-pipeline-4c88c91f7bdc)
+- [Optimize JavaScript Execution](https://web.dev/optimize-javascript-execution/)
+- [Reduce the Scope and Complexity of Style Calculations](https://web.dev/reduce-the-scope-and-complexity-of-style-calculations/)
+- [Avoid Large, Complex Layouts and Layout Thrashing](https://web.dev/avoid-large-complex-layouts-and-layout-thrashing/)
+- [Simplify Paint Complexity and Reduce Paint Areas](https://web.dev/simplify-paint-complexity-and-reduce-paint-areas/)

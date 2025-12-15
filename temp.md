@@ -1,805 +1,663 @@
-# 虚拟列表实现方式详解
+# JavaScript 执行1000万任务：性能优化与防卡顿策略详解
 
-虚拟列表是一种优化长列表性能的技术，有多种实现方式。本文将介绍主要的实现方法及其关键代码。
+## 核心优化策略
 
-## 1. 固定高度虚拟列表（Fixed Height Virtual List）
+### 1. 异步执行 - 避免阻塞主线程
 
-这是最基础也是最常用的实现方式，适用于所有列表项高度相同的情况。
-
-### 核心实现代码
+#### 1.1 使用 setTimeout/setInterval
 
 ```javascript
-class FixedHeightVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.itemHeight = options.itemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.scrollTop = 0;
+// 异步执行 - 不阻塞主线程
+const asyncExecute = (tasks) => {
+  return new Promise((resolve) => {
+    const results = [];
+    let index = 0;
     
-    this.init();
-  }
-
-  render() {
-    // 计算可见区域的起始和结束索引
-    const startIndex = Math.floor(this.scrollTop / this.itemHeight);
-    const endIndex = Math.min(
-      startIndex + this.visibleCount + 1,
-      this.totalCount
-    );
-
-    // 清空并重新渲染可见项
-    this.viewport.innerHTML = '';
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.style.transform = `translateY(${i * this.itemHeight}px)`;
-      this.viewport.appendChild(item);
-    }
-  }
-}
-```
-
-## 2. 动态高度虚拟列表（Dynamic Height Virtual List）
-
-适用于列表项高度不固定的情况，需要缓存每个项的高度。
-
-### 核心实现代码
-
-```javascript
-class DynamicHeightVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.estimatedItemHeight = options.estimatedItemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.itemHeights = new Map(); // 缓存每个项的高度
-    this.itemPositions = []; // 缓存每个项的位置
-    
-    this.init();
-  }
-
-  // 计算每个项的位置
-  calculatePositions() {
-    this.itemPositions = [0];
-    for (let i = 0; i < this.totalCount; i++) {
-      const height = this.itemHeights.get(i) || this.estimatedItemHeight;
-      this.itemPositions[i + 1] = this.itemPositions[i] + height;
-    }
-  }
-
-  // 二分查找可见区域的起始索引
-  findStartIndex(scrollTop) {
-    let left = 0;
-    let right = this.totalCount - 1;
-    
-    while (left <= right) {
-      const mid = Math.floor((left + right) / 2);
-      if (this.itemPositions[mid] <= scrollTop && 
-          this.itemPositions[mid + 1] > scrollTop) {
-        return mid;
+    const processNext = () => {
+      // 每次处理一批任务
+      const batchSize = 1000;
+      const endIndex = Math.min(index + batchSize, tasks.length);
+      
+      for (let i = index; i < endIndex; i++) {
+        results.push(processTask(tasks[i]));
       }
-      if (this.itemPositions[mid] > scrollTop) {
-        right = mid - 1;
+      
+      index = endIndex;
+      
+      if (index < tasks.length) {
+        // 使用 setTimeout 让出主线程
+        setTimeout(processNext, 0);
       } else {
-        left = mid + 1;
+        resolve(results);
       }
-    }
-    return left;
-  }
-
-  render() {
-    const startIndex = this.findStartIndex(this.scrollTop);
-    const endIndex = Math.min(
-      startIndex + this.visibleCount + 2,
-      this.totalCount
-    );
-
-    this.viewport.innerHTML = '';
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.style.transform = `translateY(${this.itemPositions[i]}px)`;
-      this.viewport.appendChild(item);
-    }
-  }
-}
-```
-
-## 3. 窗口化虚拟列表（Windowing Virtual List）
-
-使用 `react-window` 或类似库的实现方式，更高效地管理可见区域。
-
-### 核心实现代码
-
-```javascript
-class WindowingVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.itemHeight = options.itemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.scrollTop = 0;
-    this.overscan = options.overscan || 5; // 预渲染的数量
-    
-    this.init();
-  }
-
-  render() {
-    const startIndex = Math.max(0, 
-      Math.floor(this.scrollTop / this.itemHeight) - this.overscan
-    );
-    const endIndex = Math.min(
-      this.totalCount,
-      Math.ceil((this.scrollTop + this.container.clientHeight) / this.itemHeight) + this.overscan
-    );
-
-    // 使用 DocumentFragment 优化批量DOM操作
-    const fragment = document.createDocumentFragment();
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.style.transform = `translateY(${i * this.itemHeight}px)`;
-      fragment.appendChild(item);
-    }
-
-    this.viewport.innerHTML = '';
-    this.viewport.appendChild(fragment);
-  }
-}
-```
-
-## 4. 基于 Intersection Observer 的虚拟列表
-
-使用现代浏览器API实现，性能更好，代码更简洁。
-
-### 核心实现代码
-
-```javascript
-class IntersectionObserverVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.itemHeight = options.itemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.observer = null;
-    
-    this.init();
-  }
-
-  init() {
-    this.createContainer();
-    this.setupIntersectionObserver();
-    this.render();
-  }
-
-  setupIntersectionObserver() {
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const index = parseInt(entry.target.dataset.index);
-            this.onItemVisible(index);
-          }
-        });
-      },
-      {
-        root: this.container,
-        rootMargin: '50px', // 预加载区域
-        threshold: 0.1
-      }
-    );
-  }
-
-  render() {
-    this.viewport.innerHTML = '';
-    
-    // 渲染所有项，但只观察可见的
-    for (let i = 0; i < this.totalCount; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.dataset.index = i;
-      item.style.transform = `translateY(${i * this.itemHeight}px)`;
-      this.viewport.appendChild(item);
-      
-      // 观察每个项
-      this.observer.observe(item);
-    }
-  }
-
-  onItemVisible(index) {
-    // 处理项变为可见的逻辑
-    console.log(`Item ${index} is now visible`);
-  }
-}
-```
-
-## 5. 基于 ResizeObserver 的自适应虚拟列表
-
-能够自动适应列表项高度变化的虚拟列表。
-
-### 核心实现代码
-
-```javascript
-class AdaptiveVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.estimatedItemHeight = options.estimatedItemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.itemHeights = new Map();
-    this.resizeObserver = null;
-    
-    this.init();
-  }
-
-  init() {
-    this.createContainer();
-    this.setupResizeObserver();
-    this.render();
-  }
-
-  setupResizeObserver() {
-    this.resizeObserver = new ResizeObserver((entries) => {
-      let needsUpdate = false;
-      
-      entries.forEach(entry => {
-        const index = parseInt(entry.target.dataset.index);
-        const newHeight = entry.contentRect.height;
-        
-        if (this.itemHeights.get(index) !== newHeight) {
-          this.itemHeights.set(index, newHeight);
-          needsUpdate = true;
-        }
-      });
-
-      if (needsUpdate) {
-        this.updateLayout();
-      }
-    });
-  }
-
-  updateLayout() {
-    // 重新计算所有项的位置
-    this.calculatePositions();
-    // 重新渲染可见区域
-    this.render();
-  }
-
-  render() {
-    const startIndex = this.findStartIndex(this.scrollTop);
-    const endIndex = Math.min(
-      startIndex + this.visibleCount + 2,
-      this.totalCount
-    );
-
-    this.viewport.innerHTML = '';
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.dataset.index = i;
-      item.style.transform = `translateY(${this.itemPositions[i]}px)`;
-      this.viewport.appendChild(item);
-      
-      // 观察尺寸变化
-      this.resizeObserver.observe(item);
-    }
-  }
-}
-```
-
-## 6. 基于 Web Workers 的虚拟列表
-
-将计算密集型操作放在后台线程中，避免阻塞主线程。
-
-### 核心实现代码
-
-```javascript
-class WorkerBasedVirtualList {
-  constructor(container, options = {}) {
-    this.container = container;
-    this.itemHeight = options.itemHeight || 50;
-    this.visibleCount = options.visibleCount || 10;
-    this.totalCount = options.totalCount || 0;
-    this.data = options.data || [];
-    this.worker = null;
-    
-    this.init();
-  }
-
-  init() {
-    this.createContainer();
-    this.setupWorker();
-    this.render();
-  }
-
-  setupWorker() {
-    // 创建 Web Worker 处理计算
-    this.worker = new Worker(URL.createObjectURL(new Blob([`
-      self.onmessage = function(e) {
-        const { scrollTop, itemHeight, totalCount, visibleCount } = e.data;
-        
-        const startIndex = Math.floor(scrollTop / itemHeight);
-        const endIndex = Math.min(
-          startIndex + visibleCount + 1,
-          totalCount
-        );
-        
-        self.postMessage({ startIndex, endIndex });
-      };
-    `]));
-
-    this.worker.onmessage = (e) => {
-      const { startIndex, endIndex } = e.data;
-      this.renderVisibleItems(startIndex, endIndex);
     };
-  }
+    
+    processNext();
+  });
+};
+```
 
-  render() {
-    // 发送计算请求到 Worker
-    this.worker.postMessage({
-      scrollTop: this.scrollTop,
-      itemHeight: this.itemHeight,
-      totalCount: this.totalCount,
-      visibleCount: this.visibleCount
+#### 1.2 使用 requestAnimationFrame
+```javascript
+// 基于帧率的异步执行
+const frameBasedExecute = (tasks) => {
+  return new Promise((resolve) => {
+    const results = [];
+    let index = 0;
+    
+    const processFrame = () => {
+      const startTime = performance.now();
+      const frameTime = 16; // 60fps = 16ms per frame
+      
+      // 在每帧内处理尽可能多的任务
+      while (index < tasks.length && (performance.now() - startTime) < frameTime) {
+        results.push(processTask(tasks[index]));
+        index++;
+      }
+      
+      if (index < tasks.length) {
+        requestAnimationFrame(processFrame);
+      } else {
+        resolve(results);
+      }
+    };
+    
+    requestAnimationFrame(processFrame);
+  });
+};
+```
+
+#### 1.3 使用 MessageChannel
+```javascript
+// 使用 MessageChannel 实现真正的异步
+const channelExecute = (tasks) => {
+  return new Promise((resolve) => {
+    const results = [];
+    let index = 0;
+    
+    const channel = new MessageChannel();
+    const port1 = channel.port1;
+    const port2 = channel.port2;
+    
+    port1.onmessage = () => {
+      const batchSize = 1000;
+      const endIndex = Math.min(index + batchSize, tasks.length);
+      
+      for (let i = index; i < endIndex; i++) {
+        results.push(processTask(tasks[i]));
+      }
+      
+      index = endIndex;
+      
+      if (index < tasks.length) {
+        port2.postMessage('continue');
+      } else {
+        resolve(results);
+      }
+    };
+    
+    port2.postMessage('start');
+  });
+};
+```
+
+### 2. Web Workers - 多线程处理
+
+#### 2.1 基础 Web Worker 实现
+```javascript
+// main.js - 主线程
+const workerExecute = (tasks) => {
+  return new Promise((resolve, reject) => {
+    const worker = new Worker('task-worker.js');
+    const results = [];
+    
+    // 分批发送任务
+    const batchSize = 10000;
+    let currentBatch = 0;
+    
+    const sendBatch = () => {
+      const startIndex = currentBatch * batchSize;
+      const endIndex = Math.min(startIndex + batchSize, tasks.length);
+      const batch = tasks.slice(startIndex, endIndex);
+      
+      worker.postMessage({
+        type: 'process',
+        tasks: batch,
+        batchIndex: currentBatch
+      });
+      
+      currentBatch++;
+    };
+    
+    worker.onmessage = (e) => {
+      const { type, results: batchResults, batchIndex } = e.data;
+      
+      if (type === 'complete') {
+        results[batchIndex] = batchResults;
+        
+        if (currentBatch * batchSize < tasks.length) {
+          sendBatch();
+        } else {
+          // 所有批次完成
+          const finalResults = results.flat();
+          worker.terminate();
+          resolve(finalResults);
+        }
+      }
+    };
+    
+    worker.onerror = (error) => {
+      worker.terminate();
+      reject(error);
+    };
+    
+    sendBatch();
+  });
+};
+
+// task-worker.js - Worker线程
+self.onmessage = function(e) {
+  const { type, tasks, batchIndex } = e.data;
+  
+  if (type === 'process') {
+    const results = tasks.map(task => processTask(task));
+    
+    self.postMessage({
+      type: 'complete',
+      results: results,
+      batchIndex: batchIndex
     });
   }
+};
 
-  renderVisibleItems(startIndex, endIndex) {
-    this.viewport.innerHTML = '';
-    for (let i = startIndex; i < endIndex; i++) {
-      const item = this.createListItem(i, this.data[i]);
-      item.style.transform = `translateY(${i * this.itemHeight}px)`;
-      this.viewport.appendChild(item);
+function processTask(task) {
+  // 在Worker中处理任务
+  return task * 2; // 示例处理逻辑
+}
+```
+
+#### 2.2 多Worker并行处理
+```javascript
+// 使用多个Worker并行处理
+const multiWorkerExecute = (tasks, workerCount = 4) => {
+  return new Promise((resolve, reject) => {
+    const workers = [];
+    const results = new Array(workerCount);
+    let completedWorkers = 0;
+    
+    // 创建多个Worker
+    for (let i = 0; i < workerCount; i++) {
+      const worker = new Worker('task-worker.js');
+      workers.push(worker);
+      
+      worker.onmessage = (e) => {
+        const { type, results: workerResults, workerIndex } = e.data;
+        
+        if (type === 'complete') {
+          results[workerIndex] = workerResults;
+          completedWorkers++;
+          
+          if (completedWorkers === workerCount) {
+            // 所有Worker完成
+            workers.forEach(w => w.terminate());
+            resolve(results.flat());
+          }
+        }
+      };
+      
+      worker.onerror = (error) => {
+        workers.forEach(w => w.terminate());
+        reject(error);
+      };
+    }
+    
+    // 分配任务给各个Worker
+    const tasksPerWorker = Math.ceil(tasks.length / workerCount);
+    
+    workers.forEach((worker, index) => {
+      const startIndex = index * tasksPerWorker;
+      const endIndex = Math.min(startIndex + tasksPerWorker, tasks.length);
+      const workerTasks = tasks.slice(startIndex, endIndex);
+      
+      worker.postMessage({
+        type: 'process',
+        tasks: workerTasks,
+        workerIndex: index
+      });
+    });
+  });
+};
+```
+
+### 3. 分批处理 - 控制内存使用
+
+#### 3.1 流式处理
+```javascript
+// 流式处理大量数据
+const streamProcess = async (tasks, batchSize = 1000) => {
+  const results = [];
+  
+  for (let i = 0; i < tasks.length; i += batchSize) {
+    const batch = tasks.slice(i, i + batchSize);
+    const batchResults = await processBatch(batch);
+    results.push(...batchResults);
+    
+    // 让出主线程
+    await new Promise(resolve => setTimeout(resolve, 0));
+  }
+  
+  return results;
+};
+
+const processBatch = (batch) => {
+  return new Promise((resolve) => {
+    const results = batch.map(task => processTask(task));
+    resolve(results);
+  });
+};
+```
+
+#### 3.2 内存管理
+```javascript
+// 内存友好的处理方式
+const memoryEfficientProcess = (tasks) => {
+  const results = [];
+  const maxMemoryUsage = 100 * 1024 * 1024; // 100MB限制
+  
+  let currentMemory = 0;
+  let index = 0;
+  
+  const processWithMemoryCheck = () => {
+    const startTime = performance.now();
+    
+    while (index < tasks.length && (performance.now() - startTime) < 16) {
+      const result = processTask(tasks[index]);
+      results.push(result);
+      
+      // 估算内存使用
+      currentMemory += estimateMemoryUsage(result);
+      
+      if (currentMemory > maxMemoryUsage) {
+        // 内存使用过高，清理并暂停
+        results.splice(0, Math.floor(results.length / 2));
+        currentMemory = Math.floor(currentMemory / 2);
+        break;
+      }
+      
+      index++;
+    }
+    
+    if (index < tasks.length) {
+      setTimeout(processWithMemoryCheck, 0);
+    }
+  };
+  
+  processWithMemoryCheck();
+  return results;
+};
+```
+
+### 4. 任务调度优化
+
+#### 4.1 优先级调度
+```javascript
+// 基于优先级的任务调度
+class PriorityTaskScheduler {
+  constructor() {
+    this.highPriorityTasks = [];
+    this.normalPriorityTasks = [];
+    this.lowPriorityTasks = [];
+    this.isProcessing = false;
+  }
+  
+  addTask(task, priority = 'normal') {
+    switch (priority) {
+      case 'high':
+        this.highPriorityTasks.push(task);
+        break;
+      case 'low':
+        this.lowPriorityTasks.push(task);
+        break;
+      default:
+        this.normalPriorityTasks.push(task);
+    }
+    
+    if (!this.isProcessing) {
+      this.processTasks();
     }
   }
-}
-```
-
-## createListItem 方法实现详解
-
-`createListItem` 方法是虚拟列表的核心方法，负责创建和配置单个列表项的DOM元素。不同的实现方式会有不同的实现策略。
-
-### 基础实现
-
-```javascript
-createListItem(index, data) {
-  const item = document.createElement('div');
   
-  // 基础样式设置
-  item.style.cssText = `
-    height: ${this.itemHeight}px;
-    line-height: ${this.itemHeight}px;
-    padding: 0 20px;
-    border-bottom: 1px solid #eee;
-    background: ${index % 2 === 0 ? '#f9f9f9' : '#fff'};
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    box-sizing: border-box;
-    overflow: hidden;
-  `;
-  
-  // 设置内容
-  item.textContent = `Item ${index + 1}: ${data || 'No data'}`;
-  
-  // 添加数据属性，便于后续操作
-  item.dataset.index = index;
-  item.dataset.data = JSON.stringify(data);
-  
-  return item;
-}
-```
-
-### 高级实现（支持自定义渲染）
-
-```javascript
-createListItem(index, data, options = {}) {
-  const {
-    itemHeight = this.itemHeight,
-    customClass = '',
-    renderContent = null,
-    itemStyle = {},
-    itemClass = ''
-  } = options;
-
-  const item = document.createElement('div');
-  
-  // 基础样式
-  const baseStyle = {
-    height: `${itemHeight}px`,
-    lineHeight: `${itemHeight}px`,
-    padding: '0 20px',
-    borderBottom: '1px solid #eee',
-    background: index % 2 === 0 ? '#f9f9f9' : '#fff',
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    right: '0',
-    boxSizing: 'border-box',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    transition: 'background-color 0.2s ease'
-  };
-
-  // 合并自定义样式
-  const finalStyle = { ...baseStyle, ...itemStyle };
-  
-  // 应用样式
-  Object.assign(item.style, finalStyle);
-  
-  // 添加CSS类
-  if (itemClass) {
-    item.className = itemClass;
-  }
-  
-  // 添加自定义类
-  if (customClass) {
-    item.classList.add(customClass);
-  }
-  
-  // 设置数据属性
-  item.dataset.index = index;
-  item.dataset.data = JSON.stringify(data);
-  
-  // 自定义内容渲染
-  if (renderContent && typeof renderContent === 'function') {
-    item.innerHTML = renderContent(index, data, item);
-  } else {
-    // 默认内容渲染
-    this.renderDefaultContent(item, index, data);
-  }
-  
-  // 添加事件监听器
-  this.addItemEventListeners(item, index, data);
-  
-  return item;
-}
-
-// 默认内容渲染
-renderDefaultContent(item, index, data) {
-  const content = document.createElement('div');
-  content.style.cssText = `
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-  `;
-  
-  // 左侧内容
-  const leftContent = document.createElement('span');
-  leftContent.textContent = `Item ${index + 1}`;
-  leftContent.style.fontWeight = 'bold';
-  
-  // 右侧内容
-  const rightContent = document.createElement('span');
-  rightContent.textContent = data || 'No data';
-  rightContent.style.color = '#666';
-  
-  content.appendChild(leftContent);
-  content.appendChild(rightContent);
-  item.appendChild(content);
-}
-
-// 添加事件监听器
-addItemEventListeners(item, index, data) {
-  // 点击事件
-  item.addEventListener('click', (e) => {
-    this.onItemClick(index, data, e);
-  });
-  
-  // 鼠标悬停事件
-  item.addEventListener('mouseenter', (e) => {
-    item.style.backgroundColor = '#e3f2fd';
-  });
-  
-  item.addEventListener('mouseleave', (e) => {
-    item.style.backgroundColor = index % 2 === 0 ? '#f9f9f9' : '#fff';
-  });
-  
-  // 双击事件
-  item.addEventListener('dblclick', (e) => {
-    this.onItemDoubleClick(index, data, e);
-  });
-}
-```
-
-### 支持复杂内容的实现
-
-```javascript
-createListItem(index, data, options = {}) {
-  const {
-    itemHeight = this.itemHeight,
-    itemType = 'default',
-    showCheckbox = false,
-    showActions = false,
-    selectable = true
-  } = options;
-
-  const item = document.createElement('div');
-  
-  // 基础样式
-  item.style.cssText = `
-    height: ${itemHeight}px;
-    padding: 0 20px;
-    border-bottom: 1px solid #eee;
-    background: ${index % 2 === 0 ? '#f9f9f9' : '#fff'};
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-sizing: border-box;
-  `;
-  
-  // 设置数据属性
-  item.dataset.index = index;
-  item.dataset.data = JSON.stringify(data);
-  
-  // 根据类型渲染不同内容
-  switch (itemType) {
-    case 'user':
-      this.renderUserItem(item, index, data, options);
-      break;
-    case 'product':
-      this.renderProductItem(item, index, data, options);
-      break;
-    case 'message':
-      this.renderMessageItem(item, index, data, options);
-      break;
-    default:
-      this.renderDefaultItem(item, index, data, options);
-  }
-  
-  return item;
-}
-
-// 渲染用户项
-renderUserItem(item, index, data, options) {
-  // 复选框
-  if (options.showCheckbox) {
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = data.selected || false;
-    checkbox.addEventListener('change', (e) => {
-      this.onItemSelect(index, e.target.checked);
-    });
-    item.appendChild(checkbox);
-  }
-  
-  // 头像
-  const avatar = document.createElement('img');
-  avatar.src = data.avatar || 'default-avatar.png';
-  avatar.style.cssText = `
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-  `;
-  item.appendChild(avatar);
-  
-  // 用户信息
-  const userInfo = document.createElement('div');
-  userInfo.style.cssText = `
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  `;
-  
-  const userName = document.createElement('div');
-  userName.textContent = data.name || 'Unknown User';
-  userName.style.fontWeight = 'bold';
-  
-  const userEmail = document.createElement('div');
-  userEmail.textContent = data.email || 'No email';
-  userEmail.style.fontSize = '12px';
-  userEmail.style.color = '#666';
-  
-  userInfo.appendChild(userName);
-  userInfo.appendChild(userEmail);
-  item.appendChild(userInfo);
-  
-  // 操作按钮
-  if (options.showActions) {
-    const actions = document.createElement('div');
-    actions.style.cssText = `
-      display: flex;
-      gap: 8px;
-    `;
+  async processTasks() {
+    this.isProcessing = true;
     
-    const editBtn = document.createElement('button');
-    editBtn.textContent = 'Edit';
-    editBtn.style.cssText = `
-      padding: 4px 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      background: white;
-      cursor: pointer;
-      font-size: 12px;
-    `;
-    editBtn.addEventListener('click', () => {
-      this.onItemEdit(index, data);
-    });
+    while (this.hasTasks()) {
+      const task = this.getNextTask();
+      if (task) {
+        await this.processTask(task);
+      }
+      
+      // 让出主线程
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
     
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = 'Delete';
-    deleteBtn.style.cssText = `
-      padding: 4px 8px;
-      border: 1px solid #ff4444;
-      border-radius: 4px;
-      background: white;
-      color: #ff4444;
-      cursor: pointer;
-      font-size: 12px;
-    `;
-    deleteBtn.addEventListener('click', () => {
-      this.onItemDelete(index, data);
-    });
-    
-    actions.appendChild(editBtn);
-    actions.appendChild(deleteBtn);
-    item.appendChild(actions);
+    this.isProcessing = false;
   }
-}
-
-// 渲染产品项
-renderProductItem(item, index, data, options) {
-  // 产品图片
-  const image = document.createElement('img');
-  image.src = data.image || 'default-product.png';
-  image.style.cssText = `
-    width: 48px;
-    height: 48px;
-    object-fit: cover;
-    border-radius: 4px;
-  `;
-  item.appendChild(image);
   
-  // 产品信息
-  const productInfo = document.createElement('div');
-  productInfo.style.cssText = `
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  `;
+  hasTasks() {
+    return this.highPriorityTasks.length > 0 || 
+           this.normalPriorityTasks.length > 0 || 
+           this.lowPriorityTasks.length > 0;
+  }
   
-  const productName = document.createElement('div');
-  productName.textContent = data.name || 'Unknown Product';
-  productName.style.fontWeight = 'bold';
+  getNextTask() {
+    if (this.highPriorityTasks.length > 0) {
+      return this.highPriorityTasks.shift();
+    } else if (this.normalPriorityTasks.length > 0) {
+      return this.normalPriorityTasks.shift();
+    } else {
+      return this.lowPriorityTasks.shift();
+    }
+  }
   
-  const productPrice = document.createElement('div');
-  productPrice.textContent = `$${data.price || '0.00'}`;
-  productPrice.style.color = '#e44d26';
-  productPrice.style.fontWeight = 'bold';
-  
-  const productDesc = document.createElement('div');
-  productDesc.textContent = data.description || 'No description';
-  productDesc.style.fontSize = '12px';
-  productDesc.style.color = '#666';
-  
-  productInfo.appendChild(productName);
-  productInfo.appendChild(productPrice);
-  productInfo.appendChild(productDesc);
-  item.appendChild(productInfo);
-  
-  // 库存状态
-  const stockStatus = document.createElement('div');
-  stockStatus.textContent = data.inStock ? 'In Stock' : 'Out of Stock';
-  stockStatus.style.cssText = `
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    background: ${data.inStock ? '#e8f5e8' : '#ffe8e8'};
-    color: ${data.inStock ? '#2e7d32' : '#c62828'};
-  `;
-  item.appendChild(stockStatus);
+  async processTask(task) {
+    // 处理单个任务
+    return task();
+  }
 }
 ```
 
-### 性能优化版本
-
+#### 4.2 时间片调度
 ```javascript
-createListItem(index, data, options = {}) {
-  // 使用对象池复用DOM元素
-  let item = this.itemPool.pop();
-  
-  if (!item) {
-    item = document.createElement('div');
-    this.setupItemElement(item);
-  } else {
-    // 重置元素状态
-    this.resetItemElement(item);
+// 基于时间片的任务调度
+class TimeSliceScheduler {
+  constructor(timeSlice = 5) {
+    this.timeSlice = timeSlice; // 5ms时间片
+    this.tasks = [];
+    this.isProcessing = false;
   }
   
-  // 更新元素内容
-  this.updateItemContent(item, index, data, options);
+  addTasks(tasks) {
+    this.tasks.push(...tasks);
+    if (!this.isProcessing) {
+      this.processTasks();
+    }
+  }
   
-  return item;
-}
-
-// 设置元素基础属性
-setupItemElement(item) {
-  // 只设置一次，避免重复操作
-  item.style.cssText = `
-    height: ${this.itemHeight}px;
-    padding: 0 20px;
-    border-bottom: 1px solid #eee;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    box-sizing: border-box;
-    will-change: transform;
-  `;
+  async processTasks() {
+    this.isProcessing = true;
+    
+    while (this.tasks.length > 0) {
+      const startTime = performance.now();
+      
+      // 在时间片内处理任务
+      while (this.tasks.length > 0 && (performance.now() - startTime) < this.timeSlice) {
+        const task = this.tasks.shift();
+        await this.processTask(task);
+      }
+      
+      // 时间片用完，让出主线程
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+    
+    this.isProcessing = false;
+  }
   
-  // 使用事件委托，避免为每个元素绑定事件
-  item.addEventListener('click', this.handleItemClick.bind(this));
-}
-
-// 重置元素状态
-resetItemElement(item) {
-  item.innerHTML = '';
-  item.className = '';
-  item.dataset.index = '';
-  item.dataset.data = '';
-}
-
-// 更新元素内容
-updateItemContent(item, index, data, options) {
-  item.dataset.index = index;
-  item.dataset.data = JSON.stringify(data);
-  
-  // 根据数据类型选择渲染策略
-  const renderer = this.renderers.get(options.itemType) || this.renderers.get('default');
-  renderer(item, index, data, options);
-}
-
-// 事件委托处理
-handleItemClick(e) {
-  const item = e.currentTarget;
-  const index = parseInt(item.dataset.index);
-  const data = JSON.parse(item.dataset.data);
-  
-  this.onItemClick(index, data, e);
+  async processTask(task) {
+    return task();
+  }
 }
 ```
 
-### 使用示例
+### 5. 缓存与优化
 
+#### 5.1 结果缓存
 ```javascript
-// 基础使用
-const virtualList = new VirtualList(container, {
-  itemHeight: 60,
-  visibleCount: 10,
-  totalCount: 1000,
-  data: userData
+// 使用缓存避免重复计算
+class TaskCache {
+  constructor(maxSize = 10000) {
+    this.cache = new Map();
+    this.maxSize = maxSize;
+  }
+  
+  get(key) {
+    return this.cache.get(key);
+  }
+  
+  set(key, value) {
+    if (this.cache.size >= this.maxSize) {
+      // 清理最旧的缓存
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    
+    this.cache.set(key, value);
+  }
+  
+  has(key) {
+    return this.cache.has(key);
+  }
+}
+
+const cachedProcess = (tasks) => {
+  const cache = new TaskCache();
+  const results = [];
+  
+  for (const task of tasks) {
+    const cacheKey = JSON.stringify(task);
+    
+    if (cache.has(cacheKey)) {
+      results.push(cache.get(cacheKey));
+    } else {
+      const result = processTask(task);
+      cache.set(cacheKey, result);
+      results.push(result);
+    }
+  }
+  
+  return results;
+};
+```
+
+#### 5.2 预计算优化
+```javascript
+// 预计算常用结果
+class PrecomputeOptimizer {
+  constructor() {
+    this.precomputed = new Map();
+    this.precomputeCommonTasks();
+  }
+  
+  precomputeCommonTasks() {
+    // 预计算常见的任务结果
+    const commonTasks = [1, 2, 3, 4, 5, 10, 100, 1000];
+    
+    for (const task of commonTasks) {
+      this.precomputed.set(task, processTask(task));
+    }
+  }
+  
+  processTask(task) {
+    if (this.precomputed.has(task)) {
+      return this.precomputed.get(task);
+    }
+    
+    return processTask(task);
+  }
+}
+```
+
+## 实际应用示例
+
+### 完整的大规模任务处理系统
+```javascript
+class LargeScaleTaskProcessor {
+  constructor(options = {}) {
+    this.options = {
+      batchSize: 1000,
+      workerCount: 4,
+      timeSlice: 5,
+      maxMemoryUsage: 100 * 1024 * 1024,
+      ...options
+    };
+    
+    this.monitor = new PerformanceMonitor();
+    this.debugger = new TaskDebugger();
+    this.cache = new TaskCache();
+    this.scheduler = new TimeSliceScheduler(this.options.timeSlice);
+  }
+  
+  async processTasks(tasks) {
+    this.monitor.start();
+    this.debugger.log('开始处理任务', { taskCount: tasks.length });
+    
+    try {
+      // 根据任务数量选择处理策略
+      if (tasks.length < 10000) {
+        return await this.processSmallBatch(tasks);
+      } else if (tasks.length < 100000) {
+        return await this.processMediumBatch(tasks);
+      } else {
+        return await this.processLargeBatch(tasks);
+      }
+    } catch (error) {
+      this.debugger.error(error, { taskCount: tasks.length });
+      throw error;
+    } finally {
+      const report = this.monitor.end();
+      this.debugger.log('任务处理完成', report);
+    }
+  }
+  
+  async processSmallBatch(tasks) {
+    // 小批量任务：直接异步处理
+    return await this.asyncExecute(tasks);
+  }
+  
+  async processMediumBatch(tasks) {
+    // 中批量任务：使用时间片调度
+    return await this.scheduler.processTasks(tasks);
+  }
+  
+  async processLargeBatch(tasks) {
+    // 大批量任务：使用Web Workers
+    return await this.multiWorkerExecute(tasks);
+  }
+  
+  async asyncExecute(tasks) {
+    const results = [];
+    const batchSize = this.options.batchSize;
+    
+    for (let i = 0; i < tasks.length; i += batchSize) {
+      const batch = tasks.slice(i, i + batchSize);
+      const batchResults = await this.processBatch(batch);
+      results.push(...batchResults);
+      
+      // 让出主线程
+      await new Promise(resolve => setTimeout(resolve, 0));
+    }
+    
+    return results;
+  }
+  
+  async processBatch(batch) {
+    return batch.map(task => this.processTask(task));
+  }
+  
+  processTask(task) {
+    // 检查缓存
+    const cacheKey = JSON.stringify(task);
+    if (this.cache.has(cacheKey)) {
+      return this.cache.get(cacheKey);
+    }
+    
+    // 处理任务
+    const result = this.executeTask(task);
+    
+    // 缓存结果
+    this.cache.set(cacheKey, result);
+    
+    return result;
+  }
+  
+  executeTask(task) {
+    // 实际的任务执行逻辑
+    return task * 2; // 示例
+  }
+  
+  async multiWorkerExecute(tasks) {
+    // 多Worker并行处理实现
+    // ... (前面已实现)
+  }
+}
+
+// 使用示例
+const processor = new LargeScaleTaskProcessor({
+  batchSize: 1000,
+  workerCount: 4,
+  timeSlice: 5
 });
 
-// 高级使用
-const virtualList = new VirtualList(container, {
-  itemHeight: 80,
-  visibleCount: 8,
-  totalCount: 5000,
-  data: productData,
-  createListItem: (index, data, options) => {
-    return this.createListItem(index, data, {
-      itemType: 'product',
-      showActions: true,
-      showCheckbox: true
-    });
-  }
-});
+// 处理1000万个任务
+const tasks = Array.from({ length: 10000000 }, (_, i) => i);
+const results = await processor.processTasks(tasks);
 ```
 
-`createListItem` 方法的实现需要考虑性能、可维护性和扩展性。基础版本适合简单场景，高级版本适合复杂业务需求，性能优化版本适合对性能要求极高的场景。
+
+
+
+
+
+
+
+
+
+
+如何统计用户访问数据？比如PV、UV
+如何判断DOM元素是否在可视范围内？
+如何通过设置失效时间清除本地数据？
+不使用脚手架，如何用webpack搭建一个react项目？详细分析每一步的流程。
+package.json中有哪些属性？每个属性作用是什么？原理是什么？详细列出这些所有的属性。
+package.json中的sideEffects属性是什么？有什么作用？原理是什么？
+`<script>` `<link>` `<meta>` 标签有哪些属性？每个属性作用是什么？
+为什么SPA应用都会提供一个hash路由？
+如何进行路由变化监听？
+react-router和原生路由区别是什么？react-router实现原理是什么？
+单点登录是什么？它的提出是为了解决什么问题？实际开发中，单点登录实现的具体流程是什么？
+实际开发中，页面白屏的原因有哪些？如何排查？如何解决
+如何实现大对象深度对比？
+如何理解数据驱动视图？有哪些核心要素？
+ESLint 代码检测原理是什么？过程是什么？
+DocumentFragment API是什么？有哪些使用场景？
+-git pull vs git fetch
+- 如何解决递归导致的栈溢出问题
+- 站点防爬虫
+- 不同窗口通信方式有哪些
+- 表单校验时，如何让页面滚动到报错位置
+- 如何一次性渲染10w条数据且不卡顿
+- webpack 打包时，hash是如何生成的
+- js加载会阻塞浏览器渲染吗
+- 浏览器队头阻塞优化
+- webpack 中通过script引入资源，在项目中如何处理？
+- 应用上线后，如何通知用户刷新页面？
+- 常见的登录鉴权方式有哪些？token进行身份验证了解多少？
+- 需要在跨域请求时，携带另外一个域名的cookie 如何处理？
+- 封装一个请求超时重试的代码
+- 前端如何设置请求超时时间？
+- node如何利用多核cpu
+- 后端一次性返回的树形结构数据太大，前端如何处理
+- 组件封装如何做？遵守哪些原则？
+- 前端日志埋点设计思路
+- 前端应用如何进行权限设计？
+- indexdb存储空间大小如何约束？
+- webpack如何打包运行时chunk？项目工程中如何去加载这个运行时chunk？
+- react避免不必要渲染的方法
+- 全局样式冲突和覆盖有哪些解决思路
+- react如何实现转场动画？
+
+
+
+实现扫码登录项目，要求：
+1. 包括客户端和服务器端代码，客户端使用 react、webpack、javascript、Airbnb代码规范、BEM命名规范，服务端使用node、express、mongo、mongoose。
+2. 模拟真实的项目开发环境，考虑到各种安全方面问题，比如二维码生命周期管理、实时状态同步、身份验证安全、会话管理安全、数据传输安全、Token存储安全等。
+3. 整个流程按照这个图片的流程进行设计。
+

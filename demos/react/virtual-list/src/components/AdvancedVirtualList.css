@@ -1,0 +1,232 @@
+.virtual-list {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.virtual-list__title {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.virtual-list__controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.virtual-list__search-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.virtual-list__refresh-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.virtual-list__refresh-button:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.virtual-list__refresh-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* 性能监控样式 */
+.virtual-list__performance {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.virtual-list__performance h4 {
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.virtual-list__performance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.virtual-list__performance-grid > div {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  backdrop-filter: blur(10px);
+}
+
+/* 状态信息样式 */
+.virtual-list__status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.virtual-list__status--error {
+  color: #dc3545;
+  font-weight: 500;
+}
+
+/* 滚动容器样式 */
+.virtual-list__scroll-container {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.virtual-list__content {
+  position: relative;
+}
+
+.virtual-list__item {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+.virtual-list__item:hover {
+  background-color: #f8f9fa !important;
+}
+
+.virtual-list__item-content {
+  display: flex;
+  align-items: center;
+}
+
+.virtual-list__item-text {
+  flex: 1;
+}
+
+.virtual-list__item-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+  font-size: 16px;
+}
+
+.virtual-list__item-description {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.virtual-list__loading-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #999;
+  font-style: italic;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .virtual-list {
+    padding: 15px;
+  }
+  
+  .virtual-list__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .virtual-list__performance-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .virtual-list__status {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 滚动条样式 */
+.virtual-list__scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.virtual-list__scroll-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.virtual-list__scroll-container::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+.virtual-list__scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.virtual-list__item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* 性能指标高亮 */
+.virtual-list__performance-grid > div:nth-child(1) {
+  border-left: 4px solid #28a745;
+}
+
+.virtual-list__performance-grid > div:nth-child(2) {
+  border-left: 4px solid #ffc107;
+}
+
+.virtual-list__performance-grid > div:nth-child(3) {
+  border-left: 4px solid #17a2b8;
+}
+
+.virtual-list__performance-grid > div:nth-child(4) {
+  border-left: 4px solid #6f42c1;
+}
+
+.virtual-list__performance-grid > div:nth-child(5) {
+  border-left: 4px solid #fd7e14;
+}
+
+.virtual-list__performance-grid > div:nth-child(6) {
+  border-left: 4px solid #e83e8c;
+}

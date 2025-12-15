@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>混动跟随导航（电梯导航）演示</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    /* 电梯导航栏 */
+    .elevator-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e0e0e0;
+      z-index: 1000;
+      transition: background 0.3s ease;
+    }
+
+    .elevator-nav__container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .elevator-nav__logo {
+      font-size: 20px;
+      font-weight: 600;
+      color: #333;
+      text-decoration: none;
+    }
+
+    .elevator-nav__menu {
+      display: flex;
+      list-style: none;
+      gap: 30px;
+    }
+
+    .elevator-nav__item {
+      position: relative;
+    }
+
+    .elevator-nav__link {
+      text-decoration: none;
+      color: #666;
+      font-weight: 500;
+      padding: 8px 0;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .elevator-nav__link:hover,
+    .elevator-nav__link--active {
+      color: #007bff;
+    }
+
+    .elevator-nav__link--active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #007bff;
+      border-radius: 1px;
+    }
+
+    /* 内容区域 */
+    .content-section {
+      min-height: 100vh;
+      padding: 100px 20px 50px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .content-section__title {
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .content-section__text {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 15px;
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
+      .elevator-nav__menu {
+        display: none;
+      }
+
+      .elevator-nav__container {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 电梯导航栏 -->
+  <nav class="elevator-nav" id="elevatorNav">
+    <div class="elevator-nav__container">
+      <a href="#home" class="elevator-nav__logo">电梯导航</a>
+      <ul class="elevator-nav__menu">
+        <li class="elevator-nav__item">
+          <a href="#home" class="elevator-nav__link" data-section="home">首页</a>
+        </li>
+        <li class="elevator-nav__item">
+          <a href="#about" class="elevator-nav__link" data-section="about">关于</a>
+        </li>
+        <li class="elevator-nav__item">
+          <a href="#services" class="elevator-nav__link" data-section="services">服务</a>
+        </li>
+        <li class="elevator-nav__item">
+          <a href="#contact" class="elevator-nav__link" data-section="contact">联系</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 内容区域 -->
+  <section id="home" class="content-section">
+    <h2 class="content-section__title">欢迎来到首页</h2>
+    <p class="content-section__text">
+      这是一个混动跟随导航（电梯导航）的演示页面。导航栏会跟随页面滚动，
+      并根据当前浏览的内容区域自动高亮对应的导航项。
+    </p>
+    <p class="content-section__text">
+      点击导航项可以平滑滚动到对应的内容区域，就像电梯一样方便快捷。
+    </p>
+  </section>
+
+  <section id="about" class="content-section">
+    <h2 class="content-section__title">关于我们</h2>
+    <p class="content-section__text">
+      我们是一家专注于前端技术开发的公司，致力于为用户提供优质的产品和服务。
+    </p>
+    <p class="content-section__text">
+      我们的团队拥有丰富的开发经验，熟练掌握各种前端技术栈，包括React、Vue、Angular等。
+    </p>
+  </section>
+
+  <section id="services" class="content-section">
+    <h2 class="content-section__title">我们的服务</h2>
+    <p class="content-section__text">
+      我们提供全方位的技术服务，包括网站开发、移动应用开发、UI/UX设计等。
+    </p>
+    <p class="content-section__text">
+      我们的服务特点：专业、高效、创新、可靠。我们始终以客户需求为导向，
+      为客户提供最优质的技术解决方案。
+    </p>
+  </section>
+
+  <section id="contact" class="content-section">
+    <h2 class="content-section__title">联系我们</h2>
+    <p class="content-section__text">
+      如果您有任何问题或需要我们的服务，请随时与我们联系。
+    </p>
+    <p class="content-section__text">
+      邮箱：contact@example.com<br>
+      电话：+86 123-4567-8900<br>
+      地址：北京市朝阳区xxx街道xxx号
+    </p>
+  </section>
+
+  <script>
+    class ElevatorNavigation {
+      constructor(options = {}) {
+        this.options = {
+          offset: options.offset || 80,
+          duration: options.duration || 800,
+          easing: options.easing || 'easeInOutQuad',
+          activeClass: options.activeClass || 'elevator-nav__link--active',
+          threshold: options.threshold || 0.3,
+          ...options,
+        };
+
+        this.nav = document.getElementById('elevatorNav');
+        this.navLinks = document.querySelectorAll('.elevator-nav__link');
+        this.sections = document.querySelectorAll('.content-section');
+
+        this.init();
+      }
+
+      init() {
+        this.bindEvents();
+        this.updateActiveSection();
+      }
+
+      bindEvents() {
+        // 导航链接点击事件
+        this.navLinks.forEach((link) => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            this.scrollToSection(targetId);
+          });
+        });
+
+        // 滚动事件
+        window.addEventListener('scroll', this.throttle(() => {
+          this.updateActiveSection();
+          this.updateNavbarStyle();
+        }, 100));
+
+        // 窗口大小改变事件
+        window.addEventListener('resize', this.throttle(() => {
+          this.updateActiveSection();
+        }, 100));
+      }
+
+      scrollToSection(sectionId) {
+        const targetSection = document.getElementById(sectionId);
+        if (!targetSection) return;
+
+        const targetPosition = targetSection.offsetTop - this.options.offset;
+        this.smoothScrollTo(targetPosition);
+      }
+
+      smoothScrollTo(targetPosition) {
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        const startTime = performance.now();
+
+        const animation = (currentTime) => {
+          const timeElapsed = currentTime - startTime;
+          const progress = Math.min(timeElapsed / this.options.duration, 1);
+
+          const ease = this.getEasingFunction(this.options.easing);
+          const currentPosition = startPosition + distance * ease(progress);
+
+          window.scrollTo(0, currentPosition);
+
+          if (progress < 1) {
+            requestAnimationFrame(animation);
+          }
+        };
+
+        requestAnimationFrame(animation);
+      }
+
+      getEasingFunction(easing) {
+        const easingFunctions = {
+          linear: (t) => t,
+          easeInQuad: (t) => t * t,
+          easeOutQuad: (t) => t * (2 - t),
+          easeInOutQuad: (t) => (t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t),
+          easeInCubic: (t) => t * t * t,
+          easeOutCubic: (t) => (--t) * t * t + 1,
+          easeInOutCubic: (t) => (t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1),
+        };
+
+        return easingFunctions[easing] || easingFunctions.easeInOutQuad;
+      }
+
+      updateActiveSection() {
+        const scrollPosition = window.pageYOffset + this.options.offset;
+
+        this.sections.forEach((section) => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            this.setActiveNavLink(sectionId);
+          }
+        });
+      }
+
+      setActiveNavLink(sectionId) {
+        this.navLinks.forEach((link) => {
+          link.classList.remove(this.options.activeClass);
+          if (link.getAttribute('data-section') === sectionId) {
+            link.classList.add(this.options.activeClass);
+          }
+        });
+      }
+
+      updateNavbarStyle() {
+        const scrollTop = window.pageYOffset;
+
+        if (scrollTop > 100) {
+          this.nav.style.background = 'rgba(255, 255, 255, 0.95)';
+          this.nav.style.backdropFilter = 'blur(10px)';
+        } else {
+          this.nav.style.background = 'rgba(255, 255, 255, 0.95)';
+          this.nav.style.backdropFilter = 'blur(10px)';
+        }
+      }
+
+      throttle(func, limit) {
+        let inThrottle;
+        return function throttledFunction(...args) {
+          const context = this;
+          if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => {
+              inThrottle = false;
+            }, limit);
+          }
+        };
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      new ElevatorNavigation({
+        offset: 80,
+        duration: 800,
+        easing: 'easeInOutQuad',
+        threshold: 0.3,
+      });
+    });
+  </script>
+</body>
+
+</html>

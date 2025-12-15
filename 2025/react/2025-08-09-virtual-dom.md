@@ -329,16 +329,12 @@ export function createFiberFromElement(
 }
 ```
 
-React虚拟DOM转换为真实DOM的完整执行过程分析
-
-基于React最新源代码的深入分析，本文档详细阐述了React中虚拟DOM转换为真实DOM的完整执行过程。这个过程涉及多个关键阶段，从组件的渲染触发到最终DOM节点的创建和更新。
-
 ## 1. 整体架构概览
 
-React的渲染过程主要分为两个阶段：
+React 的渲染过程主要分为两个阶段。
 
-- Render 阶段（协调阶段）：构建 Fiber 树，确定需要执行的副作用。
-- Commit 阶段（提交阶段）：将副作用应用到真实 DOM。
+- Render 阶段（协调阶段）构建 Fiber 树，确定需要执行的副作用。
+- Commit 阶段（提交阶段）将副作用应用到真实 DOM。
 
 整个流程由 React Reconciler（协调器）和 React DOM Renderer（渲染器）协同完成。
 
@@ -1200,23 +1196,6 @@ export function removeChild(
 
 ## 三、diff 算法
 
-虚拟 DOM 的 diff 算法通过比较新旧虚拟 DOM 树的差异，最小化对真实 DOM 的操作，diff 算法基于两个假设。
-
-- 相同类型的组件产生相似的树结构。这个假设允许 React 在更新时复用已有的组件实例，而不是重新创建整个组件树。
-- 不同类型的组件产生不同的树结构。因为不同类型的组件通常有不同的内部结构和行为。
-
-之所以这样假设，是为了避免不必要的深度比较，另外，这样的假设在大多数情况下都成立。
-
-diff 算法采用**分层比较**的策略，只对同一层级的节点进行比较，不会跨层级比较。跨层级比较的复杂度是 `O(n³)`，而同层级比较的复杂度是 `O(n)`，性能更好，而且在 Web 应用中，跨层级的 DOM 操作非常罕见。
-
-diff 算法的比较，从三个层面进行：`Tree Diff`、`Component Diff` 和 `Element Diff`。
-
-- **Tree Diff**：只比较同层级的节点。
-- **Component Diff**：相同类型的组件继续 diff，不同类型直接替换。
-- **Element Diff**：通过 `key` 属性优化列表渲染。
-
-不过，diff 算法也有局限性，比如，无法处理跨层级的 DOM 操作，列表渲染严重依赖 key 属性等。
-
 下面是 diff 算法完整的执行流程。
 
 ```javascript
@@ -1272,7 +1251,7 @@ function reconcileChildFibers(
     return reconcileChildrenArray(returnFiber, currentFirstChild, newChild, lanes);
   }
 
-  // 5. 处理其他类型
+  // 处理其他类型
   if (getIteratorFn(newChild)) {
     return reconcileChildrenIterator(
       returnFiber,
@@ -1501,7 +1480,7 @@ function reconcileChildrenArray(
     }
   }
 
-  // 5. 删除剩余的旧节点
+  // 5. 删除剩余的旧节点 
   if (shouldTrackSideEffects) {
     existingChildren.forEach(child => deleteChild(returnFiber, child));
   }

@@ -1,0 +1,135 @@
+.qr-login-page {
+  width: 100%;
+  max-width: 500px;
+}
+
+.qr-login-page__container {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 2rem;
+}
+
+.qr-login-page__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.qr-login-page__title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.qr-login-page__subtitle {
+  color: #666;
+}
+
+.qr-login-page__content {
+  margin-bottom: 2rem;
+}
+
+.qr-login-page__generate {
+  text-align: center;
+}
+
+.qr-login-page__generate-btn {
+  background: #007bff;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  font-size: 1rem;
+  margin: 0 auto;
+}
+
+.qr-login-page__generate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.qr-login-page__qr-container {
+  text-align: center;
+}
+
+.qr-login-page__qr-code {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.qr-login-page__qr-code canvas {
+  border: 1px solid #ccc;
+}
+
+.qr-login-page__countdown {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.qr-login-page__status {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+}
+
+.qr-login-page__status--generated {
+  background-color: #e3f2fd;
+  color: #1976d2;
+}
+
+.qr-login-page__status--pending_confirmation {
+  background-color: #fff3e0;
+  color: #f57c00;
+}
+
+.qr-login-page__status--confirmed {
+  background-color: #e8f5e8;
+  color: #2e7d32;
+}
+
+.qr-login-page__status--expired {
+  background-color: #ffebee;
+  color: #c62828;
+}
+
+.qr-login-page__status--cancelled {
+  background-color: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.qr-login-page__regenerate-btn {
+  background: #f8f9fa;
+  color: #495057;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #ccc;
+  margin: 0 auto;
+}
+
+.qr-login-page__regenerate-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.qr-login-page__error {
+  background-color: #fee;
+  color: #c33;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid #fcc;
+}
+
+.qr-login-page__footer {
+  text-align: center;
+}
+
+.qr-login-page__back-btn {
+  background: none;
+  color: #007bff;
+  text-decoration: underline;
+}
