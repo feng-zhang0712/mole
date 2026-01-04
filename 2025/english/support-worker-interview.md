@@ -6,13 +6,22 @@
 
 ### Introduce Yourself
 
-- My name is Zhang Feng, I’m 35 years old. I have completed the Certificate III in individual support and practical placement in aged care.
+- My name is Zhang Feng, I’m 35 years old. I hold a Certificate III in individual support and have completed the practical placement in aged care.
+
+<!-- Placement experience -->
+
+- During my placement, I provided person-centred care for clients with different health conditions, such as dementia, heart disease, mobility issues, and client with psychological trauma. The clients I supported were between their 50s and 80s.
+- I provided **Personal Hygiene Care**, like helping the clients wash feet and take bath.
+- I provided **Dressing**, **Mobility**, **Toileting Assistance**, and **Incontinence Care**.
+- I provided **Meal Serving**, **Assisted Feeding**, and **Enteral Feeding** for clients with eating challenges.
+- I provided **Medication Reminders** and **Insulin Administration Support**, like communicating with nurses before meals to arrange insulin shots for diabetic clients.
+- I helped the clients wash their clothes and bed sheets, and cleaned their rooms. I often chatted with clients to offer emotional support.
 
 <!-- Strength -->
 
 - I'm confident in driving, I got my drivers license 10 years ago in 2015.
 - I enjoy cooking meals, I think it can be useful for clients’ meal preparation.
-- I enjoy keeping the environment clean and organized, I always do housework and cleaning, creating a comfortable environment for the clients.
+- I enjoy keeping the environment clean and organized, I always do housework and cleaning.
 - I’m physically healthy, I don’t smoke or drink. During my daily routine, I stay active through regular exercise, I usually go to the gym 5 times a week. so I’m confident in manual handling tasks.
 - I’m patient and calm, I take my job seriously which helps me build trust with clients and handle challenging situations.
 - I speak both Mandarin and English, I understand Chinese culture and traditions, I have both life experience in northern and southern China, which gives me more advantages when serving Chinese clients.
@@ -23,15 +32,6 @@ As for my weaknesses,
 
 - Sometimes I hope things can be done perfectly, which may causes me to spend extra time, but I’m trying to balance the efficiency and quality to better manage my time.
 - Since I only have placement experience, I’m still building experience with clients who have complex health issues, but I’m eager to learn through training and guidance.
-
-<!-- Placement experience -->
-
-- During my placement, I provided **Person-Centred Care** for clients with different health conditions, such as dementia, heart disease, mobility issues, and client with psychological trauma. The clients I supported were between their 50s and 80s.
-- I provided **Personal Hygiene Care**, like helping the clients wash feet and take bath.
-- I provided **Dressing**, **Mobility**, **Toileting Assistance**, and **Incontinence Care**.
-- I provided **Meal Serving**, **Assisted Feeding**, and **Enteral Feeding** for clients with eating challenges.
-- I provided **Medication Reminders** and **Insulin Administration Support**, like communicating with nurses before meals to arrange insulin shots for diabetic clients.
-- I helped the clients wash their clothes and bed sheets, and cleaned their rooms. I often chatted with clients to offer emotional support.
 
 <!-- End -->
 
