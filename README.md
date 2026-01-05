@@ -11,6 +11,169 @@
 
 什么是 NDIS
 
+### How do you handle conflict with colleagues?
+
+As a Support Worker, I think there are two kinds of conflicts: conflict with clients or their families and conflict with colleagues. I'll give two examples of how I handle these two different situations.
+
+#### 1. Conflict with Clients or Their Family
+
+Situation: During my placement, I provided mobility assistance for a client living with dementia who had limited mobility. His wife was dissatisfied with the walking time we provided. She believed we should increase her husband's daily activity.
+
+Task: My task was to address her concerns and ensure the client's safety while finding a safe and reasonable way to adjust the client's walking time.
+
+Action:
+I took these steps:
+
+- First, I stayed calm. I listened to her carefully without arguing and showed understanding for her concerns.
+- I used de-escalating techniques: I kept a gentle tone, maintained a comfortable distance, and focused on the issue rather than emotions.
+- I explained our current plan: “We walk him 20 minutes twice a day in the morning and afternoon, but we’re happy to explore adjustments if it’s safe.”
+- With the involvement of the nurse, we agreed to increase the client's walking time safely.
+- I documented and reported the incident to my supervisor, and updated the client’s care plan.
+
+Result: The result was that the client received more beneficial exercise safely and the wife was satisfied about the adjustment. From this experience, I learned the importance of communication and person-centered approaches.
+
+#### 2. Conflict with Colleagues
+
+Situation: Imagine I am working with a colleague in the kitchen, and they tell me they are too busy to complete the **light housekeeping** or **laundry and linen care** duties assigned to them. They ask me to do their tasks instead.
+
+Task: My task is to ensure that all tasks are completed efficiently for client safety and comfort, but also to maintain professional **teamwork** without encouraging them to avoid their responsibilities.
+
+Action:
+I'd handle this privately and diplomatically
+
+- I'd speak to my colleague alone and use a **calm** and **objective** tone. I'd focus on the tasks, not the person. I'd say: 'I understand you are busy, but the linen for Client X must be changed today for **infection prevention and control**.'
+- I'd offer to **collaborate** by saying: 'If I finish **assisted feeding** for Client Y now, can we work together to finish the laundry quickly?' [2]
+- If the essential tasks still cannot be completed, I'd **report** the time management issue to the supervisor. This is not about blame; it is about ensuring **client safety** is not compromised due to unfinished work." [5]
+
+Result: By focusing on **collaboration** and **prioritizing** the client's needs (like infection control), we would complete the necessary tasks and maintain a professional working relationship.
+
+Case 2: Conflict with a Colleague
+
+Situation: During a busy shift, a colleague and I disagreed about tasks for a client. We both thought we should attend to the same client first. This led to tension and a brief argument between us.
+Task: My task was to resolve the misunderstanding quickly so the client’s care would not be affected, and to maintain a respectful working relationship with my colleague.
+Action:
+
+  1. I asked my colleague if we could talk privately, away from the client.
+  2. I listened to her concerns, then calmly explained why I had started the task.
+  3. We realized there was confusion in our schedule, so we reviewed the care plan and decided who would do which tasks. 
+  4. We agreed that I'd finish helping this client and she would start another urgent task.
+  5. I thanked her for working together to find a solution.
+Result: By communicating calmly and sharing tasks, we both felt respected and the client was helped promptly. The conflict was resolved professionally, and we learned to coordinate better to avoid confusion in future shifts.
+
+#### How do you practice duty of care?
+
+- I must ensure the client's environment is safe and follow manual handling procedures when lifting or moving a client to prevent falls or injuries to them and myself.
+- I must ensure the client's dignity, privacy, and quality of life while providing care, such as ensuring curtains are closed during personal care.
+- I must follow the client's care plan and the facility's Work Health and Safety (WHS) procedures.
+- If I see a change in a client's health (like a new bruise, fever, or confusion), I have a duty to report it to my supervisor or the Registered Nurse. Otherwise, it is a breach of my duty of care.
+
+#### What is the relevance of duty of care in aged care?
+
+A duty of care outlines standards of reasonable and appropriate care. It also provides a legal basis for determining how to make the best decisions regarding the care of a person with disability.
+
+<!-- Reference: Reference: CHCDIS020 -->
+
+#### Support workers' duty of care
+
+Support workers' duty of care includes eight obligations:
+
+- Providing safe and high-quality service
+- Treating people with dignity and respect
+- Preventing abuse and neglect
+- Protecting people's privacy
+- Informing people about their care
+- Helping people maintain independence
+- Giving people control over their decisions
+- Listening to people's opinions and feedback
+
+#### What is the support worker's duty of care in relation to dignity of risk?
+
+It is the disability support worker’s duty of care to ensure that the person they are supporting is able to live their life however they choose while maintaining their health and safety (as far as reasonably practicable).
+
+<!-- Reference: CHCDIS020 -->
+
+#### Examples to reduce the risks
+
+Support workers can develop ways to honour clients' dignity of risk while protecting their well-being. Here are some ways to reduce the risks:
+
+- Situation: A person wants to continue living alone despite their mobility issues.
+- Result: They may hurt themselves without anyone there to help them.
+- Suggestions:
+  - Ask them to always keep an emergency cell phone with them. They can use it to call for help in case of emergencies.
+  - Schedule more frequent check-ins and home visits.
+  - Ask one of their neighbours to check in on them at least once a day.
+  
+- Situation: A person wants to continue using a cane instead of a wheelchair.
+- Result: There is a greater risk of falling and injury when using a cane.
+- Suggestions:
+  - Ask them if they agree to have physical therapy to strengthen their arms and legs. This would make it safer for them to use a cane because they will be more stable.
+  - Make sure they have a sturdy, stable, and comfortable cane to use.
+
+- Situation: A person does not want to receive a flu vaccine.
+- Result: They are at a higher risk of a serious flu infection.
+- Suggestions:
+  - Monitor their health more closely.
+  - Minimise their potential exposure to the flu.
+
+#### What is an individualised plan?
+
+individualised plans detail an old person’s medical and care information and what services or lifestyle modifications they may need to address their individual needs.
+
+Individual plans are vital because they are tailored to each person. It ensures that older people do not just receive generic services that do not fit their needs. It also enables them to decide when and how to receive services.
+
+#### Contents
+
+A person’s individualised plan contains the following information:
+
+- Basic information
+- Current medical needs
+- Care needs
+- Goals and preferences
+- Members of care team
+- Services being availed
+- Assessment results
+- Family or carer contact information
+
+#### Purpose
+
+Individualised plan serves as a guide.
+
+A person’s individualised plan serves the following purposes:
+
+- Tells the team basic and medical information about the person
+- Tells each aged care worker what to do for the person and when to do it
+- Serves as a record of the person’s goals and progress
+- Serves as an agreement between the person and the care provider
+
+#### What is Mandatory Reporting?
+
+Mandatory reporting is a legal obligation to report any reasonable belief of abuse to the proper authorities. Any person with a duty of care over a person with disability must determine whether the person with disability needs immediate help or is suffering from significant harm.
+
+Mandatory reporting is the responsibility of reporting suspected instances of abuse. Professionals like teachers, medical workers and care workers all have this responsibility. When it comes to aged care, mandatory reporting enables older people to be protected from indicators and allegations of exploitation, abuse, harassment and neglect. 
+
+As an aged care worker, you should know the mandatory reporting laws that apply to aged care. Familiarise yourself with the reporting policies and procedures of your workplace. This will help you protect the rights of the older people in your care.
+
+The Aged Care Act 1997 defines a reportable incident as the occurrence, or suspected occurrence, of abuse, including: 
+
+- Unreasonable use of force
+- Unlawful sexual contact or inappropriate sexual conduct
+- Psychological or emotional abuse
+- Stealing done by an aged care worker
+- Unexpected death of the residential care recipient
+- Neglect
+- Unreasonable use of restrictive practices
+- Unexplained absence of the residential care recipient from the residential care services of the provider
+
+Aged care workers must report these cases to the proper authorities. Aged care providers must respond to these reports quickly and efficiently. There must be a record of each report, including what was done to address it.
+
+Mandatory reporting is related to your duty of care as an aged care worker. You must ensure that any reasonable belief of abuse to the older person you are supporting is reported to the proper authorities. 
+
+If you have spotted any indicator of abuse or neglect in the older person, reach out immediately for help from authorities. Remember that mandatory reporting plays a vital role in preventing and stopping the harm that abuse, harassment and neglect can bring to older people.
+
+#### What is the support workers duty of care in relation to mandatory reporting?
+
+Its role is to enable persons with disability to be protected from indicators and allegations of exploitation, abuse, harassment, and neglect.
+
 <!--
 What is Duty of Care?
 
