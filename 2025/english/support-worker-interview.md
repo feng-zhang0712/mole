@@ -57,21 +57,16 @@ I’m excited to use my skills and positive attitudes to make a difference in cl
 
 ### What do you learned from previous job.
 
-From my previous job, I learned three key skills that make me a better Support Worker.
-
-- **Attention to Detail**: In programming, one small mistake in the code can crash the whole system. I developed a habit of being **careful and double-checking**. In Aged Care, this is very important for reviewing clients' Care Plans, checking dietary requirements, and writing accurate records. I never guess; I always check.
-- **Patience and Problem Solving**: Programming requires a lot of patience to fix problems. I learned to stay calm under pressure and not give up easily. This helps me in Aged Care. For example, if a client with dementia is confused or upset, I have the patience to listen, wait, and find a gentle way to help them.
-- **Teamwork and Communication**: In my previous job, I worked in a big team where clear communication was essential to finish projects. I know that Aged Care is also **team-based work**. I am good at following instructions, reporting issues to supervisors, and working smoothly with nurses and other carers.
+- Attention to Detail: In programming, one small mistake in the code can crash the whole system, so I developed a habit of being careful and double-checking in every task, whether it’s reviewing the client's individualized care plan, or writing accurate records.
+- Patience: Programming requires a lot of patience to fix problems. I learned to stay calm under pressure and not give up easily. I bring this same patience to my clients, especially when supporting those with dementia or communication barriers who need extra time to express themselves.
+- Teamwork: I previously worked as part of a big team, there were project manager, designers, testers, clients, and other software engineers. This taught me to listen carefully and communicate effectively with others, these are important skills that are essential when working within a multidisciplinary team as a support worker, cause aged care is a team-based work.
+- Continuous Learning: Technology changes fast in the IT industry, so I developed a habit of ongoing learning. As a support worker, I'll keep learning in the aged care industry, aiming to provide better service for my clients and contributing to the team and even the whole industry in the long run.
 
 ### How do you pre colleagues describe you?
 
 - I am known as someone who is easy to get along with. I am always happy to help a colleague if they are busy or struggling. I don't just focus on my own work; I care about the whole team's success.
 - I am punctual (on time) and I never leave a task unfinished. In my previous team, if I promised to do something, I always did it. I know that in Aged Care, reliability is crucial because the residents and the team depend on me showing up on time.
 - My colleagues often mentioned that I stay very calm under pressure. When we had technical problems or tight deadlines, I didn't panic. I just focused on solving the problem. I believe this will help me when dealing with busy shifts or challenging behaviors in Aged Care.
-
-### What shifts are you available for?
-
-I'm available for both weekday and weekend shifts. I'm also available in the morning, afternoon, and evening, depending on the team's schedules.
 
 ### How do you think of aged care or support worker?
 
@@ -101,6 +96,23 @@ Person-centred care means putting the client at the centre of everything we do.
 - It’s about respecting their choices to help them live with dignity and independence, while ensuring they feel safe, comfortable, and respected.
 - As a support worker, I'll try to ensure the care is tailored and do things with them instead of doing things for them, encouraging them to participate as much as possible.
 
+### Support I hope from the employer
+
+- I hope for regular training, such as handling clients with complex health issues and using specialized tools.
+- I hope for essential care tools, such as PPE, mobility aids, and basic medical supplies (like thermometers).
+- I hope for safety measures, such as providing support for high-risk tasks (having a second staff member for client transfers).
+- I hope for timely and detailed information, such as client care plans, schedule changes, and feedback from clients/families.
+- I hope for supervisor support, so I can consult when facing tricky situations.
+
+### What shifts are you available for?
+
+I'm available for both weekday and weekend shifts. I'm also available in the morning, afternoon, and evening, depending on the team's schedules.
+
+### What do you hope to learn from this job if you are hired?
+
+- I hope to build my skills in personal care, dementia support, and responding to changes in clients’ physical and emotional needs.
+- I want to learn from experienced colleagues how to communicate effectively with clients, families, and multidisciplinary teams.
+
 ## 场景题
 
 ### What would you do if there's no response after you arrived client's house?
@@ -112,15 +124,16 @@ Person-centred care means putting the client at the centre of everything we do.
 5. I'd check the environment for any unusual signs, like lights or sounds, and call 000 for emergency services if necessary.
 6. If I still get no response from the client, I'd document and report it to my supervisor, and I'll stay until I get clear instructions.
 
-### Infection Control and Measures will you take when you arrive at client's house?
+### Infection Control
 
-Infection control means the actions and practices used to prevent the spread of infections between clients, workers, families, and the community. In aged care and disability support, many clients have weaker immune systems, so infection control is essential to protect their safety, health, and wellbeing. Infection control is part of a support worker’s duty of care and professional responsibility.
+- 到达客户家时采取的防传染措施
+- 给老人洗澡应注意哪些防传染措施
 
-Infection control procedures are the rules and standard steps that workers follow to reduce infection risks.
+Infection control is the practices and procedures used to prevent the spread of infections between clients, support workers, families, and the community. In aged care and disability support, many clients have weaker immune systems, so infection control is essential to protect their safety, health, and wellbeing. Infection control is part of a support worker’s duty of care and professional responsibility.
 
 - I'd wash hands with soap and water or use alcohol-based sanitizer before and after the care, client contact, or touching surfaces.
 - I'd use appropriate PPE, such as gloves, masks, and apron, and dispose of PPE properly after use.
-  - For instance, I'd wear a mask if the client got sick.
+  - For instance, I'd wear a mask if the client get sick.
   - I'd wear shoe covers to avoid carrying germs from the outside.
 - I'd (regularly) clean and disinfect high-touch surfaces, client areas, and equipment to reduce the risk of infection spread.
 - I'd observe the client for signs of infection (fever, cough, or red skin), and document and report it to my supervisor immediately.
@@ -147,7 +160,7 @@ Infection control procedures are the rules and standard steps that workers follo
 2. If the task is within my role, I'd perform it while ensuring following the requirements and procedures, like wearing PPE.
 3. If the task is outside my role, I'd explain it to the client. I'd suggest an appropriate solution within my role if possible, such as helping the client access the right support, like contacting a nurse or family member.
 4. If I'm not sure whether should I perform the task, I'd report it to my supervisor for advice.
-5. I'd document the request in the client's records, and continue to provide care within my role, ensuring the client feels supported and respected while their request is addressed appropriately.
+5. I'd document the request in the client's progress notes, review and discuss with my team later to update the support plan with the client's consent, ensuring the client feels supported and respected while their request is addressed appropriately.
 
 ### Handle Refusal
 
@@ -156,7 +169,7 @@ Infection control procedures are the rules and standard steps that workers follo
 3. I'd explain the purpose of the support and the potential risks of their refusal.
 4. I'd check the client’s care plan to find out how to handle refusals.
 5. I'd offer options to give them control and reduce tension. For instance, if they refuse to shower, I might say, “Would you like to freshen up with a washcloth instead, or maybe later today?”.
-6. I'd give them some time then check back later, or when they feel relaxed or in a good mood, ask again if they’re ready for service.
+6. I'd give them some time then check back later, or when they feel relaxed or in a good mood, ask them again if they’re ready for service.
 7. If the refusal impacts their safety or health, I'd document and report it to my supervisor, and maybe share with my team to keep the authorized colleagues informed if necessary.
 
 ### Handle Challenging Situations
@@ -181,110 +194,65 @@ I don’t have direct experience with clients from different culture backgrounds
 - I'll use their feedback to adjust the care I delivered. This might mean modifying meal choices, ensuring privacy for prayer, or respecting their preference for a male or female carer.
 - I'll document the client's specific needs and adaptations, and report it to my supervisor if I have any concerns. This ensures the whole team provides consistent and safe support.
 
-### How do you handle multiple clients' in one busy shift?
+### Handle multiple clients in one busy shift
 
-- When supporting multiple clients in one shift, I prioritize tasks based on safety, urgency, and the clients’ care plans.
-- I start by reviewing the care plan and identify urgent or high-risk tasks.
-- I prioritize tasks based on urgency and importance. For instance, tasks like managing medical needs or addressing immediate health concerns take top priority to prevent risks.
+- I start by reviewing the clients' care plans, identify and prioritize urgent and high-risk tasks. For instance, tasks like managing medical needs or addressing immediate health concerns take top priority to prevent risks.
 - Then I focus on tasks with fixed schedules, like medication or meal times, to maintain clients’ expectations.
 - I check in with each client to understand their immediate needs or preferences. This helps me adjust priorities if someone needs urgent attention.
-- If working in a team, I coordinate with the team to divide tasks efficiently.
 - I remain flexible in case unexpected situations arise, such as a client feeling unwell, and re-prioritize tasks as needed while keeping all clients’ needs in mind.
-- I document and report any concerns to my supervisor and keep team informed to maintain continuous care.
+- I keep clients informed about what you are doing and expected timeframes, and communicate with supervisors or team members if workload becomes unsafe.
+- I accurately document care provided and promptly report any changes in clients’ conditions or incidents according to workplace procedures.
+- Stay calm, focused, and respectful under pressure to ensure safe, consistent, and person-centred care for all clients.
 
-### Support I hope from the employer
+### When the client is impatient on seeing a doctor
 
-- I hope for regular training, such as handling clients with complex health issues and using specialized tools.
-- I hope for essential care tools, such as PPE, mobility aids, and basic medical supplies (like thermometers).
-- I hope for safety measures, such as providing support for high-risk tasks (having a second staff member for client transfers).
-- I hope for timely and detailed information, such as client care plans, schedule changes, and feedback from clients/families.
-- I hope for supervisor support, so I can consult when facing tricky situations.
+- 看病、外出就餐时等待很久，客人不耐烦怎么办
+- 周边环境嘈杂怎么办
 
-### Handle client's complaint or feedback
+- I stay calm.
+- I ensure immediate safety — find a seat, remove hazards, fasten seatbelt or help them sit if needed.
+- I acknowledge their feeling, explain briefly and simply what’s happening.
+<!-- - Offer two simple choices (gives control): e.g. “Would you like to wait in the waiting room or sit in the car for a few minutes?” -->
+- I distracted the client by chatting with them.
+- If at a clinic, let staff know the client is anxious, so they may be able to prioritize or fast-track.
+- If impatience risks safety (agitation, trying to leave into traffic), move to a safer place and seek help from clinic staff or call your supervisor.
+- After the visit, document the incident and inform your supervisor/family if relevant; update the care plan with strategies that helped.
+- Preventive steps for next time: allow extra travel/appointment time, give regular time warnings (“we leave in 10 minutes”), schedule quieter appointment times, bring a familiar object or activity.
 
-- I stay calm and listen carefully about the client's concerns without interrupting and show empathy, so they feel heard and respected.
-- I acknowledge their feelings and apologize, then clarify the problem by asking gentle questions to make sure I fully understand their concern.
-- I take immediate steps to resolve it if possible, while ensuring aligning with the client’s individualised support plan and following workplace policies.
-- If the complaint is complex or beyond my scope of practice, I document and report it to my supervisor.
-- I check with the client later to ensure they’re satisfied with the resolution.
-- Actually, complaints and feedback are important, cause they help me improve the care and prevent similar issues in the future.
-
-### Work as part of a team
-
-- I share updates and client information with my team, like nurses or supervisors, using clear words to ensure everyone knows what’s happening.
-- I listen carefully to my teammates’ ideas or feedback, respecting their views to make sure we work well together and support clients.
-- I help with tasks like personal care or cleaning, taking on my share and offering help to others when needed to keep the team on track.
-- I stick to the client’s care plan and team instructions, ensuring my work matches the team’s goals and Aged Care Quality Standards.
-- If I notice a client’s health change or a problem, I tell my supervisor right away, giving clear details to keep the team informed.
-- I show up on time and complete my tasks well, so my team can trust me to do my part in caring for clients.
-- I keep a friendly attitude, even during busy shifts, to create a good team environment and make work easier for everyone.
-- I ask for advice or training from teammates to improve my skills, helping the team provide better care together.
-
-### How do you handle conflict with colleagues? 
+### Handle conflict
 
 As a Support Worker, I think there are two kinds of conflicts: conflict with clients or their families and conflict with colleagues. I'll give two examples of how I handle these two different situations.
 
-### How do you build a good relationship with clients?
+- I’d keep my tone gentle and my body language relaxed, even if the person is upset. Taking a deep breath helps me respond thoughtfully rather than react emotionally. My steady personality supports this approach.
+- I’d give them full attention, letting them explain their concern without interrupting. For example, I’d say, “I’m sorry you’re upset about this. Please tell me more so I can understand.” This shows respect and often helps de-escalate the situation.
+- I’d validate their emotions, saying something like, “I can see why that would be frustrating for you.” This demonstrates empathy without necessarily agreeing with their view.
+- I’d ask open-ended questions to get clear details, such as, “Can you help me understand what happened during the meal preparation?” If it’s about food, for instance, I’d note their preferences and offer to adjust, using my skills to cook something they like better.
+- If I can address it directly, I’d suggest practical options while respecting the client’s choices. For example, if a family member disagrees with the care routine, I’d explain the care plan gently and say, “We can adjust this to better suit your loved one – what would work best?”
+- If the conflict is beyond my scope or remains unresolved, I’d involve my supervisor calmly, saying, “I want to make sure this is handled properly, so I’ll speak with my manager and get back to you soon.” I’d never argue or make promises I can’t keep.
+- I’d record the concern in the progression notes factually, noting what was said, actions taken, and any follow-up, like, “Family member expressed dissatisfaction with meal; discussed preferences, referred to supervisor.”
+- Afterward, I’d check back with the client or family to ensure they feel heard and the issue is resolved, reinforcing trust.
 
-- I always treat clients with dignity, listening to their feelings and needs with a kind and patient attitude to make them feel valued.
-- I use simple, friendly language and non-verbal cues like smiles or gestures, especially for clients with language barriers, to ensure they understand and feel comfortable.
-- I take time to know their likes, dislikes, and background, such as asking about their favorite foods or hobbies, to personalize their care and build trust.
-- I show up on time, follow their care plan, and keep promises, like preparing a meal they enjoy, so they know they can depend on me.
-- I involve them in activities they love, like chatting about their favorite topics or helping with a hobby, to create positive, meaningful moments.
-- I encourage their independence by offering choices, like asking if they prefer a shower now or later, showing I respect their decisions.
-- I pay attention to their mood or health changes and adjust my approach, reporting concerns to my team to ensure their well-being.
+### Manager personal boundaries with clients
 
-For example, with a Chinese client, I might use my knowledge of their culture, like offering familiar dishes or greetings in Mandarin, to make them feel at home and strengthen our bond.
+- The first and most important principle is to keep a clear professional relationship, not a personal or dependent one, while still being respectful, kind, and supportive.
+- I avoid becoming personally or emotionally over-involved with clients.
+- I only perform tasks that are within the client’s individualized support plan and my scope of practice.
+- Be friendly, polite, and empathetic, but avoid sharing personal problems, opinions, or private information.
+- I provide personal care in a dignified way, explain actions before touching, and respond to emotional needs without encouraging dependency.
+- I politely but firmly say no to inappropriate requests, gifts, or favours, and explain the reason in a professional manner.
+- I discuss boundary issues with my supervisor early and document and report any concerns to protect both the client and myself.
+<!-- - Adhere to workplace policies, the Aged Care Code of Conduct, and professional standards at all times. -->
 
-### How do you ensure clients’ safety?
+### When notice signs of abuse or neglect
 
-Clients' safety is my highest priority. My approach is always based on the client's individualized support plan and following professional standards and procedures.
-
-- For physical and environmental safety, I try to prevent physical injury, especially falls. I regularly check the environment for any hazards that may cause harm, like wet floors, clutter, or loose rugs, to make sure the environment is safe. I use the correct and safe techniques and equipment when providing ambulation assistance.
-- For clinical and health safety, I follow the infection control procedures to ensure the client's safety and health. I manage medication reminders and communicate with the nurse about the client’s health status.
-- For dignity and emotional safety, I ask for permission before providing care and respect their privacy. If a client becomes distressed or aggressive, I try to understand the cause of their distress and redirect them to a safe activity.
-- I document and report things like incidents, safety concerns, or changes in clients' condition to the nurse or my supervisor. This ensures the whole team to provide safe and consistent care.
-
-### How do you ensure clients’ dignity?
-
-Ensuring clients' dignity is the highest priority. This is the core requirement of Aged Care Quality Standard. To me, dignity means treating clients as individuals and helping them maintain control over their life.
-
-- To respect autonomy and choice, I ensure the client has autonomy by following the principles of Person-Centred Care (PCC). I ask for permission before providing care and respect their privacy. I give simple choices whenever possible, for example: 'Would you like to have your shower now or in 30 minutes?' This helps them feel in control.
-- To protect privacy, I'm conscientious about protecting client's privacy, especially during personal care. When assisting with personal hygiene, I ensure close the door and pull the curtains to give them privacy. I make sure that their body is covered with a towel or gown as much as possible to protect their comfort and modesty.
-- To value identity and culture, Dignity is also about respecting who the person is. I ensure their identity, culture, and diversity are respected. I never make assumptions about their needs. Instead, I check their care plan and ask open-ended questions about their preferences regarding their diet, religious practices, or if they prefer a male or female carer. I always speak to them with a calm and polite tone, using their preferred name, to make them feel heard and valued.
-
-By focusing on these steps, I ensure that the client is safe, respected, and treated with the dignity they deserve.
-
-### How do you handle client's confidential or sensitive information?
-
-For me, protecting client’s confidential or sensitive information is important for providing safe and professional care. I follow all workplace policies, the Privacy Act, and the organisation’s confidentiality rules.
-
-- I treat all client information as confidential.
-- If a client tells me personal or sensitive information, I listen respectfully and keep it private.
-- I only share client information with authorized personnel on a need-to-know basis, and I never discuss them in public areas.
-- I make sure all documents and notes are handled properly — for example, keeping care records secure, logging out of computer systems, and not leaving paperwork unattended.
-- If the information impacts clients' safety and health, such as abuse or health concerns, I document and report it to my supervisor.
-- I’m always mindful of privacy in the physical environment — speaking quietly, not discussing clients in public areas, and making sure conversations happen in private spaces.
-- Overall, confidentiality means respecting the client, protecting their dignity, and ensuring their information is always safe and used only for their care.
-
-### What would you do if you noticed signs of abuse or neglect?
-
-- I'd make sure the client is safe. If there’s immediate danger, I'd take appropriate action, such as removing the client from harm.
+- I'd stay calm, make sure the client is safe. If there’s immediate danger, I'd take appropriate action, removing the client from harm.
 - I'd carefully observe any physical, emotional, or behavioral signs of abuse or neglect, ensuring I have clear and accurate details without jumping to conclusions.
 - I'd document and report the incident to my supervisor immediately. I’d provide factual details about what I observed without making assumptions, focusing on the co-worker’s actions and the client’s well-being.
 - If the situation involves serious abuse or neglect, I know aged care workers in Australia are required to report it under the Aged Care Act. I’d follow the Mandatory Reporting process, report it to the appropriate authorities, like Aged Care Quality and Safety Commission.
 - I'd offer emotional support to the client, listening to their concerns and ensuring they feel safe and respected.
 - I'd check in with my supervisor to ensure the issue is being addressed and offer any further assistance needed to support the client’s well-being.
 
-What Would You Do If You Suspected Abuse Or Neglect?
-If I suspected abuse or neglect, I'd stay calm, ensure the immediate safety of the client, and follow safeguarding procedures.
-I'd not confront the alleged abuser or promise confidentiality to the victim.
-Instead, I'd record the facts objectively—what I saw, heard, or was told—and report the concern to my designated safeguarding lead or manager without delay.
-If the client was in immediate danger, I'd contact emergency services.
-Acting swiftly and responsibly is crucial to protecting vulnerable individuals.
-I take every concern seriously and understand it is my duty to report, not to investigate.
-
-### How do you ensure clear communication with clients who have communication difficulties?
+### Ensure clear communication with clients who have communication difficulties
 
 - 确保与有沟通障碍的客户进行清晰的沟通
 - 如何照顾一个不会说英文（not speak English）的老人
@@ -299,29 +267,54 @@ I take every concern seriously and understand it is my duty to report, not to in
 - I may ask my supervisor for advice, consult family for preferences, or use interpreters for non-English and Mandarin speakers if needed.
 - I document effective methods and report changes in care notes, ensuring the team is informed.
 
-### What to do if the guest is impatient when seeing a doctor?
+### Handle client's complaint or feedback
 
-- 看病、外出就餐时等待很久，客人不耐烦怎么办
-- 周边环境嘈杂怎么办
+- I stay calm and listen carefully about the client's concerns without interrupting and show empathy, so they feel heard and respected.
+- I acknowledge their feelings and apologize, then clarify the problem by asking gentle questions to make sure I fully understand their concern.
+- I take immediate steps to resolve it if possible, while ensuring aligning with the client’s individualised support plan and following workplace policies.
+- If the complaint is complex or beyond my scope of practice, I document and report it to my supervisor.
+- I check with the client later to ensure they’re satisfied with the resolution.
+- Actually, complaints and feedback are important, cause they help me improve the care and prevent similar issues in the future.
 
-- I stay calm.
-- I ensure immediate safety — find a seat, remove hazards, fasten seatbelt or help them sit if needed.
-- I acknowledge their feeling, explain briefly and simply what’s happening.
-<!-- - Offer two simple choices (gives control): e.g. “Would you like to wait in the waiting room or sit in the car for a few minutes?” -->
-- I distracted the client by chatting with them.
-- If at a clinic, let staff know the client is anxious — they may be able to prioritize or fast-track.
-- If impatience risks safety (agitation, trying to leave into traffic), move to a safer place and seek help from clinic staff or call your supervisor.
-- After the visit, document the incident and inform your supervisor/family if relevant; update the care plan with strategies that helped.
-- Preventive steps for next time: allow extra travel/appointment time, give regular time warnings (“we leave in 10 minutes”), schedule quieter appointment times, bring a familiar object or activity.
+### Handle client's confidential or sensitive information
 
-### How do you safely transport a patient?
+For me, protecting client’s confidential or sensitive information is important for providing safe and professional care. I follow all workplace policies, the Privacy Act, and the organisation’s confidentiality rules.
 
-- I'd review the client’s care plan to know their mobility needs, like if they use a wheelchair or need extra support.
-- I ensure the vehicle is safe, check wheelchair locks or seat belts, and use aids like transfer belts if needed.
-- I'd follow manual handling procedures, bending my knees and moving slowly, to help the client in and out of the vehicle safely.
-- I'd explain each step to keep the client calm, aware, and reduce stress.
-- I'd watch for signs of discomfort or distress while driving, ensuring the client's is safety and comfort.
-- If any thing unexpected happened, I'd document and report it to my supervisor.
+- I treat all client information as confidential.
+- If a client tells me personal or sensitive information, I listen respectfully and keep it private.
+- I only share client information with authorized personnel on a need-to-know basis, and I never discuss them in public areas.
+- I make sure all documents and notes are handled properly, for example, keeping care records secure, logging out of computer systems, and not leaving paperwork unattended.
+- I’m always mindful of privacy in the physical environment, speaking quietly, not discussing clients in public areas, and making sure conversations happen in private spaces.
+- If the information impacts clients' safety and health, such as abuse or health concerns, I document and report it to my supervisor.
+- Overall, confidentiality means respecting the client, protecting their dignity, and ensuring their information is always safe and used only for their care.
+
+### Work as part of a team
+
+- I share information accurately during handovers, listen to others’ input, and speak up promptly about client needs or safety concerns.
+- I work within my scope of practice, respect the responsibilities of nurses, coordinators, and other support workers, and avoid role overlap.
+- I arrive on time, complete assigned tasks, and follow through on commitments so the team can rely on me.
+- I offer help when appropriate, be flexible during busy shifts, and contribute to a positive and professional team environment.
+- I work consistently according to organizational guidelines to ensure safe, coordinated, and high-quality care.
+- Be open to feedback, reflect on my practice, and use supervision and training to continuously improve teamwork and care quality.
+
+### Ensure clients’ safety
+
+Clients' safety is my highest priority. My approach is always based on the client's individualized support plan and following professional standards and procedures.
+
+- For physical and environmental safety, I try to prevent physical injury, especially falls. I regularly check the environment for any hazards that may cause harm, like wet floors, clutter, or loose rugs, to make sure the environment is safe. I use the correct and safe techniques and equipment when providing ambulation assistance.
+- For clinical and health safety, I follow the infection control procedures to ensure the client's safety and health. I manage medication reminders and communicate with the nurse about the client’s health status.
+- For dignity and emotional safety, I ask for permission before providing care and respect their privacy. If a client becomes distressed or aggressive, I try to understand the cause of their distress and redirect them to a safe activity.
+- I document and report things like incidents, safety concerns, or changes in clients' condition to the nurse or my supervisor. This ensures the whole team to provide safe and consistent care.
+
+### Ensure clients’ dignity
+
+Ensuring clients' dignity is the highest priority. This is the core requirement of Aged Care Quality Standard. To me, dignity means treating clients as individuals and helping them maintain control over their life.
+
+- To respect autonomy and choice, I ensure the client has autonomy by following the principles of Person-Centred Care (PCC). I ask for permission before providing care and respect their privacy. I give simple choices whenever possible, for example: 'Would you like to have your shower now or in 30 minutes?' This helps them feel in control.
+- To protect privacy, I'm conscientious about protecting client's privacy, especially during personal care. When assisting with personal hygiene, I ensure close the door and pull the curtains to give them privacy. I make sure that their body is covered with a towel or gown as much as possible to protect their comfort and modesty.
+- To value identity and culture, Dignity is also about respecting who the person is. I ensure their identity, culture, and diversity are respected. I never make assumptions about their needs. Instead, I check their care plan and ask open-ended questions about their preferences regarding their diet, religious practices, or if they prefer a male or female carer. I always speak to them with a calm and polite tone, using their preferred name, to make them feel heard and valued.
+
+By focusing on these steps, I ensure that the client is safe, respected, and treated with the dignity they deserve.
 
 ## 专业题
 
@@ -341,45 +334,13 @@ Dignity of risk means respecting client's right to make choices, even if these c
 
 ### Mandatory Reporting
 
-### How Do You Manage Personal Boundaries In Your Role?
+Mandatory reporting is a legal requirement to report suspected or observed abuse, neglect, or exploitation of vulnerable people, including children and older adults, to the appropriate authorities.
 
-How do you ensure accurate documentation and record keeping?
-<!-- I understand the importance of accurate documentation for client safety and care continuity.
-I record all observations, activities, medication administration, and incidents promptly and clearly, using the correct formats and systems.
-I avoid assumptions, stick to factual descriptions, and ensure records are up to date and confidential.
-If I notice any changes in a client’s health or behavior, I document and report them immediately.
-I regularly review care plans to stay aligned with the client’s needs.
-By being diligent and detail-oriented, I support high-quality care and ensure legal and professional standards are met. -->
+Support worker’s duty of care is to promptly identify and report any signs of abuse or neglect according to organizational policies and legal requirements, ensuring the client’s safety while maintaining confidentiality and professionalism.
 
-### What do you know about manual handling in aged care?
+### Manual Handling
 
 你对搬运技巧了解多少？
-
-Manual handling in aged care is about safely moving or supporting clients, like helping them walk, sit, or get out of bed. It also includes moving objects, like lifting a chair or carrying supplies.
-
-- Before moving a client, I’d check their care plan for mobility needs or restrictions, like if they need a walker or have a recent injury. I’d also assess the environment for hazards, like clutter or wet floors, to ensure it’s safe.
-- I’d explain what I’m doing to make them feel comfortable, saying, “I’m going to help you stand now – let me know if anything feels off.” I’d ask if they’re ready and encourage them to do as much as they can to maintain independence.
-- I’d use techniques from my training, like bending my knees, keeping my back straight, and holding the client close to my body for stability. For example, when helping someone stand, I’d support them under their arms, not pulling on their wrists.
-- If a client needs more support, I’d use aids like hoists, slide sheets, or transfer belts, following the facility’s training. For instance, with a hoist, I’d check it’s in good condition and position it correctly before lifting.
-- For complex transfers, like moving a client from bed to a wheelchair, I’d ask a colleague for help if the care plan requires two people. I’d coordinate by saying, “Let’s lift on three – ready?”
-- I’d watch for signs of discomfort during the task and stop if the client seems in pain. If something doesn’t work, I’d try a different approach or consult my supervisor. For example, if a client struggles to stand, I’d check if they need a different aid.
-- After assisting, I’d record any issues, like if the client felt unsteady, in their care notes. If I notice a new mobility concern, I’d report it to my supervisor to update the care plan.
-- I’d stick to the manual handling training from my Certificate III and the facility’s policies, which align with Australia’s Work Health and Safety regulations and Aged Care Standards. If I’m unsure, I’d ask for a refresher or guidance.
-
-During my placement, I helped clients with tasks like transferring from bed to chair using a slide sheet or supporting them while walking with a walker. My steady personality helps me stay focused, and my habit of keeping spaces tidy ensures the environment is clear of trip hazards. I also prioritize the client’s dignity, making sure they feel secure and respected during any manual handling task.
-
-### If you are hired, what do you hope to learn from this job?
-
-If I get this job, I want to get better at helping clients, like learning more about personal care or dealing with tricky moments. I’d love to take training, like for dementia, and work with the team to give safe, kind care. This job will teach me how to understand clients better and make their lives happier, which I really care about.
-
-How Do You Communicate With Non-Verbal Or Hearing-Impaired Clients?
-I adapt my communication methods based on the client’s abilities.
-Use gestures, facial expressions, picture cards, or written communication
-I observe body language closely and maintain eye contact to gauge responses.
-Speak clearly, face them directly, and use simple language.
-If they use hearing aids, I check that they are functioning.
-I may also learn basic sign language or consult with family members about preferred communication methods.
-My goal is to ensure they feel understood, included, and respected, regardless of their communication challenges.
 
 ### What's the difference between Home Care and Residential Aged Cared?
 
@@ -406,7 +367,7 @@ The main difference between Home Care and Residential Aged Care is where the car
 
 **Summary**
 
-In summary, home care focuses on independence and support in the client’s own home, while residential aged care provides higher-level, continuous care in a facility. In both settings, the goal is the same: to ensure safety, health, and wellbeing through person-centred care.
+In short, home care focuses on independence and support in the client’s own home, while residential aged care focuses on higher-level, continuous care in a facility. In both settings, the goal is the same: to ensure safety, health, and wellbeing through person-centred care.
 
 [居家护理和养老院护理的区别](https://www.doubao.com/thread/w1843215303ff3292)
 

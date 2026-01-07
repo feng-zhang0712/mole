@@ -11,6 +11,44 @@
 
 什么是 NDIS
 
+### Build good relationship with clients
+
+- I always treat clients with dignity, listening to their feelings and needs with a kind and patient attitude to make them feel valued.
+- I use simple, friendly language and non-verbal cues like smiles or gestures, especially for clients with language barriers, to ensure they understand and feel comfortable.
+- I take time to know their likes, dislikes, and background, such as asking about their favorite foods or hobbies, to personalize their care and build trust.
+- I show up on time, follow their care plan, and keep promises, like preparing a meal they enjoy, so they know they can depend on me.
+- I involve them in activities they love, like chatting about their favorite topics or helping with a hobby, to create positive, meaningful moments.
+- I encourage their independence by offering choices, like asking if they prefer a shower now or later, showing I respect their decisions.
+- I pay attention to their mood or health changes and adjust my approach, reporting concerns to my team to ensure their well-being.
+
+For example, with a Chinese client, I might use my knowledge of their culture, like offering familiar dishes or greetings in Mandarin, to make them feel at home and strengthen our bond.
+
+### Safely transport a patient
+
+- I'd review the client’s care plan to know their mobility needs, like if they use a wheelchair or need extra support.
+- I ensure the vehicle is safe, check wheelchair locks or seat belts, and use aids like transfer belts if needed.
+- I'd follow manual handling procedures, bending my knees and moving slowly, to help the client in and out of the vehicle safely.
+- I'd explain each step to keep the client calm, aware, and reduce stress.
+- I'd watch for signs of discomfort or distress while driving, ensuring the client's is safety and comfort.
+- If any thing unexpected happened, I'd document and report it to my supervisor.
+
+### Manual Handling
+
+你对搬运技巧了解多少？
+
+Manual handling in aged care is about safely moving or supporting clients, like helping them walk, sit, or get out of bed. It also includes moving objects, like lifting a chair or carrying supplies.
+
+- Before moving a client, I’d check their care plan for mobility needs or restrictions, like if they need a walker or have a recent injury. I’d also assess the environment for hazards, like clutter or wet floors, to ensure it’s safe.
+- I’d explain what I’m doing to make them feel comfortable, saying, “I’m going to help you stand now – let me know if anything feels off.” I’d ask if they’re ready and encourage them to do as much as they can to maintain independence.
+- I’d use techniques from my training, like bending my knees, keeping my back straight, and holding the client close to my body for stability. For example, when helping someone stand, I’d support them under their arms, not pulling on their wrists.
+- If a client needs more support, I’d use aids like hoists, slide sheets, or transfer belts, following the facility’s training. For instance, with a hoist, I’d check it’s in good condition and position it correctly before lifting.
+- For complex transfers, like moving a client from bed to a wheelchair, I’d ask a colleague for help if the care plan requires two people. I’d coordinate by saying, “Let’s lift on three – ready?”
+- I’d watch for signs of discomfort during the task and stop if the client seems in pain. If something doesn’t work, I’d try a different approach or consult my supervisor. For example, if a client struggles to stand, I’d check if they need a different aid.
+- After assisting, I’d record any issues, like if the client felt unsteady, in their care notes. If I notice a new mobility concern, I’d report it to my supervisor to update the care plan.
+- I’d stick to the manual handling training from my Certificate III and the facility’s policies, which align with Australia’s Work Health and Safety regulations and Aged Care Standards. If I’m unsure, I’d ask for a refresher or guidance.
+
+During my placement, I helped clients with tasks like transferring from bed to chair using a slide sheet or supporting them while walking with a walker. My steady personality helps me stay focused, and my habit of keeping spaces tidy ensures the environment is clear of trip hazards. I also prioritize the client’s dignity, making sure they feel secure and respected during any manual handling task.
+
 ### How do you handle conflict with colleagues?
 
 As a Support Worker, I think there are two kinds of conflicts: conflict with clients or their families and conflict with colleagues. I'll give two examples of how I handle these two different situations.
